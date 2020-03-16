@@ -1,2 +1,19 @@
-# elephant_vending_machine_frontend
-User interface for the Elephant Vending Machine
+# Elephant Vending Machine
+OSU CSE 5911 Capstone Project: Elephant Vending Machine in coordination with Cincinnati Zoo. Designed to facilitate automated behavioral psychology experiments.
+
+## Dependencies
+For this project to run successfully, you must have installed:
+* Node >= 8.10
+* npm >= 5.6
+
+## Starting the user interface
+1. Navigate to the `elephant-vending-machine` directory of this project
+1. Run `npm start`
+
+## Running tests
+1. Navigate to the `elephant-vending-machine` directory of this project
+1. Run `npm test`
+
+## Bundling the application to deploy
+1. Navigate to the `elephant-vending-machine` directory of this project
+1. Run `npm run build`
