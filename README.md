@@ -10,6 +10,11 @@ For this project to run successfully, you must have installed:
 1. Navigate to the `elephant-vending-machine` directory of this project
 1. Run `npm start`
 
+## Running linting
+1. Navigate to the `elephant-vending-machine` directory of this project
+1. Run `npm run lint`
+    * Note: You can use `npm run format` to automatically fix many style issues
+
 ## Running tests
 1. Navigate to the `elephant-vending-machine` directory of this project
 1. Run `npm test`
