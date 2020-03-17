@@ -18,6 +18,7 @@ For this project to run successfully, you must have installed:
 ## Running tests
 1. Navigate to the `elephant-vending-machine` directory of this project
 1. Run `npm test`
+    * A coverage report can be viewed with `npm run test:coverage`
 
 ## Bundling the application to deploy
 1. Navigate to the `elephant-vending-machine` directory of this project
