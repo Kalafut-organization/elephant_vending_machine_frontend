@@ -13,6 +13,7 @@ For this project to run successfully, you must have installed:
 ## Viewing Documentation
 1. Navigate to the root directory of this project
 1. Run `npm run docs`
+1. Open the generated page in `docs/index.html` in a browser
 
 ## Running linting
 1. Navigate to the root directory of this project
