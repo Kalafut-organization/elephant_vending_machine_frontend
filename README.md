@@ -14,6 +14,7 @@ For this project to run successfully, you must have installed:
 1. Navigate to the root directory of this project
 1. Run `npm run docs`
 1. Open the generated page in `docs/index.html` in a browser
+    * Up to date documentation can be found [here](https://Kalafut-organization.github.io/elephant_vending_machine_frontend).
 
 ## Running linting
 1. Navigate to the root directory of this project
