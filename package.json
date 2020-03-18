@@ -20,6 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:coverage": "react-scripts test --coverage",
+    "docs": "npx typedoc --out docs src",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
     "format": "prettier --write src/**/*.{ts,tsx,scss,css,json}"
@@ -75,6 +76,7 @@
     "eslint-plugin-react-hooks": "^2.5.0",
     "prettier": "^1.19.1",
     "prettier-eslint": "^9.0.1",
-    "prettier-eslint-cli": "^5.0.0"
+    "prettier-eslint-cli": "^5.0.0",
+    "typedoc": "^0.17.1"
   }
 }
