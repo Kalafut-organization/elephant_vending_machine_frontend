@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import StimuliCard from './stimuliCard';
 
-function generateCards(stimuliUrls: Array<string>) {
+function generateCards(stimuliUrls: Array<string>): Array<JSX.Element> {
   const cards: Array<JSX.Element> = [];
   stimuliUrls.forEach(url => {
     cards.push(<StimuliCard url={url} key={url} />);

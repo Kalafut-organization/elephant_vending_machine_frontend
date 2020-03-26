@@ -3,14 +3,15 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
-interface StimuliCardProps {
+export interface StimuliCardProps {
+  /** URL of the image displayed on card */
   url: string
 }
 
-function StimuliCard({url}: StimuliCardProps): ReactElement<StimuliCardProps> {
-  const filenameExpression = new RegExp(`${process.env.REACT_APP_BACKEND_ADDRESS}/static/img/(.*)`);
-  const match = filenameExpression.exec(url);
-  const filename = match ? match[1] : 'unknown filename';
+function StimuliCard({url}: StimuliCardProps): ReactElement {
+  const filenameExpression: RegExp = new RegExp(`${process.env.REACT_APP_BACKEND_ADDRESS}/static/img/(.*)`);
+  const match: RegExpExecArray | null = filenameExpression.exec(url);
+  const filename: string = match ? match[1] : 'unknown filename';
 
   return (
     <Col md={6} lg={4} xl={3} className="py-2">
