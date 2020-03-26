@@ -1,18 +1,18 @@
-import React, { useEffect, useState, ReactElement } from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import StimuliCard from './stimuliCard';
 
-function generateCards(stimuliUrls: Array<string>): Array<JSX.Element> {
+const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
   const cards: Array<JSX.Element> = [];
   stimuliUrls.forEach(url => {
     cards.push(<StimuliCard url={url} key={url} />);
   });
 
   return cards;
-}
+};
 
-function Stimuli(): ReactElement {
+const Stimuli: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [stimuliUrls, setStimuliUrls] = useState([]);
 
@@ -38,6 +38,6 @@ function Stimuli(): ReactElement {
       </Row>
     </Container>
   );
-}
+};
 
 export default Stimuli;

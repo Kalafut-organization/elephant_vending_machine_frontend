@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, ReactElement } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -9,7 +9,7 @@ import './App.css';
 const Home = lazy(() => import('../home/Home'));
 const Stimuli = lazy(() => import('../stimuli/Stimuli'));
 
-function App(): ReactElement {
+const App: React.FC = () => {
   return (
     <Container fluid>
       <Navbar bg="primary" variant="dark" className="mb-3">

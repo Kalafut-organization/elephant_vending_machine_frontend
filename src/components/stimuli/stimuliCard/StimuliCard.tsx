@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
@@ -8,7 +8,7 @@ export interface StimuliCardProps {
   url: string
 }
 
-function StimuliCard({url}: StimuliCardProps): ReactElement {
+const StimuliCard: React.FC<StimuliCardProps> = ({url}: StimuliCardProps) => {
   const filenameExpression: RegExp = new RegExp(`${process.env.REACT_APP_BACKEND_ADDRESS}/static/img/(.*)`);
   const match: RegExpExecArray | null = filenameExpression.exec(url);
   const filename: string = match ? match[1] : 'unknown filename';
@@ -28,6 +28,6 @@ function StimuliCard({url}: StimuliCardProps): ReactElement {
       </Card>
     </Col>
   );
-}
+};
 
 export default StimuliCard;
