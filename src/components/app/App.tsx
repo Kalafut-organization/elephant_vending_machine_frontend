@@ -29,6 +29,6 @@ const App: React.FC = () => {
       </Row>
     </Container>
   );
-}
+};
 
 export default App;

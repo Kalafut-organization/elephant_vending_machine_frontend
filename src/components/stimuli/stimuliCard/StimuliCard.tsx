@@ -5,25 +5,25 @@ import Button from 'react-bootstrap/Button';
 
 export interface StimuliCardProps {
   /** URL of the image displayed on card */
-  url: string
+  url: string;
 }
 
-const StimuliCard: React.FC<StimuliCardProps> = ({url}: StimuliCardProps) => {
-  const filenameExpression: RegExp = new RegExp(`${process.env.REACT_APP_BACKEND_ADDRESS}/static/img/(.*)`);
+const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
+  const filenameExpression: RegExp = new RegExp(
+    `${process.env.REACT_APP_BACKEND_ADDRESS}/static/img/(.*)`
+  );
   const match: RegExpExecArray | null = filenameExpression.exec(url);
   const filename: string = match ? match[1] : 'unknown filename';
 
   return (
     <Col md={6} lg={4} xl={3} className="py-2">
       <Card className="mb-4 h-100">
-        <Card.Img
-          variant="top"
-          src={url}
-          className="img-fluid"
-        />
+        <Card.Img variant="top" src={url} className="img-fluid" />
         <Card.Body>
           <Card.Text>{filename}</Card.Text>
-          <Button href={url} variant="secondary">View</Button>
+          <Button href={url} variant="secondary">
+            View
+          </Button>
         </Card.Body>
       </Card>
     </Col>

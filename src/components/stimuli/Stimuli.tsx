@@ -18,7 +18,9 @@ const Stimuli: React.FC = () => {
 
   async function fetchStimuliUrls() {
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/image`);
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/image`
+      );
       const body = await response.json();
       setStimuliUrls(body.files);
     } catch (err) {

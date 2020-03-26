@@ -9,51 +9,34 @@ const Home: React.FC = () => {
     <Container>
       <Row>
         <Col>
-          <Button
-            variant="secondary"
-            className="my-3"
-            block
-          >
+          <Button variant="secondary" className="my-3" block>
             Run Experiment
           </Button>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Button
-            variant="secondary"
-            className="my-3"
-            block
-          >
+          <Button variant="secondary" className="my-3" block>
             Manage Logs
           </Button>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Button
-            variant="secondary"
-            className="my-3"
-            block
-          >
+          <Button variant="secondary" className="my-3" block>
             Manage Experiments
           </Button>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Button
-            variant="secondary"
-            className="my-3"
-            href="/stimuli"
-            block
-          >
+          <Button variant="secondary" className="my-3" href="/stimuli" block>
             Manage Stimuli
           </Button>
         </Col>
       </Row>
     </Container>
   );
-}
+};
 
 export default Home;
