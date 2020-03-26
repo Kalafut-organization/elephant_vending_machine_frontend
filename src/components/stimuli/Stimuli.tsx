@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ReactElement } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import StimuliCard from './stimuliCard';
@@ -12,7 +12,7 @@ function generateCards(stimuliUrls: Array<string>) {
   return cards;
 }
 
-function Stimuli() {
+function Stimuli(): ReactElement {
   const [hasError, setErrors] = useState(false);
   const [stimuliUrls, setStimuliUrls] = useState([]);
 
