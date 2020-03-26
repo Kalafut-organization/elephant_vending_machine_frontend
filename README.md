@@ -19,7 +19,7 @@ For this project to run successfully, you must have installed:
 ## Running linting
 1. Navigate to the root directory of this project
 1. Run `npm run lint`
-    * Note: You can use `npm run format` to automatically fix many style issues
+    * Note: Code is automatically formatted with Prettier on each commit. You can use `npm run format` to run the formatter manually
 
 ## Running tests
 1. Navigate to the root directory of this project

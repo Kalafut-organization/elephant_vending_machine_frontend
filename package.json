@@ -12,12 +12,19 @@
     "@types/react-dom": "^16.9.5",
     "@types/react-router-dom": "^5.1.3",
     "bootstrap": "^4.4.1",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.9",
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0",
     "react-dom": "^16.13.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "typescript": "^3.7.5"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   },
   "scripts": {
     "start": "react-scripts start",
@@ -26,7 +33,7 @@
     "test:coverage": "react-scripts test --coverage",
     "docs": "npx typedoc --out docs src",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx,.json,.css.scss,.md src --color",
     "format": "prettier --write src/**/*.{ts,tsx,scss,css,json}"
   },
   "eslintConfig": {
@@ -47,6 +54,11 @@
         "lines": 80,
         "statements": 80
       }
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
     }
   },
   "browserslist": {
