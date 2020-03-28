@@ -19,9 +19,13 @@ const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
     <Col md={6} lg={4} xl={3} className="py-2">
       <Card className="mb-4 h-100">
         <Card.Img variant="top" src={url} className="img-fluid" />
-        <Card.Body>
-          <Card.Text>{filename}</Card.Text>
-          <Button href={url} variant="secondary">
+        <Card.Body className="d-flex flex-column">
+          <Card.Text className="mt-auto">{filename}</Card.Text>
+          <Button
+            href={url}
+            variant="secondary"
+            className="align-self-start align-self-bottom"
+          >
             View
           </Button>
         </Card.Body>
