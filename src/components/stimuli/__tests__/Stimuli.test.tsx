@@ -44,7 +44,7 @@ describe('<Stimuli />', () => {
     });
 
     // This is a terrible way to match the body components. We should find a better selector that works here.
-    expect(wrapper.html().match(/card/g)).toHaveLength(8);
+    expect(wrapper.html().match(/mb-4 h-100 card/g)).toHaveLength(2);
     fetchMock.mockRestore();
     wrapper.unmount();
   });
