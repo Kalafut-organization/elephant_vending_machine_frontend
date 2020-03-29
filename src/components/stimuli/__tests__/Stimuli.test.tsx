@@ -1,7 +1,6 @@
 import React from 'react';
-import { mount, shallow, ReactWrapper } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import StimuliCard from '../stimuliCard/StimuliCard';
 import Stimuli from '../Stimuli';
 
 describe('<Stimuli />', () => {
