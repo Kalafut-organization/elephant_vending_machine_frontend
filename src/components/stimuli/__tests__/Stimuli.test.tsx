@@ -1,6 +1,7 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import fetchMock from 'jest-fetch-mock';
+import { mount, shallow, ReactWrapper } from 'enzyme';
+import { act } from 'react-dom/test-utils';
+import StimuliCard from '../stimuliCard/StimuliCard';
 import Stimuli from '../Stimuli';
 
 describe('<Stimuli />', () => {
@@ -8,18 +9,43 @@ describe('<Stimuli />', () => {
     await shallow(<Stimuli />);
   });
 
-  it.skip('renders an error when fetching stimuli fails', async () => {
+  it('renders an error when fetching stimuli fails', async () => {
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => {
+      return Promise.reject(new Error('An error occurred'));
+    });
+
+    let wrapper;
+    await act(async () => {
+      wrapper = await mount(<Stimuli />);
+    });
+
+    const errorDiv = wrapper.find('Row');
+    expect(errorDiv).toHaveLength(1);
+    expect(errorDiv.text()).toEqual('Error encountered while loading images.');
+
+    fetchMock.mockRestore();
+    wrapper.unmount();
+  });
+
+  it('renders stimuli cards for each url returned by API', async () => {
     const mockResponse = {
       files: [
         'http://localhost/static/img/some_image_url.jpg',
         'http://localhost/static/img/some_other_image_url.jpg',
       ],
     };
-    fetchMock.mockRejectOnce(new Error('Some error'));
-    const wrapper = await shallow(<Stimuli />);
-    const errorDiv = wrapper.find('Row').find('div');
-    expect(fetchMock.mock.calls.length).toEqual(1);
-    expect(errorDiv).toHaveLength(1);
-    expect(errorDiv.text()).toEqual('Error encountered while loading images.');
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => {
+      return Promise.resolve(new Response(JSON.stringify(mockResponse)));
+    });
+
+    let wrapper;
+    await act(async () => {
+      wrapper = await mount(<Stimuli />);
+    });
+
+    // This is a terrible way to match the body components. We should find a better selector that works here.
+    expect(wrapper.html().match(/card/g)).toHaveLength(8);
+    fetchMock.mockRestore();
+    wrapper.unmount();
   });
 });

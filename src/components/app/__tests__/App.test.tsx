@@ -10,7 +10,7 @@ function timeout(ms: number) {
 
 const waitForComponent: any = async (
   page: ReactWrapper,
-  component: React.FC,
+  component: string,
   i = 0
 ) => {
   if (i > 9) {
