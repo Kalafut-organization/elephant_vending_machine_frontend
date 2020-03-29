@@ -6,8 +6,9 @@ import Col from 'react-bootstrap/Col';
 import Navbar from 'react-bootstrap/Navbar';
 import './App.css';
 
-const Home = lazy(() => import('../home/Home'));
-const Stimuli = lazy(() => import('../stimuli/Stimuli'));
+export const Home = lazy(() => import('../home/Home'));
+export const Stimuli = lazy(() => import('../stimuli/Stimuli'));
+export const NotFound = lazy(() => import('../notFound/NotFound'));
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
               <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/stimuli" component={Stimuli} />
+                <Route component={NotFound} />
               </Switch>
             </Suspense>
           </Router>
