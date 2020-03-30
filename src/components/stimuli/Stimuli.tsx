@@ -16,19 +16,19 @@ const Stimuli: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [stimuliUrls, setStimuliUrls] = useState([]);
 
-  async function fetchStimuliUrls() {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/image`
-      );
-      const body = await response.json();
-      setStimuliUrls(body.files);
-    } catch (err) {
-      setErrors(err);
-    }
-  }
-
   useEffect(() => {
+    async function fetchStimuliUrls(): Promise<void> {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/image`
+        );
+        const body = await response.json();
+        setStimuliUrls(body.files);
+      } catch (err) {
+        setErrors(err);
+      }
+    }
+
     fetchStimuliUrls();
   }, []);
 
