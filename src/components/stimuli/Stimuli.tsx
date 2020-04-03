@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 import StimuliCard from './stimuliCard';
 
 const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
@@ -12,9 +14,19 @@ const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
   return cards;
 };
 
+const buildFileSelector = (): HTMLInputElement => {
+  const fileSelector: HTMLInputElement = document.createElement('input');
+  fileSelector.setAttribute('type', 'file');
+  fileSelector.setAttribute('accept', 'image/*');
+  fileSelector.setAttribute('multiple', 'single');
+
+  return fileSelector;
+};
+
 const Stimuli: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [stimuliUrls, setStimuliUrls] = useState([]);
+  const [isUploading, setUploading] = useState(false);
 
   useEffect(() => {
     async function fetchStimuliUrls(): Promise<void> {
@@ -29,11 +41,49 @@ const Stimuli: React.FC = () => {
       }
     }
 
-    fetchStimuliUrls();
-  }, []);
+    if (!isUploading) fetchStimuliUrls();
+    else console.log('Uploading animation!');
+  }, [isUploading]);
+
+  const onFileSelect = (e: any) => {
+    const file: File = e.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    setUploading(true);
+    fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/image`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then(res => res.json())
+      .then(() => {
+        console.log('Finished uploading!');
+        setUploading(false);
+      });
+  };
+
+  const fileSelector: HTMLInputElement = buildFileSelector();
+  fileSelector.onchange = onFileSelect;
+
+  const handleUploadClick = (e: any) => {
+    e.preventDefault();
+    fileSelector.click();
+  };
 
   return (
     <Container>
+      <Row>
+        <Col>
+          <Button
+            variant="secondary"
+            size="lg"
+            className="my-3"
+            onClick={handleUploadClick}
+            block
+          >
+            Upload New Image
+          </Button>
+        </Col>
+      </Row>
       <Row>
         {hasError && <div>Error encountered while loading images.</div>}
         {stimuliUrls && generateCards(stimuliUrls)}
