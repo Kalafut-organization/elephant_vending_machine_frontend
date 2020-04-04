@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -42,7 +43,7 @@ const Stimuli: React.FC = () => {
     }
 
     if (!isUploading) fetchStimuliUrls();
-    else console.log('Uploading animation!');
+    //else console.log('Uploading animation!');
   }, [isUploading]);
 
   const onFileSelect = (e: any) => {
@@ -80,7 +81,16 @@ const Stimuli: React.FC = () => {
             onClick={handleUploadClick}
             block
           >
-            Upload New Image
+            {isUploading ? (
+              <Spinner
+                as="span"
+                animation="border"
+                role="status"
+                aria-hidden="true"
+              />
+            ) : (
+              'Upload New Image'
+            )}
           </Button>
         </Col>
       </Row>
