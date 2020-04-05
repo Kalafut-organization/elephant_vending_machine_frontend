@@ -7,6 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import './App.css';
 
 const Home = lazy(() => import('../home/Home'));
+const Expreiment = lazy(() => import('../experiment/Experiment'));
 const Stimuli = lazy(() => import('../stimuli/Stimuli'));
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
                 <Route exact path="/" component={Home} />
+                <Route exact path="/experiment" component={Expreiment} />
                 <Route path="/stimuli" component={Stimuli} />
               </Switch>
             </Suspense>
