@@ -74,23 +74,6 @@ const Stimuli: React.FC = () => {
   return (
     <Container>
       <Row>
-        {showToast ? (
-          <div
-            style={{
-              position: 'absolute',
-              zIndex: 3,
-            }}
-          >
-            <Toast
-              onClose={() => setShowToast(false)}
-              show={showToast}
-              delay={3000}
-              autohide
-            >
-              <Toast.Body>Image Upload Successful</Toast.Body>
-            </Toast>
-          </div>
-        ) : null}
         <Col>
           <Button
             variant="secondary"
@@ -116,6 +99,25 @@ const Stimuli: React.FC = () => {
         {hasError && <div>Error encountered while loading images.</div>}
         {stimuliUrls && generateCards(stimuliUrls)}
       </Row>
+      {showToast ? (
+        <Row>
+          <Col>
+            <div>
+              <Toast
+                style={{
+                  position: 'absolute',
+                }}
+                onClose={() => setShowToast(false)}
+                show={showToast}
+                delay={3000}
+                autohide
+              >
+                <Toast.Body>Image Upload Successful</Toast.Body>
+              </Toast>
+            </div>
+          </Col>
+        </Row>
+      ) : null}
     </Container>
   );
 };
