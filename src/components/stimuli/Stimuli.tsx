@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
+import Toast from 'react-bootstrap/Toast';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -28,6 +29,7 @@ const Stimuli: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [stimuliUrls, setStimuliUrls] = useState([]);
   const [isUploading, setUploading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     async function fetchStimuliUrls(): Promise<void> {
@@ -43,7 +45,6 @@ const Stimuli: React.FC = () => {
     }
 
     if (!isUploading) fetchStimuliUrls();
-    //else console.log('Uploading animation!');
   }, [isUploading]);
 
   const onFileSelect = (e: any) => {
@@ -57,8 +58,8 @@ const Stimuli: React.FC = () => {
     })
       .then(res => res.json())
       .then(() => {
-        console.log('Finished uploading!');
         setUploading(false);
+        setShowToast(true);
       });
   };
 
@@ -73,6 +74,23 @@ const Stimuli: React.FC = () => {
   return (
     <Container>
       <Row>
+        {showToast ? (
+          <div
+            style={{
+              position: 'absolute',
+              zIndex: 3,
+            }}
+          >
+            <Toast
+              onClose={() => setShowToast(false)}
+              show={showToast}
+              delay={3000}
+              autohide
+            >
+              <Toast.Body>Image Upload Successful</Toast.Body>
+            </Toast>
+          </div>
+        ) : null}
         <Col>
           <Button
             variant="secondary"

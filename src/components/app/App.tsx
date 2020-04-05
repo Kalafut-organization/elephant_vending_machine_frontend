@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { HouseDoorFill } from 'react-bootstrap-icons';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -14,6 +15,7 @@ const App: React.FC = () => {
   return (
     <Container fluid>
       <Navbar bg="primary" variant="dark" className="mb-3">
+        <HouseDoorFill color="white" size={25} />
         <Navbar.Brand href="/">Elephant Vending Machine</Navbar.Brand>
       </Navbar>
       <Row>
