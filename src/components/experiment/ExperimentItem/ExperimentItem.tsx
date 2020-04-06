@@ -8,6 +8,7 @@ interface ExperimentItemProps {
 
 async function deleteExperimentFile(filename: string) {
   await fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/experiment/${filename}`, { method: 'delete'});
+  window.location.reload(false);
 }
 
 function ExperimentItem({ url }: ExperimentItemProps): ReactElement<ExperimentItemProps> {
