@@ -1,5 +1,4 @@
 ![build](https://github.com/Kalafut-organization/elephant_vending_machine_frontend/workflows/build/badge.svg)
-![build](https://github.com/Kalafut-organization/elephant_vending_machine_frontend/workflows/build/badge.svg)
 [![MIT license](https://github.com/Kalafut-organization/elephant_vending_machine_frontend/blob/master/LICENSE.md)
 [![codecov](https://codecov.io/gh/Kalafut-organization/elephant_vending_machine_frontend/branch/master/graph/badge.svg)](https://codecov.io/gh/Kalafut-organization/elephant_vending_machine_frontend)
 # Elephant Vending Machine
