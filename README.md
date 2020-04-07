@@ -1,6 +1,8 @@
 ![build](https://github.com/Kalafut-organization/elephant_vending_machine_frontend/workflows/build/badge.svg)
-[![MIT license](https://github.com/Kalafut-organization/elephant_vending_machine_frontend/blob/master/LICENSE.md)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Kalafut-organization/elephant_vending_machine_frontend/blob/master/LICENSE.md)
 [![codecov](https://codecov.io/gh/Kalafut-organization/elephant_vending_machine_frontend/branch/master/graph/badge.svg)](https://codecov.io/gh/Kalafut-organization/elephant_vending_machine_frontend)
+![docs](https://github.com/Kalafut-organization/elephant_vending_machine_frontend/workflows/docs/badge.svg)
+
 # Elephant Vending Machine
 OSU CSE 5911 Capstone Project: Elephant Vending Machine in coordination with Cincinnati Zoo. Designed to facilitate automated behavioral psychology experiments.
 
