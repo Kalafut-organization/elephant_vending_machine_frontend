@@ -5,7 +5,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import StimuliCard from './stimuliCard';
+import bsCustomFileInput from 'bs-custom-file-input';
 
 const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
   const cards: Array<JSX.Element> = [];
@@ -16,20 +18,15 @@ const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
   return cards;
 };
 
-const buildFileSelector = (): HTMLInputElement => {
-  const fileSelector: HTMLInputElement = document.createElement('input');
-  fileSelector.setAttribute('type', 'file');
-  fileSelector.setAttribute('accept', 'image/*');
-  fileSelector.setAttribute('multiple', 'single');
-
-  return fileSelector;
-};
-
 const Stimuli: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [stimuliUrls, setStimuliUrls] = useState([]);
   const [isUploading, setUploading] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [responseMessage, setResponseMessage] = useState('');
+  const [file, setFile] = useState<string | Blob>('');
+
+  bsCustomFileInput.init();
 
   useEffect(() => {
     async function fetchStimuliUrls(): Promise<void> {
@@ -45,79 +42,95 @@ const Stimuli: React.FC = () => {
     }
 
     if (!isUploading) fetchStimuliUrls();
-  }, [isUploading]);
+  }, [isUploading, file]);
 
-  const onFileSelect = (e: any) => {
-    const file: File = e.target.files[0];
-    const formData = new FormData();
-    formData.append('file', file);
-    setUploading(true);
-    fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/image`, {
-      method: 'POST',
-      body: formData,
-    })
-      .then(res => res.json())
-      .then(() => {
-        setUploading(false);
-        setShowToast(true);
-      });
+  const fileChangedHandler = (event: any) => {
+    setFile(event.target.files[0]);
   };
 
-  const fileSelector: HTMLInputElement = buildFileSelector();
-  fileSelector.onchange = onFileSelect;
-
-  const handleUploadClick = (e: any) => {
+  const handleUploadClick = async (e: React.FormEvent) => {
     e.preventDefault();
-    fileSelector.click();
+    if (file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      setUploading(true);
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/image`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+      const body = await response.json();
+      setResponseMessage(body.message);
+      setUploading(false);
+      setShowToast(true);
+    }
   };
 
   return (
     <Container>
       <Row>
         <Col>
-          <Button
-            variant="secondary"
-            size="lg"
-            className="my-3"
-            onClick={handleUploadClick}
-            block
-          >
-            {isUploading ? (
-              <Spinner
-                as="span"
-                animation="border"
-                role="status"
-                aria-hidden="true"
-              />
-            ) : (
-              'Upload New Image'
-            )}
-          </Button>
+          <Form onSubmit={handleUploadClick}>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <Button variant="secondary" type="submit">
+                  {isUploading ? (
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    'Upload New Image'
+                  )}
+                </Button>
+              </div>
+              <div className="custom-file">
+                <input
+                  type="file"
+                  onChange={fileChangedHandler}
+                  aria-describedby="inputGroupFileAddon01"
+                  accept="image/*"
+                  className="custom-file-input"
+                />
+                <label className="custom-file-label" htmlFor="inputGroupFile01">
+                  Choose file
+                </label>
+              </div>
+            </div>
+          </Form>
         </Col>
       </Row>
       <Row>
         {hasError && <div>Error encountered while loading images.</div>}
         {stimuliUrls && generateCards(stimuliUrls)}
       </Row>
-      {showToast ? (
+      {showToast && (
         <Row>
           <Col>
             <div>
               <Toast
                 style={{
-                  position: 'absolute',
+                  left: '50%',
+                  bottom: '0%',
+                  position: 'fixed',
+                  zIndex: 10,
+                  transform: 'translate(-50%, -50%)',
                 }}
                 onClose={() => setShowToast(false)}
                 show={showToast}
                 delay={3000}
                 autohide
               >
-                <Toast.Body>Image Upload Successful</Toast.Body>
+                <Toast.Body>{responseMessage}</Toast.Body>
               </Toast>
             </div>
           </Col>
         </Row>
-      ) : null}
+      )}
     </Container>
   );
 };
