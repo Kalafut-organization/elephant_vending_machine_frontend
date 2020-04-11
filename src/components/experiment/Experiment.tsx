@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
 import Toast from 'react-bootstrap/Toast';
 import Container from 'react-bootstrap/Container';
 import ExperimentItem from './ExperimentItem';
@@ -32,6 +30,9 @@ const Experiment: React.FC = () => {
   const [isUploading, setUploading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
+  const [fileSelected, setFileSelected] = useState(false);
+  const [selectedFilename, setSelectedFilename] = useState("");
+  const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     async function fetchExperimentUrls(): Promise<void> {
@@ -49,10 +50,23 @@ const Experiment: React.FC = () => {
     if (!isUploading) fetchExperimentUrls();
   }, [isUploading]);
 
+
   const onFileSelect = async (e: any) => {
-    const file: File = e.target.files[0];
+    setFileSelected(true);
+    if (fileInput && fileInput.current) {
+      fileInput.current.files = e.target.files;
+    }
+    setSelectedFilename(e.target.files[0]?.name as string);
+  };
+
+  const fileSelector: HTMLInputElement = buildFileSelector();
+  fileSelector.onchange = onFileSelect;
+
+  const handleUploadClick = async () => {
     const formData = new FormData();
-    formData.append('file', file);
+    if (fileInput && fileInput.current && fileInput.current.files) {
+      formData.append('file', fileInput.current.files[0]);
+    }
     setUploading(true);
     const response = await fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/experiment`, {
       method: 'POST',
@@ -62,38 +76,37 @@ const Experiment: React.FC = () => {
     setResponseMessage(body.message);
     setUploading(false);
     setShowToast(true);
+    setSelectedFilename("");
+    setFileSelected(false);
   };
 
-  const fileSelector: HTMLInputElement = buildFileSelector();
-  fileSelector.onchange = onFileSelect;
-
-  const handleUploadClick = (e: any) => {
+  const handleFileSelect = (e: any) => {
     e.preventDefault();
     fileSelector.click();
-  };
+  }
 
   return (
     <Container>
       <Row>
         <Col>
-          <Button
-            variant="secondary"
-            size="lg"
-            className="my-3"
-            onClick={handleUploadClick}
-            block
-          >
-            {isUploading ? (
-              <Spinner
-                as="span"
-                animation="border"
-                role="status"
-                aria-hidden="true"
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span className="input-group-text" onClick={() => { fileSelected && handleUploadClick() }}>
+                Upload
+              </span>
+            </div>
+            <div className="custom-file">
+              <input
+                type="file"
+                className="custom-file-input"
+                ref={fileInput}
+                onClick={handleFileSelect}
               />
-            ) : (
-                'Upload New Experiment'
-              )}
-          </Button>
+              <label className="custom-file-label">
+                {(fileSelected && selectedFilename) || "Select a file to upload"}
+              </label>
+            </div>
+          </div>
         </Col>
       </Row>
       <Row>
@@ -104,7 +117,7 @@ const Experiment: React.FC = () => {
           </ListGroup>
         </Col>
       </Row>
-      {showToast ? (
+      {showToast && (
         <Row>
           <Col>
             <div>
@@ -122,7 +135,7 @@ const Experiment: React.FC = () => {
             </div>
           </Col>
         </Row>
-      ) : null}
+      )}
     </Container>
   );
 }
