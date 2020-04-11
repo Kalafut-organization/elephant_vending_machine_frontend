@@ -30,9 +30,7 @@ const Experiment: React.FC = () => {
   const [isUploading, setUploading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
-  const [fileSelected, setFileSelected] = useState(false);
-  const [selectedFilename, setSelectedFilename] = useState("");
-  const fileInput = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState({ 'file': null });
 
   useEffect(() => {
     async function fetchExperimentUrls(): Promise<void> {
@@ -52,11 +50,7 @@ const Experiment: React.FC = () => {
 
 
   const onFileSelect = async (e: any) => {
-    setFileSelected(true);
-    if (fileInput && fileInput.current) {
-      fileInput.current.files = e.target.files;
-    }
-    setSelectedFilename(e.target.files[0]?.name as string);
+    setSelectedFile({ 'file': e.target.files[0] });
   };
 
   const fileSelector: HTMLInputElement = buildFileSelector();
@@ -64,8 +58,8 @@ const Experiment: React.FC = () => {
 
   const handleUploadClick = async () => {
     const formData = new FormData();
-    if (fileInput && fileInput.current && fileInput.current.files) {
-      formData.append('file', fileInput.current.files[0]);
+    if (selectedFile && selectedFile.file) {
+      formData.append('file', selectedFile.file as unknown as File);
     }
     setUploading(true);
     const response = await fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/experiment`, {
@@ -76,8 +70,7 @@ const Experiment: React.FC = () => {
     setResponseMessage(body.message);
     setUploading(false);
     setShowToast(true);
-    setSelectedFilename("");
-    setFileSelected(false);
+    setSelectedFile({'file': null});
   };
 
   const handleFileSelect = (e: any) => {
@@ -91,7 +84,9 @@ const Experiment: React.FC = () => {
         <Col>
           <div className="input-group">
             <div className="input-group-prepend">
-              <span className="input-group-text" onClick={() => { fileSelected && handleUploadClick() }}>
+              <span className="input-group-text"
+              style={{ cursor: selectedFile.file !== null ? 'pointer' : 'not-allowed'}}
+              onClick={() => { selectedFile.file && handleUploadClick() }}>
                 Upload
               </span>
             </div>
@@ -99,11 +94,10 @@ const Experiment: React.FC = () => {
               <input
                 type="file"
                 className="custom-file-input"
-                ref={fileInput}
                 onClick={handleFileSelect}
               />
               <label className="custom-file-label">
-                {(fileSelected && selectedFilename) || "Select a file to upload"}
+                {selectedFile.file !== null ? (selectedFile.file as unknown as File).name : "Select a file to upload"}
               </label>
             </div>
           </div>
