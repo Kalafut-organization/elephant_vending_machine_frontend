@@ -1,3 +1,8 @@
+[![build](https://github.com/Kalafut-organization/elephant_vending_machine_frontend/workflows/build/badge.svg)](https://github.com/Kalafut-organization/elephant_vending_machine_frontend/actions?query=workflow%3Abuild)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Kalafut-organization/elephant_vending_machine_frontend/blob/master/LICENSE.md)
+[![codecov](https://codecov.io/gh/Kalafut-organization/elephant_vending_machine_frontend/branch/master/graph/badge.svg)](https://codecov.io/gh/Kalafut-organization/elephant_vending_machine_frontend)
+[![docs](https://github.com/Kalafut-organization/elephant_vending_machine_frontend/workflows/docs/badge.svg)](https://kalafut-organization.github.io/elephant_vending_machine_frontend/)
+
 # Elephant Vending Machine
 OSU CSE 5911 Capstone Project: Elephant Vending Machine in coordination with Cincinnati Zoo. Designed to facilitate automated behavioral psychology experiments.
 
@@ -19,7 +24,7 @@ For this project to run successfully, you must have installed:
 ## Running linting
 1. Navigate to the root directory of this project
 1. Run `npm run lint`
-    * Note: You can use `npm run format` to automatically fix many style issues
+    * Note: Code is automatically formatted with Prettier on each commit. You can use `npm run format` to run the formatter manually
 
 ## Running tests
 1. Navigate to the root directory of this project

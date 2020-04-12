@@ -6,11 +6,12 @@ import Col from 'react-bootstrap/Col';
 import Navbar from 'react-bootstrap/Navbar';
 import './App.css';
 
-const Home = lazy(() => import('../home/Home'));
-const Expreiment = lazy(() => import('../experiment/Experiment'));
-const Stimuli = lazy(() => import('../stimuli/Stimuli'));
+export const Home = lazy(() => import('../home/Home'));
+export const Stimuli = lazy(() => import('../stimuli/Stimuli'));
+export const Experiment = lazy(() => import('../experiment/Experiment'));
+export const NotFound = lazy(() => import('../notFound/NotFound'));
 
-function App() {
+const App: React.FC = () => {
   return (
     <Container fluid>
       <Navbar bg="primary" variant="dark" className="mb-3">
@@ -22,8 +23,10 @@ function App() {
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
                 <Route exact path="/" component={Home} />
-                <Route exact path="/experiment" component={Expreiment} />
+                <Route exact path="/experiment" component={Experiment} />
                 <Route path="/stimuli" component={Stimuli} />
+                <Route path="/stimuli" component={Stimuli} />
+                <Route component={NotFound} />
               </Switch>
             </Suspense>
           </Router>
@@ -31,6 +34,6 @@ function App() {
       </Row>
     </Container>
   );
-}
+};
 
 export default App;

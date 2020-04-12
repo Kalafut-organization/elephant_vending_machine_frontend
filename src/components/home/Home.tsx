@@ -4,39 +4,26 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 
-function Home() {
+const Home: React.FC = () => {
   return (
     <Container>
       <Row>
         <Col>
-          <Button
-            variant="secondary"
-            className="my-3"
-            block
-          >
+          <Button variant="secondary" size="lg" className="my-3" block>
             Run Experiment
           </Button>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Button
-            variant="secondary"
-            className="my-3"
-            block
-          >
+          <Button variant="secondary" size="lg" className="my-3" block>
             Manage Logs
           </Button>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Button
-            variant="secondary"
-            className="my-3"
-            href="/experiment"
-            block
-          >
+          <Button variant="secondary" size="lg" className="my-3" block>
             Manage Experiments
           </Button>
         </Col>
@@ -45,6 +32,7 @@ function Home() {
         <Col>
           <Button
             variant="secondary"
+            size="lg"
             className="my-3"
             href="/stimuli"
             block
@@ -55,6 +43,6 @@ function Home() {
       </Row>
     </Container>
   );
-}
+};
 
 export default Home;
