@@ -15,7 +15,7 @@ const App: React.FC = () => {
   return (
     <Container fluid>
       <Navbar bg="primary" variant="dark" className="mb-3">
-        <a href="/">
+        <a id="home-icon-link" href="/">
           <HouseDoorFill color="white" size={25} className="mr-3" />
         </a>
         <Navbar.Brand href="/">Elephant Vending Machine</Navbar.Brand>

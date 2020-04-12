@@ -47,4 +47,106 @@ describe('<Stimuli />', () => {
     fetchMock.mockRestore();
     wrapper.unmount();
   });
+
+  // Test: Renders file input
+  it('renders file input field with prompt', () => {
+    const wrapper = shallow(<Stimuli />);
+    const fileInputLabel = wrapper.find('label.custom-file-label').at(0);
+    expect(wrapper.find("input[type='file']")).toHaveLength(1);
+    expect(fileInputLabel.text()).toEqual('Choose an image...');
+  });
+
+  // Test: Renders disabled upload button
+  it('renders a disabled upload button', () => {
+    const wrapper = shallow(<Stimuli />);
+    expect(wrapper.find('Button[disabled=true]')).toHaveLength(1);
+  });
+
+  // Test: Choosing a file updates the file input label
+  it('updates file input label', () => {
+    const wrapper = shallow(<Stimuli />);
+    const fileInputLabel = wrapper.find('label.custom-file-label').at(0);
+    act(() => {
+      wrapper.find("input[type='file']").simulate('change', {
+        target: {
+          files: [{ name: 'elephant.jpg' }],
+        },
+      });
+    });
+    expect(fileInputLabel.text()).toEqual('elephant.jpg');
+  });
+
+  // Test: Choosing a file enables the upload button
+  it('enables upload button', () => {
+    const wrapper = shallow(<Stimuli />);
+    act(() => {
+      wrapper.find("input[type='file']").simulate('change', {
+        target: {
+          files: [{ name: 'elephant.jpg' }],
+        },
+      });
+    });
+    expect(wrapper.find('Button[disabled=false]')).toHaveLength(1);
+  });
+
+  it('shows toast with server response message', async () => {
+    let wrapper;
+    await act(async () => {
+      wrapper = await mount(<Stimuli />);
+    });
+
+    const mockResponse = {
+      message: 'server response',
+    };
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => {
+      return Promise.resolve(new Response(JSON.stringify(mockResponse)));
+    });
+
+    act(() => {
+      wrapper.find("input[type='file']").simulate('change', {
+        target: {
+          files: [{ name: 'elephant.jpg' }],
+        },
+      });
+    });
+
+    act(() => {
+      wrapper.find('Form').simulate('submit');
+    });
+
+    expect(wrapper.find('Toast').text()).toEqual('server response');
+    fetchMock.mockRestore();
+    wrapper.unmount();
+  });
+
+  // Test: Upload button spinner icon while sending
+  it('renders spinner icon on upload', async () => {
+    let wrapper;
+    await act(async () => {
+      wrapper = await mount(<Stimuli />);
+    });
+
+    const mockResponse = {
+      message: 'server response',
+    };
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => {
+      return Promise.resolve(new Response(JSON.stringify(mockResponse)));
+    });
+
+    act(() => {
+      wrapper.find("input[type='file']").simulate('change', {
+        target: {
+          files: [{ name: 'elephant.jpg' }],
+        },
+      });
+    });
+
+    act(() => {
+      wrapper.find('Form').simulate('submit');
+    });
+
+    expect(wrapper.find('Spinner')).toHaveLength(1);
+    fetchMock.mockRestore();
+    wrapper.unmount();
+  });
 });

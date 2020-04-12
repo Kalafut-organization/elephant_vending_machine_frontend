@@ -7,7 +7,6 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import StimuliCard from './stimuliCard';
-import bsCustomFileInput from 'bs-custom-file-input';
 
 const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
   const cards: Array<JSX.Element> = [];
@@ -18,6 +17,8 @@ const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
   return cards;
 };
 
+const DEFAULT_FILE_INPUT_TEXT = 'Choose an image...';
+
 const Stimuli: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [stimuliUrls, setStimuliUrls] = useState([]);
@@ -25,8 +26,7 @@ const Stimuli: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [file, setFile] = useState<string | Blob>('');
-
-  bsCustomFileInput.init();
+  const [fileInputText, setFileInputText] = useState(DEFAULT_FILE_INPUT_TEXT);
 
   useEffect(() => {
     async function fetchStimuliUrls(): Promise<void> {
@@ -45,6 +45,7 @@ const Stimuli: React.FC = () => {
   }, [isUploading, file]);
 
   const fileChangedHandler = (event: any) => {
+    setFileInputText(event.target.files[0].name);
     setFile(event.target.files[0]);
   };
 
@@ -64,6 +65,8 @@ const Stimuli: React.FC = () => {
       const body = await response.json();
       setResponseMessage(body.message);
       setUploading(false);
+      setFile('');
+      setFileInputText(DEFAULT_FILE_INPUT_TEXT);
       setShowToast(true);
     }
   };
@@ -75,16 +78,21 @@ const Stimuli: React.FC = () => {
           <Form onSubmit={handleUploadClick}>
             <div className="input-group">
               <div className="input-group-prepend">
-                <Button variant="secondary" type="submit">
+                <Button
+                  variant="secondary"
+                  type="submit"
+                  disabled={file === '' || isUploading}
+                >
                   {isUploading ? (
                     <Spinner
                       as="span"
                       animation="border"
+                      size="sm"
                       role="status"
                       aria-hidden="true"
                     />
                   ) : (
-                    'Upload New Image'
+                    'Upload Image'
                   )}
                 </Button>
               </div>
@@ -97,7 +105,7 @@ const Stimuli: React.FC = () => {
                   className="custom-file-input"
                 />
                 <label className="custom-file-label" htmlFor="inputGroupFile01">
-                  Choose file
+                  {fileInputText}
                 </label>
               </div>
             </div>
