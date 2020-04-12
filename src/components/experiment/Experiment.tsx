@@ -6,14 +6,14 @@ import Toast from 'react-bootstrap/Toast';
 import Container from 'react-bootstrap/Container';
 import ExperimentItem from './ExperimentItem';
 
-function generateItems(experimentUrls: Array<string>) {
+const generateItems = (experimentUrls: Array<string>) => {
   const items: Array<JSX.Element> = [];
   experimentUrls.forEach(url => {
     items.push(<ExperimentItem url={url} key={url} />);
   });
 
   return items;
-}
+};
 
 const buildFileSelector = (): HTMLInputElement => {
   const fileSelector: HTMLInputElement = document.createElement('input');
