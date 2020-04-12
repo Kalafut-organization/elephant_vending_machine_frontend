@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -29,8 +29,8 @@ const Experiment: React.FC = () => {
   const [experimentUrls, setExperimentUrls] = useState([]);
   const [isUploading, setUploading] = useState(false);
   const [showToast, setShowToast] = useState(false);
-  const [responseMessage, setResponseMessage] = useState("");
-  const [selectedFile, setSelectedFile] = useState({ 'file': null });
+  const [responseMessage, setResponseMessage] = useState('');
+  const [selectedFile, setSelectedFile] = useState({ file: null });
 
   useEffect(() => {
     async function fetchExperimentUrls(): Promise<void> {
@@ -48,9 +48,8 @@ const Experiment: React.FC = () => {
     if (!isUploading) fetchExperimentUrls();
   }, [isUploading]);
 
-
   const onFileSelect = async (e: any) => {
-    setSelectedFile({ 'file': e.target.files[0] });
+    setSelectedFile({ file: e.target.files[0] });
   };
 
   const fileSelector: HTMLInputElement = buildFileSelector();
@@ -59,54 +58,70 @@ const Experiment: React.FC = () => {
   const handleUploadClick = async () => {
     const formData = new FormData();
     if (selectedFile && selectedFile.file) {
-      formData.append('file', selectedFile.file as unknown as File);
+      formData.append('file', (selectedFile.file as unknown) as File);
     }
     setUploading(true);
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/experiment`, {
-      method: 'POST',
-      body: formData,
-    });
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/experiment`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    );
     const body = await response.json();
     setResponseMessage(body.message);
     setUploading(false);
     setShowToast(true);
-    setSelectedFile({'file': null});
+    setSelectedFile({ file: null });
   };
 
   const handleFileSelect = (e: any) => {
     e.preventDefault();
     fileSelector.click();
-  }
+  };
 
   return (
     <Container>
-      <Row>
-        <Col>
-          <div className="input-group">
-            <div className="input-group-prepend">
-              <span className="input-group-text"
-              style={{ cursor: selectedFile.file !== null ? 'pointer' : 'not-allowed'}}
-              onClick={() => { selectedFile.file && handleUploadClick() }}>
-                Upload
-              </span>
+      {!hasError && (
+        <Row>
+          <Col>
+            <div className="input-group">
+              <div className="input-group-prepend">
+                <span
+                  className="input-group-text"
+                  style={{
+                    cursor:
+                      selectedFile.file !== null ? 'pointer' : 'not-allowed',
+                  }}
+                  onClick={() => {
+                    selectedFile.file && handleUploadClick();
+                  }}
+                >
+                  Upload
+                </span>
+              </div>
+              <div className="custom-file">
+                <input
+                  type="file"
+                  className="custom-file-input"
+                  onClick={handleFileSelect}
+                />
+                <label className="custom-file-label">
+                  {selectedFile.file !== null
+                    ? ((selectedFile.file as unknown) as File).name
+                    : 'Select a file to upload'}
+                </label>
+              </div>
             </div>
-            <div className="custom-file">
-              <input
-                type="file"
-                className="custom-file-input"
-                onClick={handleFileSelect}
-              />
-              <label className="custom-file-label">
-                {selectedFile.file !== null ? (selectedFile.file as unknown as File).name : "Select a file to upload"}
-              </label>
-            </div>
-          </div>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      )}
       <Row>
         <Col>
           <ListGroup>
-            {hasError && <div>Error encountered while loading experiments.</div>}
+            {hasError && (
+              <div>Error encountered while loading experiments.</div>
+            )}
             {experimentUrls && generateItems(experimentUrls)}
           </ListGroup>
         </Col>
@@ -132,6 +147,6 @@ const Experiment: React.FC = () => {
       )}
     </Container>
   );
-}
+};
 
 export default Experiment;

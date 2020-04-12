@@ -1,27 +1,45 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { Modal, Button } from 'react-bootstrap';
 
 interface ExperimentItemProps {
-  url: string
+  url: string;
 }
 
 async function deleteExperimentFile(filename: string) {
-  await fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/experiment/${filename}`, { method: 'delete' });
+  await fetch(
+    `${process.env.REACT_APP_BACKEND_ADDRESS}/experiment/${filename}`,
+    { method: 'delete' }
+  );
   window.location.reload(false);
 }
 
-function ExperimentItem({ url }: ExperimentItemProps): ReactElement<ExperimentItemProps> {
+function ExperimentItem({
+  url,
+}: ExperimentItemProps): ReactElement<ExperimentItemProps> {
   const [isModalOpen, setModalStatus] = useState(false);
-  const filenameExpression = new RegExp(`${process.env.REACT_APP_BACKEND_ADDRESS}/static/experiment/(.*)`);
+  const filenameExpression = new RegExp(
+    `${process.env.REACT_APP_BACKEND_ADDRESS}/static/experiment/(.*)`
+  );
   const match = filenameExpression.exec(url);
   const filename = match ? match[1] : 'unknown filename';
 
   return (
     <ListGroup.Item>
       <span>{filename}</span>
-      <Button href={url} style={{ float: 'right' }} className="mr-1">View</Button>
-      <Button variant="danger" style={{ float: 'right' }} className="mr-1" onClick={() => { setModalStatus(true); }}>Delete</Button>
+      <Button href={url} style={{ float: 'right' }} className="mr-1">
+        View
+      </Button>
+      <Button
+        variant="danger"
+        style={{ float: 'right' }}
+        className="mr-1"
+        onClick={() => {
+          setModalStatus(true);
+        }}
+      >
+        Delete
+      </Button>
       <div>
         <Modal
           className="modal-container"
@@ -37,7 +55,15 @@ function ExperimentItem({ url }: ExperimentItemProps): ReactElement<ExperimentIt
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="danger" onClick={() => { deleteExperimentFile(filename); setModalStatus(false) }}>Yes</Button>
+            <Button
+              variant="danger"
+              onClick={() => {
+                deleteExperimentFile(filename);
+                setModalStatus(false);
+              }}
+            >
+              Yes
+            </Button>
             <Button onClick={() => setModalStatus(false)}>Cancel</Button>
           </Modal.Footer>
         </Modal>
