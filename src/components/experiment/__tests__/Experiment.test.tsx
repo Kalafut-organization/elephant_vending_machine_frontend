@@ -51,4 +51,20 @@ describe('<Experiment />', () => {
     fetchMock.mockRestore();
     wrapper.unmount();
   });
+
+  it('handles onClick events for file selector correctly', async () => {
+    window.alert = jest.fn();
+    let wrapper;
+    await act(async () => {
+      wrapper = await mount(<Experiment />);
+    });
+    const clickMock = jest
+      .spyOn(wrapper.instance(), 'handleFileSelect')
+      .mockImplementation(() => {
+        alert('clicked!');
+      });
+    const uploadField = wrapper.find('Browse');
+    uploadField.simulate('click');
+    expect(window.alert).toHaveBeenCalledWith('clicked!');
+  });
 });
