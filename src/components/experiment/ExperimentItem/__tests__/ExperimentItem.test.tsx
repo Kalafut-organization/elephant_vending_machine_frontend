@@ -37,6 +37,9 @@ describe('<ExperimentItem />', () => {
         json: () => Promise.resolve(mockResponse),
       })
     );
+    const mockWindowReload = jest
+      .spyOn(window.location, 'reload')
+      .mockImplementation(() => {});
 
     const wrapper = shallow(
       <ExperimentItem url="http://localhost/static/experiment/some_experiment_url.py" />
@@ -48,7 +51,9 @@ describe('<ExperimentItem />', () => {
       wrapper.find('.confirm-delete').simulate('click');
     });
     expect(fetchMock).toHaveBeenCalled();
+    expect(mockWindowReload).toHaveBeenCalled();
     fetchMock.mockRestore();
+    mockWindowReload.mockRestore();
   });
 
   it('closes the modal when you click delete and then cancel', async () => {
