@@ -15,15 +15,6 @@ const generateItems = (experimentUrls: Array<string>) => {
   return items;
 };
 
-const buildFileSelector = (): HTMLInputElement => {
-  const fileSelector: HTMLInputElement = document.createElement('input');
-  fileSelector.setAttribute('type', 'file');
-  fileSelector.setAttribute('accept', '.py');
-  fileSelector.setAttribute('multiple', 'single');
-
-  return fileSelector;
-};
-
 const Experiment: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [experimentUrls, setExperimentUrls] = useState([]);
@@ -52,9 +43,6 @@ const Experiment: React.FC = () => {
     setSelectedFile({ file: e.target.files[0] });
   };
 
-  const fileSelector: HTMLInputElement = buildFileSelector();
-  fileSelector.onchange = onFileSelect;
-
   const handleUploadClick = async () => {
     const formData = new FormData();
     if (selectedFile && selectedFile.file) {
@@ -75,11 +63,6 @@ const Experiment: React.FC = () => {
     setSelectedFile({ file: null });
   };
 
-  const handleFileSelect = (e: any) => {
-    e.preventDefault();
-    fileSelector.click();
-  };
-
   return (
     <Container>
       {!hasError && (
@@ -89,6 +72,7 @@ const Experiment: React.FC = () => {
               <div className="input-group-prepend">
                 <span
                   className="input-group-text"
+                  id="uploadButton"
                   style={{
                     cursor:
                       selectedFile.file !== null ? 'pointer' : 'not-allowed',
@@ -104,7 +88,7 @@ const Experiment: React.FC = () => {
                 <input
                   type="file"
                   className="custom-file-input"
-                  onClick={handleFileSelect}
+                  onChange={onFileSelect}
                 />
                 <label className="custom-file-label">
                   {selectedFile.file !== null
