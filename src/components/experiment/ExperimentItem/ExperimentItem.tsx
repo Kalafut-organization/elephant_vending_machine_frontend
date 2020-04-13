@@ -25,15 +25,19 @@ function ExperimentItem({
   const filename = match ? match[1] : 'unknown filename';
 
   return (
-    <ListGroup.Item>
+    <ListGroup.Item className="experiment-item">
       <span>{filename}</span>
-      <Button href={url} style={{ float: 'right' }} className="mr-1">
+      <Button
+        href={url}
+        style={{ float: 'right' }}
+        className="mr-1 view-button"
+      >
         View
       </Button>
       <Button
         variant="danger"
         style={{ float: 'right' }}
-        className="mr-1"
+        className="mr-1 delete-button"
         onClick={() => {
           setModalStatus(true);
         }}
@@ -56,6 +60,7 @@ function ExperimentItem({
 
           <Modal.Footer>
             <Button
+              className="confirm-delete"
               variant="danger"
               onClick={() => {
                 deleteExperimentFile(filename);
@@ -64,7 +69,12 @@ function ExperimentItem({
             >
               Yes
             </Button>
-            <Button onClick={() => setModalStatus(false)}>Cancel</Button>
+            <Button
+              className="cancel-delete"
+              onClick={() => setModalStatus(false)}
+            >
+              Cancel
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>

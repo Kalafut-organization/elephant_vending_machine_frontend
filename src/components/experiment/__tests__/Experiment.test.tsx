@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import Experiment from '../Experiment';
-import { exec } from 'child_process';
+import { ListGroup } from 'react-bootstrap';
 
 describe('<Experiment />', () => {
   it('renders without crashing', async () => {
@@ -29,53 +29,7 @@ describe('<Experiment />', () => {
     wrapper.unmount();
   });
 
-  it('calls fetch ', async () => {
-    let fileList: Array<string> = [];
-    const mockResponse = { files: ['some text'] };
-    const mockPostResponse = { message: '' };
-    const mockGetResponse = { files: ['newFile.py'] };
-
-    const fetchMock = jest
-      .spyOn(global, 'fetch')
-      .mockImplementationOnce((url, params) => {
-        {
-          json: () => {
-            return Promise.resolve(JSON.stringify(mockResponse));
-          };
-        }
-      })
-      .mockImplementationOnce((url, params) => {
-        {
-          json: () => {
-            return Promise.resolve(JSON.stringify(mockPostResponse));
-          };
-        }
-      })
-      .mockImplementationOnce((url, params) => {
-        {
-          json: () => {
-            return Promise.resolve(JSON.stringify(mockGetResponse));
-          };
-        }
-      });
-    let wrapper;
-    await act(async () => {
-      wrapper = await mount(<Experiment />);
-    });
-    wrapper.find('input').simulate('change', {
-      target: {
-        files: [new File([], 'newFile.py')],
-      },
-    });
-    console.log(wrapper.html());
-    wrapper.find('.input-group-text').simulate('click');
-    wrapper.find('ListGroup.Item');
-
-    fetchMock.mockRestore();
-    wrapper.unmount();
-  });
-
-  it.only('calls fetch ', async () => {
+  it('sends POSTs to the backend and then rerenders the experiment list', async () => {
     let fileList: Array<string> = [];
     const mockResponse = { files: [] };
     const mockPostResponse = { message: '' };
@@ -128,19 +82,19 @@ describe('<Experiment />', () => {
         'http://localhost/static/img/some_other_image_url.py',
       ],
     };
-    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => {
-      return Promise.resolve(new Response(JSON.stringify(mockResponse)));
-    });
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(mockResponse),
+      })
+    );
 
     let wrapper;
     await act(async () => {
       wrapper = await mount(<Experiment />);
     });
 
-    // This is a terrible way to match the body components. We should find a better selector that works here.
-    expect(wrapper.html().match(/mr-1/g)).toHaveLength(
-      2 * mockResponse.files.length
-    );
+    wrapper.update();
+    expect(wrapper.find(ListGroup.Item)).toHaveLength(2);
     fetchMock.mockRestore();
     wrapper.unmount();
   });
