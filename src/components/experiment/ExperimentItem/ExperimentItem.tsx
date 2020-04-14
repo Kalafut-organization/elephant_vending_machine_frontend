@@ -6,17 +6,17 @@ interface ExperimentItemProps {
   url: string;
 }
 
-async function deleteExperimentFile(filename: string) {
+const deleteExperimentFile = async (filename: string) => {
   await fetch(
     `${process.env.REACT_APP_BACKEND_ADDRESS}/experiment/${filename}`,
     { method: 'delete' }
   );
   window.location.reload(false);
-}
+};
 
-function ExperimentItem({
+const ExperimentItem = ({
   url,
-}: ExperimentItemProps): ReactElement<ExperimentItemProps> {
+}: ExperimentItemProps): ReactElement<ExperimentItemProps> => {
   const [isModalOpen, setModalStatus] = useState(false);
   const filenameExpression = new RegExp(
     `${process.env.REACT_APP_BACKEND_ADDRESS}/static/experiment/(.*)`
@@ -28,13 +28,6 @@ function ExperimentItem({
     <ListGroup.Item className="experiment-item">
       <span>{filename}</span>
       <Button
-        href={url}
-        style={{ float: 'right' }}
-        className="mr-1 view-button"
-      >
-        View
-      </Button>
-      <Button
         variant="danger"
         style={{ float: 'right' }}
         className="mr-1 delete-button"
@@ -43,6 +36,13 @@ function ExperimentItem({
         }}
       >
         Delete
+      </Button>
+      <Button
+        href={url}
+        style={{ float: 'right' }}
+        className="mr-1 view-button"
+      >
+        View
       </Button>
       <div>
         <Modal
@@ -60,6 +60,12 @@ function ExperimentItem({
 
           <Modal.Footer>
             <Button
+              className="cancel-delete"
+              onClick={() => setModalStatus(false)}
+            >
+              Cancel
+            </Button>
+            <Button
               className="confirm-delete"
               variant="danger"
               onClick={() => {
@@ -67,19 +73,13 @@ function ExperimentItem({
                 setModalStatus(false);
               }}
             >
-              Yes
-            </Button>
-            <Button
-              className="cancel-delete"
-              onClick={() => setModalStatus(false)}
-            >
-              Cancel
+              Delete
             </Button>
           </Modal.Footer>
         </Modal>
       </div>
     </ListGroup.Item>
   );
-}
+};
 
 export default ExperimentItem;

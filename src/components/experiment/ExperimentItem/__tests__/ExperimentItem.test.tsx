@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import ExperimentItem from '../ExperimentItem';
 import { act } from 'react-dom/test-utils';
 import { Modal } from 'react-bootstrap';
+import ExperimentItem from '../ExperimentItem';
 
 describe('<ExperimentItem />', () => {
   it('renders without crashing', () => {
@@ -25,7 +25,7 @@ describe('<ExperimentItem />', () => {
     await act(async () => {
       wrapper.find('.delete-button').simulate('click');
     });
-    expect(wrapper.find(Modal).props()['show']).toBe(true);
+    expect(wrapper.find(Modal).props().show).toBe(true);
   });
 
   it('Clicking delete and then delete again issues a fetch', async () => {
@@ -63,11 +63,11 @@ describe('<ExperimentItem />', () => {
     await act(async () => {
       wrapper.find('.delete-button').simulate('click');
     });
-    expect(wrapper.find(Modal).props()['show']).toBe(true);
+    expect(wrapper.find(Modal).props().show).toBe(true);
     await act(async () => {
-      wrapper.find('.confirm-delete').simulate('click');
+      wrapper.find('.cancel-delete').simulate('click');
     });
-    expect(wrapper.find(Modal).props()['show']).toBe(false);
+    expect(wrapper.find(Modal).props().show).toBe(false);
   });
 
   it('hides the modal when the modals hide action is triggered.', async () => {
@@ -77,11 +77,11 @@ describe('<ExperimentItem />', () => {
     await act(async () => {
       wrapper.find('.delete-button').simulate('click');
     });
-    expect(wrapper.find(Modal).props()['show']).toBe(true);
+    expect(wrapper.find(Modal).props().show).toBe(true);
     await act(async () => {
       wrapper.find(Modal).simulate('hide');
     });
-    expect(wrapper.find(Modal).props()['show']).toBe(false);
+    expect(wrapper.find(Modal).props().show).toBe(false);
   });
 
   it('renders error text if URL does not match correct format', () => {

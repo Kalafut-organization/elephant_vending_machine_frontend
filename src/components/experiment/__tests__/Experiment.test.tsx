@@ -1,8 +1,8 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import Experiment from '../Experiment';
 import { ListGroup } from 'react-bootstrap';
+import Experiment from '../Experiment';
 
 describe('<Experiment />', () => {
   it('renders without crashing', async () => {
@@ -30,7 +30,6 @@ describe('<Experiment />', () => {
   });
 
   it('sends POSTs to the backend and then rerenders the experiment list', async () => {
-    let fileList: Array<string> = [];
     const mockResponse = { files: [] };
     const mockPostResponse = { message: '' };
     const mockGetResponse = {

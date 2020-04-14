@@ -66,7 +66,7 @@ const Experiment: React.FC = () => {
   return (
     <Container>
       {!hasError && (
-        <Row>
+        <Row style={{ marginBottom: '1em' }}>
           <Col>
             <div className="input-group">
               <div className="input-group-prepend">
@@ -80,6 +80,11 @@ const Experiment: React.FC = () => {
                   onClick={() => {
                     selectedFile.file && handleUploadClick();
                   }}
+                  onKeyDown={() => {
+                    selectedFile.file && handleUploadClick();
+                  }}
+                  role="button"
+                  tabIndex={0}
                 >
                   Upload
                 </span>

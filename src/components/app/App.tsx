@@ -23,8 +23,7 @@ const App: React.FC = () => {
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
                 <Route exact path="/" component={Home} />
-                <Route exact path="/experiment" component={Experiment} />
-                <Route path="/stimuli" component={Stimuli} />
+                <Route path="/experiment" component={Experiment} />
                 <Route path="/stimuli" component={Stimuli} />
                 <Route component={NotFound} />
               </Switch>
