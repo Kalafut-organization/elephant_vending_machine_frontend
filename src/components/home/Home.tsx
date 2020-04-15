@@ -23,7 +23,13 @@ const Home: React.FC = () => {
       </Row>
       <Row>
         <Col>
-          <Button variant="secondary" size="lg" className="my-3" block>
+          <Button
+            variant="secondary"
+            size="lg"
+            className="my-3"
+            href="/experiment"
+            block
+          >
             Manage Experiments
           </Button>
         </Col>
