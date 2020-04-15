@@ -37,6 +37,7 @@ const Stimuli: React.FC = () => {
       <Row>
         {hasError && <div>Error encountered while loading images.</div>}
         {stimuliUrls && generateCards(stimuliUrls)}
+        {!stimuliUrls.length && <div>No experiment files uploaded.</div>}
       </Row>
     </Container>
   );
