@@ -112,7 +112,7 @@ const Stimuli: React.FC = () => {
           </Form>
         </Col>
       </Row>
-      <Row>
+      <Row className="content">
         {hasError && <div>Error encountered while loading images.</div>}
         {stimuliUrls && generateCards(stimuliUrls)}
       </Row>
