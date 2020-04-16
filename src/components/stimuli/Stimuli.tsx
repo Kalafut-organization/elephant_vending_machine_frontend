@@ -122,11 +122,7 @@ const Stimuli: React.FC = () => {
             <div>
               <Toast
                 style={{
-                  left: '50%',
-                  bottom: '0%',
-                  position: 'fixed',
-                  zIndex: 10,
-                  transform: 'translate(-50%, -50%)',
+                  position: 'sticky',
                 }}
                 onClose={() => setShowToast(false)}
                 show={showToast}
