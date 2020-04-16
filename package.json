@@ -34,8 +34,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:coverage": "react-scripts test --coverage --watchAll",
-    "docs": "npx typedoc --out docs src",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "docs": "npx typedoc --exclude src/**/*.test.tsx --out docs src",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx,.json,.css.scss,.md src --color",
     "format": "prettier --write src/**/*.{ts,tsx,scss,css,json}"

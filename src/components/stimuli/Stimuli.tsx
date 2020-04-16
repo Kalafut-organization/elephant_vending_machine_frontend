@@ -17,7 +17,7 @@ const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
   return cards;
 };
 
-const DEFAULT_FILE_INPUT_TEXT = 'Choose an image...';
+const DEFAULT_FILE_INPUT_TEXT = 'Select a file to upload';
 
 const Stimuli: React.FC = () => {
   const [hasError, setErrors] = useState(false);
@@ -92,7 +92,7 @@ const Stimuli: React.FC = () => {
                       aria-hidden="true"
                     />
                   ) : (
-                    'Upload Image'
+                    'Upload'
                   )}
                 </Button>
               </div>
@@ -122,11 +122,7 @@ const Stimuli: React.FC = () => {
             <div>
               <Toast
                 style={{
-                  left: '50%',
-                  bottom: '0%',
-                  position: 'fixed',
-                  zIndex: 10,
-                  transform: 'translate(-50%, -50%)',
+                  position: 'sticky',
                 }}
                 onClose={() => setShowToast(false)}
                 show={showToast}
