@@ -92,7 +92,7 @@ const Stimuli: React.FC = () => {
                       aria-hidden="true"
                     />
                   ) : (
-                    'Upload Image'
+                    'Upload'
                   )}
                 </Button>
               </div>
