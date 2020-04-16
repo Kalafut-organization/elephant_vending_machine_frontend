@@ -4,7 +4,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Toast from 'react-bootstrap/Toast';
-import ExperimentBlock from './ExperimentBlock';
+import ExperimentBlock from './experimentBlock';
 
 const generateItems = (experimentUrls: Array<string>) => {
   const items: Array<JSX.Element> = [];
