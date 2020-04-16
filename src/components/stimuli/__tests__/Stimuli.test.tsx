@@ -52,7 +52,7 @@ describe('<Stimuli />', () => {
     const wrapper = shallow(<Stimuli />);
     const fileInputLabel = wrapper.find('label.custom-file-label').at(0);
     expect(wrapper.find("input[type='file']")).toHaveLength(1);
-    expect(fileInputLabel.text()).toEqual('Choose an image...');
+    expect(fileInputLabel.text()).toEqual('Select a file to upload');
   });
 
   it('renders a disabled upload button', () => {

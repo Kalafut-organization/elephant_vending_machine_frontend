@@ -17,16 +17,13 @@ const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
   return cards;
 };
 
-const DEFAULT_FILE_INPUT_TEXT = 'Select a file to upload';
-
 const Stimuli: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [stimuliUrls, setStimuliUrls] = useState([]);
   const [isUploading, setUploading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
-  const [file, setFile] = useState<string | Blob>('');
-  const [fileInputText, setFileInputText] = useState(DEFAULT_FILE_INPUT_TEXT);
+  const [selectedFile, setSelectedFile] = useState({ file: null });
 
   useEffect(() => {
     async function fetchStimuliUrls(): Promise<void> {
@@ -42,18 +39,17 @@ const Stimuli: React.FC = () => {
     }
 
     if (!isUploading) fetchStimuliUrls();
-  }, [isUploading, file]);
+  }, [isUploading, selectedFile]);
 
   const fileChangedHandler = (event: any) => {
-    setFileInputText(event.target.files[0].name);
-    setFile(event.target.files[0]);
+    setSelectedFile({ file: event.target.files[0] });
   };
 
   const handleUploadClick = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (file) {
+    if (selectedFile && selectedFile.file) {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', (selectedFile.file as unknown) as File);
       setUploading(true);
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_ADDRESS}/image`,
@@ -65,8 +61,7 @@ const Stimuli: React.FC = () => {
       const body = await response.json();
       setResponseMessage(body.message);
       setUploading(false);
-      setFile('');
-      setFileInputText(DEFAULT_FILE_INPUT_TEXT);
+      setSelectedFile({ file: null });
       setShowToast(true);
     }
   };
@@ -81,7 +76,7 @@ const Stimuli: React.FC = () => {
                 <Button
                   variant="secondary"
                   type="submit"
-                  disabled={file === '' || isUploading}
+                  disabled={selectedFile.file === null || isUploading}
                 >
                   {isUploading ? (
                     <Spinner
@@ -105,7 +100,9 @@ const Stimuli: React.FC = () => {
                   className="custom-file-input"
                 />
                 <label className="custom-file-label" htmlFor="inputGroupFile01">
-                  {fileInputText}
+                  {selectedFile.file !== null
+                    ? ((selectedFile.file as unknown) as File).name
+                    : 'Select a file to upload'}
                 </label>
               </div>
             </div>
