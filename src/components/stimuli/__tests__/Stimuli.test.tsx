@@ -48,7 +48,6 @@ describe('<Stimuli />', () => {
     wrapper.unmount();
   });
 
-  // Test: Renders file input
   it('renders file input field with prompt', () => {
     const wrapper = shallow(<Stimuli />);
     const fileInputLabel = wrapper.find('label.custom-file-label').at(0);
@@ -56,13 +55,11 @@ describe('<Stimuli />', () => {
     expect(fileInputLabel.text()).toEqual('Choose an image...');
   });
 
-  // Test: Renders disabled upload button
   it('renders a disabled upload button', () => {
     const wrapper = shallow(<Stimuli />);
     expect(wrapper.find('Button[disabled=true]')).toHaveLength(1);
   });
 
-  // Test: Choosing a file updates the file input label
   it('updates file input label', async () => {
     const wrapper = shallow(<Stimuli />);
     await act(async () => {
@@ -76,7 +73,6 @@ describe('<Stimuli />', () => {
     expect(fileInputLabel.text()).toEqual('elephant.jpg');
   });
 
-  // Test: Choosing a file enables the upload button
   it('enables upload button', () => {
     const wrapper = shallow(<Stimuli />);
     act(() => {
@@ -120,7 +116,6 @@ describe('<Stimuli />', () => {
     wrapper.unmount();
   });
 
-  // Test: Upload button spinner icon while sending
   it('renders spinner icon on upload', async () => {
     let wrapper;
     await act(async () => {
