@@ -17,7 +17,7 @@ const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
   return cards;
 };
 
-const DEFAULT_FILE_INPUT_TEXT = 'Choose an image...';
+const DEFAULT_FILE_INPUT_TEXT = 'Select a file to upload';
 
 const Stimuli: React.FC = () => {
   const [hasError, setErrors] = useState(false);
