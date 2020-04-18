@@ -39,9 +39,7 @@ const Logs: React.FC = () => {
       <Row>
         <Col>
           <ListGroup>
-            {hasError && (
-              <div>Error encountered while loading experiments.</div>
-            )}
+            {hasError && <div>Error encountered while loading logs.</div>}
             {logUrls && generateItems(logUrls)}
           </ListGroup>
         </Col>
