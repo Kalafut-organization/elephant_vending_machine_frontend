@@ -10,6 +10,7 @@ import './App.css';
 export const Home = lazy(() => import('../home/Home'));
 export const Stimuli = lazy(() => import('../stimuli/Stimuli'));
 export const Experiment = lazy(() => import('../experiment/Experiment'));
+export const Logs = lazy(() => import('../logs/Logs'));
 export const NotFound = lazy(() => import('../notFound/NotFound'));
 
 const App: React.FC = () => {
@@ -29,6 +30,7 @@ const App: React.FC = () => {
                 <Route exact path="/" component={Home} />
                 <Route path="/experiment" component={Experiment} />
                 <Route path="/stimuli" component={Stimuli} />
+                <Route path="/logs" component={Logs} />
                 <Route component={NotFound} />
               </Switch>
             </Suspense>
