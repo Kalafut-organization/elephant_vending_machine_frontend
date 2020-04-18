@@ -39,8 +39,8 @@ const ExperimentRunner: React.FC = () => {
     if (!isRunning) fetchExperimentUrls();
   }, [isRunning]);
 
-  const onFileSelect = async (e: any) => {
-    setSelectedFile({ file: e.target.files[0] });
+  const fileClick = async (e: any) => {
+    setSelectedFile({ file: e.target.value });
   };
 
   const handleRunClick = async () => {
@@ -64,37 +64,10 @@ const ExperimentRunner: React.FC = () => {
 
   return (
     <Container>
-      {!hasError && (
-        <Row style={{ marginBottom: '1em' }}>
-          <Col>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span
-                  className="input-group-text"
-                  id="RunButton"
-                  style={{
-                    cursor:
-                      selectedFile.file !== null ? 'pointer' : 'not-allowed',
-                  }}
-                  onClick={() => {
-                    selectedFile.file && handleRunClick();
-                  }}
-                  onKeyDown={() => {
-                    selectedFile.file && handleRunClick();
-                  }}
-                  role="button"
-                  tabIndex={0}
-                >
-                  Run
-                </span>
-              </div>
-            </div>
-          </Col>
-        </Row>
-      )}
+      <h1>Please select a file to run:</h1>
       <Row>
         <Col>
-          <ListGroup>
+          <ListGroup as="ul">
             {hasError && (
               <div>Error encountered while loading experiments.</div>
             )}
@@ -117,6 +90,29 @@ const ExperimentRunner: React.FC = () => {
               >
                 <Toast.Body>{responseMessage}</Toast.Body>
               </Toast>
+            </div>
+          </Col>
+        </Row>
+      )}
+      {!hasError && (
+        <Row style={{ marginBottom: '1em' }}>
+          <Col>
+            <div className="input-group-prepend">
+              <div
+                className="input-group-text"
+                id="RunButton"
+                style={{
+                  cursor:
+                    selectedFile.file !== null ? 'pointer' : 'not-allowed',
+                }}
+                onClick={() => {
+                  selectedFile.file && handleRunClick();
+                }}
+                role="button"
+                tabIndex={0}
+              >
+                Run
+              </div>
             </div>
           </Col>
         </Row>
