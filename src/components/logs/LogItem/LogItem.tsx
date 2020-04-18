@@ -39,7 +39,7 @@ const LogItem = ({ url }: LogItemProps): ReactElement<LogItemProps> => {
         style={{ float: 'right' }}
         className="mr-1 view-button"
       >
-        View
+        Download
       </Button>
       <div>
         <Modal
