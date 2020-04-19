@@ -15,7 +15,6 @@ const ExperimentBlock = ({
   );
   const match = filenameExpression.exec(url);
   const filename = match ? match[1] : 'unknown filename';
-  const [responseMessage, setResponseMessage] = useState('');
 
   const runExperimentFile = async () => {
     const response = await fetch(
@@ -24,7 +23,6 @@ const ExperimentBlock = ({
     );
     window.location.reload(false);
     const body = await response.json();
-    setResponseMessage(body.message);
   };
 
   return (
