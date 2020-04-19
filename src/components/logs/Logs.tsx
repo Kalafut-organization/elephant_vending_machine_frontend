@@ -40,6 +40,7 @@ const Logs: React.FC = () => {
         <Col>
           <ListGroup>
             {hasError && <div>Error encountered while loading logs.</div>}
+            {!logUrls.length && !hasError && <div>No log files uploaded.</div>}
             {logUrls && generateItems(logUrls)}
           </ListGroup>
         </Col>
