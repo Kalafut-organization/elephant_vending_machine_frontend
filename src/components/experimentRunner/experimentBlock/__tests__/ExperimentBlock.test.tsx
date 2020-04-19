@@ -1,10 +1,10 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import { Modal } from 'react-bootstrap';
 import ExperimentBlock from '../ExperimentBlock';
 
-describe('<ExperimentItem />', () => {
+describe('<ExperimentBlock />', () => {
   it('renders without crashing', () => {
     shallow(
       <ExperimentBlock url="http://localhost/static/experiment/some_experiment_url.py" />
@@ -12,10 +12,10 @@ describe('<ExperimentItem />', () => {
   });
 
   it('renders filename text parsed from URL', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <ExperimentBlock url="http://localhost/static/experiment/some_experiment_url.py" />
     );
-    expect(wrapper.contains('some_experiment_url.py')).toEqual(true);
+    expect(wrapper.props().url).toContain('some_experiment_url.py');
   });
 
   it('renders a model when the run button is clicked.', async () => {
