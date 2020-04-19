@@ -22,7 +22,6 @@ const ExperimentBlock = ({
       { method: 'post' }
     );
     window.location.reload(false);
-    const body = await response.json();
   };
 
   return (
