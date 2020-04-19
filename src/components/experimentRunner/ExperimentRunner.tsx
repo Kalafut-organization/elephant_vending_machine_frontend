@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import Toast from 'react-bootstrap/Toast';
 import ExperimentBlock from './experimentBlock';
 
@@ -17,11 +16,12 @@ const generateItems = (experimentUrls: Array<string>) => {
 
 const ExperimentRunner: React.FC = () => {
   const [hasError, setErrors] = useState(false);
+  const [loading, setLoading] = React.useState(true);
   const [experimentUrls, setExperimentUrls] = useState([]);
   const [isRunning, setRunExp] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
-  const [selectedFile, setSelectedFile] = useState({ file: null });
+  const [selectedFile, setSelectedFile] = useState('');
 
   useEffect(() => {
     async function fetchExperimentUrls(): Promise<void> {
@@ -31,22 +31,20 @@ const ExperimentRunner: React.FC = () => {
         );
         const body = await response.json();
         setExperimentUrls(body.files);
+        setLoading(false);
       } catch (err) {
         setErrors(err);
       }
     }
 
-    if (!isRunning) fetchExperimentUrls();
-  }, [isRunning]);
-
-  const fileClick = async (e: any) => {
-    setSelectedFile({ file: e.target.value });
-  };
+    fetchExperimentUrls();
+  }, []);
 
   const handleRunClick = async () => {
     const formData = new FormData();
-    if (selectedFile && selectedFile.file) {
-      formData.append('file', (selectedFile.file as unknown) as File);
+    console.log(selectedFile);
+    if (selectedFile) {
+      formData.append('file', (selectedFile.valueOf as unknown) as File);
     }
     setRunExp(true);
     const response = await fetch(
@@ -59,64 +57,36 @@ const ExperimentRunner: React.FC = () => {
     const body = await response.json();
     setResponseMessage(body.message);
     setShowToast(true);
-    setSelectedFile({ file: null });
+    setSelectedFile('');
   };
 
   return (
     <Container>
-      <h1>Please select a file to run:</h1>
-      <Row>
-        <Col>
-          <ListGroup as="ul">
-            {hasError && (
-              <div>Error encountered while loading experiments.</div>
-            )}
+      <h1>Run Experiments</h1>
+      <Form>
+        <Form.Group controlId="exampleForm.SelectCustom">
+          <Form.Label>Select File:</Form.Label>
+          <Form.Control
+            as="select"
+            custom
+            disabled={loading}
+            onChange={e => setSelectedFile(e.currentTarget.value)}
+          >
             {experimentUrls && generateItems(experimentUrls)}
-          </ListGroup>
-        </Col>
-      </Row>
-      {showToast && (
-        <Row>
-          <Col>
-            <div>
-              <Toast
-                style={{
-                  position: 'sticky',
-                }}
-                onClose={() => setShowToast(false)}
-                show={showToast}
-                delay={3000}
-                autohide
-              >
-                <Toast.Body>{responseMessage}</Toast.Body>
-              </Toast>
-            </div>
-          </Col>
-        </Row>
-      )}
-      {!hasError && (
-        <Row style={{ marginBottom: '1em' }}>
-          <Col>
-            <div className="input-group-prepend">
-              <div
-                className="input-group-text"
-                id="RunButton"
-                style={{
-                  cursor:
-                    selectedFile.file !== null ? 'pointer' : 'not-allowed',
-                }}
-                onClick={() => {
-                  selectedFile.file && handleRunClick();
-                }}
-                role="button"
-                tabIndex={0}
-              >
-                Run
-              </div>
-            </div>
-          </Col>
-        </Row>
-      )}
+          </Form.Control>
+        </Form.Group>
+      </Form>
+      <div>
+        <Button
+          variant="secondary"
+          disabled={loading}
+          onClick={() => {
+            !loading && handleRunClick();
+          }}
+        >
+          Run
+        </Button>
+      </div>
     </Container>
   );
 };
