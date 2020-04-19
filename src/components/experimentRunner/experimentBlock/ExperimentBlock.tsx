@@ -17,7 +17,7 @@ const ExperimentBlock = ({
   const filename = match ? match[1] : 'unknown filename';
 
   const runExperimentFile = async () => {
-    const response = await fetch(
+    await fetch(
       `${process.env.REACT_APP_BACKEND_ADDRESS}/run-experiment/${filename}`,
       { method: 'post' }
     );
