@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import Toast from 'react-bootstrap/Toast';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import StimuliCard from './stimuliCard';
 
 const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
@@ -15,6 +17,10 @@ const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
 const Stimuli: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [stimuliUrls, setStimuliUrls] = useState([]);
+  const [isUploading, setUploading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [responseMessage, setResponseMessage] = useState('');
+  const [selectedFile, setSelectedFile] = useState({ file: null });
 
   useEffect(() => {
     async function fetchStimuliUrls(): Promise<void> {
@@ -29,18 +35,99 @@ const Stimuli: React.FC = () => {
       }
     }
 
-    fetchStimuliUrls();
-  }, []);
+    if (!isUploading) fetchStimuliUrls();
+  }, [isUploading]);
+
+  const onFileSelect = (event: any) => {
+    setSelectedFile({ file: event.target.files[0] });
+  };
+
+  const handleUploadClick = async () => {
+    const formData = new FormData();
+    if (selectedFile && selectedFile.file) {
+      formData.append('file', (selectedFile.file as unknown) as File);
+    }
+    setUploading(true);
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/image`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    );
+    const body = await response.json();
+    setResponseMessage(body.message);
+    setUploading(false);
+    setShowToast(true);
+    setSelectedFile({ file: null });
+  };
 
   return (
     <Container>
-      <Row>
+      <Row style={{ marginBottom: '1em' }}>
+        <Col>
+          <div className="input-group">
+            <div className="input-group-prepend">
+              <span
+                className="input-group-text"
+                id="uploadButton"
+                style={{
+                  cursor:
+                    selectedFile.file !== null ? 'pointer' : 'not-allowed',
+                }}
+                onClick={() => {
+                  selectedFile.file && handleUploadClick();
+                }}
+                onKeyDown={() => {
+                  selectedFile.file && handleUploadClick();
+                }}
+                role="button"
+                tabIndex={0}
+              >
+                Upload
+              </span>
+            </div>
+            <div className="custom-file">
+              <input
+                type="file"
+                className="custom-file-input"
+                onChange={onFileSelect}
+              />
+              <label className="custom-file-label">
+                {selectedFile.file !== null
+                  ? ((selectedFile.file as unknown) as File).name
+                  : 'Select a file to upload'}
+              </label>
+            </div>
+          </div>
+        </Col>
+      </Row>
+      <Row className="content">
         {hasError && <div>Error encountered while loading images.</div>}
         {!stimuliUrls.length && !hasError && (
           <div>No experiment files uploaded.</div>
         )}
         {stimuliUrls && generateCards(stimuliUrls)}
       </Row>
+      {showToast && (
+        <Row>
+          <Col>
+            <div>
+              <Toast
+                style={{
+                  position: 'sticky',
+                }}
+                onClose={() => setShowToast(false)}
+                show={showToast}
+                delay={3000}
+                autohide
+              >
+                <Toast.Body>{responseMessage}</Toast.Body>
+              </Toast>
+            </div>
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 };
