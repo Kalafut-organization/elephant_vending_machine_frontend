@@ -49,8 +49,7 @@
       "!<rootDir>/node_modules/",
       "!<rootDir>/coverage/",
       "!src/serviceWorker.ts",
-      "!src/index.tsx",
-      "!src/components/app/App.tsx"
+      "!src/index.tsx"
     ],
     "coverageThreshold": {
       "global": {

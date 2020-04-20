@@ -7,9 +7,13 @@ import Col from 'react-bootstrap/Col';
 import Navbar from 'react-bootstrap/Navbar';
 import './App.css';
 
+/* istanbul ignore next */
 export const Home = lazy(() => import('../home/Home'));
+/* istanbul ignore next */
 export const Stimuli = lazy(() => import('../stimuli/Stimuli'));
+/* istanbul ignore next */
 export const Experiment = lazy(() => import('../experiment/Experiment'));
+/* istanbul ignore next */
 export const NotFound = lazy(() => import('../notFound/NotFound'));
 
 const App: React.FC = () => {
