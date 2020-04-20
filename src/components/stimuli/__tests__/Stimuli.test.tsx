@@ -55,9 +55,9 @@ describe('<Stimuli />', () => {
     expect(fileInputLabel.text()).toEqual('Select a file to upload');
   });
 
-  it('renders a disabled upload button', () => {
+  it('renders an upload button', () => {
     const wrapper = shallow(<Stimuli />);
-    expect(wrapper.find('Button[disabled=true]')).toHaveLength(1);
+    expect(wrapper.find('.input-group-text')).toHaveLength(1);
   });
 
   it('updates file input label', async () => {
@@ -71,18 +71,6 @@ describe('<Stimuli />', () => {
     });
     const fileInputLabel = wrapper.find('label.custom-file-label').at(0);
     expect(fileInputLabel.text()).toEqual('elephant.jpg');
-  });
-
-  it('enables upload button', () => {
-    const wrapper = shallow(<Stimuli />);
-    act(() => {
-      wrapper.find("input[type='file']").simulate('change', {
-        target: {
-          files: [{ name: 'elephant.jpg' }],
-        },
-      });
-    });
-    expect(wrapper.find('Button[disabled=false]')).toHaveLength(1);
   });
 
   it('shows toast with server response message', async () => {
@@ -107,42 +95,11 @@ describe('<Stimuli />', () => {
     });
 
     await act(async () => {
-      wrapper.find('Form').simulate('submit');
+      wrapper.find('#uploadButton').simulate('click');
     });
 
     wrapper.update();
     expect(wrapper.find('Toast').text()).toEqual('server response');
-    fetchMock.mockRestore();
-    wrapper.unmount();
-  });
-
-  it('renders spinner icon on upload', async () => {
-    let wrapper;
-    await act(async () => {
-      wrapper = await mount(<Stimuli />);
-    });
-
-    const mockResponse = {
-      message: 'server response',
-    };
-    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => {
-      return Promise.resolve(new Response(JSON.stringify(mockResponse)));
-    });
-
-    await act(async () => {
-      wrapper.find("input[type='file']").simulate('change', {
-        target: {
-          files: [{ name: 'elephant.jpg' }],
-        },
-      });
-    });
-
-    act(() => {
-      wrapper.find('Form').simulate('submit');
-    });
-
-    wrapper.update();
-    expect(wrapper.find('Spinner')).toHaveLength(1);
     fetchMock.mockRestore();
     wrapper.unmount();
   });
