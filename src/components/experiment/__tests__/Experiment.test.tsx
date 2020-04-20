@@ -77,8 +77,8 @@ describe('<Experiment />', () => {
   it('renders experiment items for each url returned by API', async () => {
     const mockResponse = {
       files: [
-        'http://localhost/static/img/some_image_url.py',
-        'http://localhost/static/img/some_other_image_url.py',
+        'http://192.168.0.100/static/img/some_image_url.py',
+        'http://192.168.0.100/static/img/some_other_image_url.py',
       ],
     };
     const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() =>
