@@ -39,8 +39,9 @@ describe('<Stimuli />', () => {
       wrapper = await mount(<Stimuli />);
     });
 
-    // This is a terrible way to match the body components. We should find a better selector that works here.
-    expect(wrapper.text()).toEqual('No experiment files uploaded.');
+    expect(wrapper.find('Row.content').text()).toEqual(
+      'No experiment files uploaded.'
+    );
     fetchMock.mockRestore();
     wrapper.unmount();
   });
@@ -92,33 +93,47 @@ describe('<Stimuli />', () => {
     expect(fileInputLabel.text()).toEqual('elephant.jpg');
   });
 
-  it('shows toast with server response message', async () => {
+  it('sends POSTs to the backend and then rerenders the stimuli cards', async () => {
+    const mockResponse = { files: [] };
+    const mockPostResponse = { message: '' };
+    const mockGetResponse = {
+      files: [
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/static/img/mockimg.png`,
+      ],
+    };
+
+    const fetchMock = jest
+      .spyOn(global, 'fetch')
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          json: () => Promise.resolve(mockResponse),
+        })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          json: () => Promise.resolve(mockPostResponse),
+        })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          json: () => Promise.resolve(mockGetResponse),
+        })
+      );
     let wrapper;
     await act(async () => {
       wrapper = await mount(<Stimuli />);
     });
-
-    const mockResponse = {
-      message: 'server response',
-    };
-    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => {
-      return Promise.resolve(new Response(JSON.stringify(mockResponse)));
-    });
-
     await act(async () => {
-      wrapper.find("input[type='file']").simulate('change', {
+      wrapper.find('input').simulate('change', {
         target: {
-          files: [{ name: 'elephant.jpg' }],
+          files: [new File([], 'mockimg.png')],
         },
       });
     });
-
     await act(async () => {
       wrapper.find('#uploadButton').simulate('click');
     });
-
-    wrapper.update();
-    expect(wrapper.find('Toast').text()).toEqual('server response');
+    expect(fetchMock).toHaveBeenCalledTimes(3);
     fetchMock.mockRestore();
     wrapper.unmount();
   });
