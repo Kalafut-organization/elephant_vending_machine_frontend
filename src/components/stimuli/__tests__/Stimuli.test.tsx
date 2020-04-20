@@ -26,6 +26,25 @@ describe('<Stimuli />', () => {
     wrapper.unmount();
   });
 
+  it('renders an info message when no images returned by server', async () => {
+    const mockResponse = {
+      files: [],
+    };
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => {
+      return Promise.resolve(new Response(JSON.stringify(mockResponse)));
+    });
+
+    let wrapper;
+    await act(async () => {
+      wrapper = await mount(<Stimuli />);
+    });
+
+    // This is a terrible way to match the body components. We should find a better selector that works here.
+    expect(wrapper.text()).toEqual('No experiment files uploaded.');
+    fetchMock.mockRestore();
+    wrapper.unmount();
+  });
+
   it('renders stimuli cards for each url returned by API', async () => {
     const mockResponse = {
       files: [
