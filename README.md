@@ -12,6 +12,10 @@ For this project to run successfully, you must have installed:
 * npm >= 5.6
 
 ## Starting the user interface
+NOTE: You will need to set your local environment variables if not connected to the actual backend running on the
+Raspberry Pi attached to the real hardware. See [documentation here](https://create-react-app.dev/docs/adding-custom-environment-variables/)
+for reference.
+
 1. Navigate to the root directory of this project
 1. Run `npm start`
 
@@ -31,6 +35,10 @@ For this project to run successfully, you must have installed:
 1. Run `npm test`
     * A coverage report can be viewed with `npm run test:coverage`
 
-## Bundling the application to deploy
-1. Navigate to the root directory of this project
-1. Run `npm run build`
+## Running in production
+1. Clone this repo to the Pi
+1. Navigate to the cloned directory
+1. [Install docker and docker-compose](https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl)
+1. Run `docker-compose up --build` to start the container
+    * This will ensure the app automatically restarts in case of errors or reboots.
+    * To stop the containers you can use `ctrl-c` or `docker-compose down`
