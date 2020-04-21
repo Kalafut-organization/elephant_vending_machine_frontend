@@ -3,6 +3,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Toast from 'react-bootstrap/Toast';
+import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
 import ExperimentItem from './ExperimentItem';
 
@@ -86,7 +87,16 @@ const Experiment: React.FC = () => {
                   role="button"
                   tabIndex={0}
                 >
-                  Upload
+                  {isUploading ? (
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    'Upload'
+                  )}
                 </span>
               </div>
               <div className="custom-file">
