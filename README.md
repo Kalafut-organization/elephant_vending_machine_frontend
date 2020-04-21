@@ -12,10 +12,6 @@ For this project to run successfully, you must have installed:
 * npm >= 5.6
 
 ## Starting the user interface
-NOTE: You will need to set your local environment variables if not connected to the actual backend running on the
-Raspberry Pi attached to the real hardware. See [documentation here](https://create-react-app.dev/docs/adding-custom-environment-variables/)
-for reference.
-
 1. Navigate to the root directory of this project
 1. Run `npm start`
 
