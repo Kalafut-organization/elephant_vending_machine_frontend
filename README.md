@@ -35,6 +35,10 @@ for reference.
 1. Run `npm test`
     * A coverage report can be viewed with `npm run test:coverage`
 
-## Bundling the application to deploy
-1. Navigate to the root directory of this project
-1. Run `npm run build`
+## Running in production
+1. Clone this repo to the Pi
+1. Navigate to the cloned directory
+1. [Install docker and docker-compose](https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl)
+1. Run `docker-compose up --build` to start the container
+    * This will ensure the app automatically restarts in case of errors or reboots.
+    * To stop the containers you can use `ctrl-c` or `docker-compose down`
