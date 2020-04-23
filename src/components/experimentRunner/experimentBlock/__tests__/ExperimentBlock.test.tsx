@@ -18,6 +18,13 @@ describe('<ExperimentBlock />', () => {
     expect(wrapper.props().url).toContain('some_experiment_url.py');
   });
 
+  it('renders error text if URL does not match correct format', () => {
+    const wrapper = shallow(
+      <ExperimentBlock url="http://badurl.com/some_experiment_url.py" />
+    );
+    expect(wrapper.contains('unknown filename')).toEqual(true);
+  });
+
   it('renders a model when the run button is clicked.', async () => {
     const wrapper = shallow(
       <ExperimentBlock url="http://localhost/static/experiment/some_experiment_url.py" />
@@ -26,6 +33,44 @@ describe('<ExperimentBlock />', () => {
       wrapper.find('.run-button').simulate('click');
     });
     expect(wrapper.find(Modal).props().show).toBe(true);
+  });
+
+  it('renders a model when the run button is clicked.', async () => {
+    const wrapper = shallow(
+      <ExperimentBlock url="http://localhost/static/experiment/some_experiment_url.py" />
+    );
+    await act(async () => {
+      wrapper.find('.run-button').simulate('click');
+    });
+    expect(wrapper.find(Modal).props().show).toBe(true);
+  });
+
+  it('Clicking run and then run again issues a fetch', async () => {
+    const mockResponse = {
+      message: ['this is a message'],
+    };
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(mockResponse),
+      })
+    );
+    const mockWindowReload = jest
+      .spyOn(window.location, 'reload')
+      .mockImplementation(() => {});
+
+    const wrapper = shallow(
+      <ExperimentBlock url="http://localhost/static/experiment/some_experiment_url.py" />
+    );
+    await act(async () => {
+      wrapper.find('.run-button').simulate('click');
+    });
+    await act(async () => {
+      wrapper.find('.confirm-run').simulate('click');
+    });
+    expect(fetchMock).toHaveBeenCalled();
+    expect(mockWindowReload).toHaveBeenCalled();
+    fetchMock.mockRestore();
+    mockWindowReload.mockRestore();
   });
 
   it('closes the modal when you click run and then cancel', async () => {
