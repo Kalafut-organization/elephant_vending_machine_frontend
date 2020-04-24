@@ -7,20 +7,20 @@ import ExperimentItem from '../ExperimentItem';
 describe('<ExperimentItem />', () => {
   it('renders without crashing', () => {
     shallow(
-      <ExperimentItem url="http://localhost/static/experiment/some_experiment_url.py" />
+      <ExperimentItem url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
   });
 
   it('renders filename text parsed from URL', () => {
     const wrapper = shallow(
-      <ExperimentItem url="http://localhost/static/experiment/some_experiment_url.py" />
+      <ExperimentItem url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
     expect(wrapper.contains('some_experiment_url.py')).toEqual(true);
   });
 
   it('renders a model when the delete button is clicked.', async () => {
     const wrapper = shallow(
-      <ExperimentItem url="http://localhost/static/experiment/some_experiment_url.py" />
+      <ExperimentItem url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
     await act(async () => {
       wrapper.find('.delete-button').simulate('click');
@@ -42,7 +42,7 @@ describe('<ExperimentItem />', () => {
       .mockImplementation(() => {});
 
     const wrapper = shallow(
-      <ExperimentItem url="http://localhost/static/experiment/some_experiment_url.py" />
+      <ExperimentItem url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
     await act(async () => {
       wrapper.find('.delete-button').simulate('click');
@@ -58,7 +58,7 @@ describe('<ExperimentItem />', () => {
 
   it('closes the modal when you click delete and then cancel', async () => {
     const wrapper = shallow(
-      <ExperimentItem url="http://localhost/static/experiment/some_experiment_url.py" />
+      <ExperimentItem url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
     await act(async () => {
       wrapper.find('.delete-button').simulate('click');
@@ -72,7 +72,7 @@ describe('<ExperimentItem />', () => {
 
   it('hides the modal when the modals hide action is triggered.', async () => {
     const wrapper = shallow(
-      <ExperimentItem url="http://localhost/static/experiment/some_experiment_url.py" />
+      <ExperimentItem url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
     await act(async () => {
       wrapper.find('.delete-button').simulate('click');
@@ -93,7 +93,7 @@ describe('<ExperimentItem />', () => {
 
   it('renders a view button, a delete button, and two hidden modal buttons', () => {
     const wrapper = shallow(
-      <ExperimentItem url="http://localhost/static/experiment/some_experiment_url.py" />
+      <ExperimentItem url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
     const button = wrapper.find('Button');
     expect(button).toHaveLength(4);

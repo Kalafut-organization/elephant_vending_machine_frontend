@@ -49,8 +49,8 @@ describe('<Stimuli />', () => {
   it('renders stimuli cards for each url returned by API', async () => {
     const mockResponse = {
       files: [
-        'http://localhost/static/img/some_image_url.jpg',
-        'http://localhost/static/img/some_other_image_url.jpg',
+        'http://192.168.0.100/static/img/some_image_url.jpg',
+        'http://192.168.0.100/static/img/some_other_image_url.jpg',
       ],
     };
     const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() => {
