@@ -7,13 +7,13 @@ import StimuliCard from '../StimuliCard';
 describe('<StimuliCard />', () => {
   it('renders without crashing', () => {
     shallow(
-      <StimuliCard url="http://localhost/static/img/some_image_url.jpg" />
+      <StimuliCard url="http://192.168.0.100/static/img/some_image_url.jpg" />
     );
   });
 
   it('renders filename text parsed from URL', () => {
     const wrapper = shallow(
-      <StimuliCard url="http://localhost/static/img/some_image_url.jpg" />
+      <StimuliCard url="http://192.168.0.100/static/img/some_image_url.jpg" />
     );
     expect(wrapper.contains('some_image_url.jpg')).toEqual(true);
   });
@@ -27,7 +27,7 @@ describe('<StimuliCard />', () => {
 
   it('renders view and delete buttons and hidden modal buttons', () => {
     const wrapper = shallow(
-      <StimuliCard url="http://localhost/static/img/some_image_url.jpg" />
+      <StimuliCard url="http://192.168.0.100/static/img/some_image_url.jpg" />
     );
     const button = wrapper.find('Button');
     expect(button).toHaveLength(4);
@@ -39,18 +39,18 @@ describe('<StimuliCard />', () => {
 
   it('renders an image preview for the url passed as prop', () => {
     const wrapper = shallow(
-      <StimuliCard url="http://localhost/static/img/some_image_url.jpg" />
+      <StimuliCard url="http://192.168.0.100/static/img/some_image_url.jpg" />
     );
     const image = wrapper.find('CardImg');
     expect(image).toHaveLength(1);
     expect(image.prop('src')).toEqual(
-      'http://localhost/static/img/some_image_url.jpg'
+      'http://192.168.0.100/static/img/some_image_url.jpg'
     );
   });
 
   it('renders a model when the delete button is clicked.', async () => {
     const wrapper = shallow(
-      <StimuliCard url="http://localhost/static/img/some_stimuli_url.py" />
+      <StimuliCard url="http://192.168.0.100/static/img/some_stimuli_url.py" />
     );
     await act(async () => {
       wrapper
@@ -75,7 +75,7 @@ describe('<StimuliCard />', () => {
       .mockImplementation(() => {});
 
     const wrapper = shallow(
-      <StimuliCard url="http://localhost/static/experiment/some_experiment_url.py" />
+      <StimuliCard url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
     await act(async () => {
       wrapper
@@ -97,7 +97,7 @@ describe('<StimuliCard />', () => {
 
   it('closes the modal when you click delete and then cancel', async () => {
     const wrapper = shallow(
-      <StimuliCard url="http://localhost/static/experiment/some_experiment_url.py" />
+      <StimuliCard url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
     await act(async () => {
       wrapper
@@ -117,7 +117,7 @@ describe('<StimuliCard />', () => {
 
   it('hides the modal when the modals hide action is triggered.', async () => {
     const wrapper = shallow(
-      <StimuliCard url="http://localhost/static/experiment/some_experiment_url.py" />
+      <StimuliCard url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
     await act(async () => {
       wrapper

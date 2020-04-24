@@ -6,19 +6,19 @@ import LogItem from '../LogItem';
 
 describe('<LogItem />', () => {
   it('renders without crashing', () => {
-    shallow(<LogItem url="http://localhost/static/log/some_log_url.csv" />);
+    shallow(<LogItem url="http://192.168.0.100/static/log/some_log_url.csv" />);
   });
 
   it('renders filename text parsed from URL', () => {
     const wrapper = mount(
-      <LogItem url="http://localhost/static/log/some_log_url.csv" />
+      <LogItem url="http://192.168.0.100/static/log/some_log_url.csv" />
     );
     expect(wrapper.props().url).toContain('some_log_url.csv');
   });
 
   it('renders a modal when the delete button is clicked.', async () => {
     const wrapper = shallow(
-      <LogItem url="http://localhost/static/log/some_log_url.csv" />
+      <LogItem url="http://192.168.0.100/static/log/some_log_url.csv" />
     );
     await act(async () => {
       wrapper.find('.delete-button').simulate('click');
@@ -40,7 +40,7 @@ describe('<LogItem />', () => {
       .mockImplementation(() => {});
 
     const wrapper = shallow(
-      <LogItem url="http://localhost/static/log/some_log_url.csv" />
+      <LogItem url="http://192.168.0.100/static/log/some_log_url.csv" />
     );
     await act(async () => {
       wrapper.find('.delete-button').simulate('click');
@@ -56,7 +56,7 @@ describe('<LogItem />', () => {
 
   it('closes the modal when you click delete and then cancel', async () => {
     const wrapper = shallow(
-      <LogItem url="http://localhost/static/log/some_log_url.csv" />
+      <LogItem url="http://192.168.0.100/static/log/some_log_url.csv" />
     );
     await act(async () => {
       wrapper.find('.delete-button').simulate('click');
@@ -70,7 +70,7 @@ describe('<LogItem />', () => {
 
   it('hides the modal when the modals hide action is triggered.', async () => {
     const wrapper = shallow(
-      <LogItem url="http://localhost/static/log/some_log_url.csv" />
+      <LogItem url="http://192.168.0.100/static/log/some_log_url.csv" />
     );
     await act(async () => {
       wrapper.find('.delete-button').simulate('click');
@@ -91,7 +91,7 @@ describe('<LogItem />', () => {
 
   it('renders a view button, a delete button, and two hidden modal buttons', () => {
     const wrapper = shallow(
-      <LogItem url="http://localhost/static/log/some_log_url.csv" />
+      <LogItem url="http://192.168.0.100/static/log/some_log_url.csv" />
     );
     const button = wrapper.find('Button');
     expect(button).toHaveLength(4);

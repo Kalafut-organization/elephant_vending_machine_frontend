@@ -65,8 +65,8 @@ describe('<Logs />', () => {
   it('renders log items for each url returned by API', async () => {
     const mockResponse = {
       files: [
-        'http://localhost/static/log/some_log_url.csv',
-        'http://localhost/static/log/some_other_log_url.csv',
+        'http://192.168.0.100/static/log/some_log_url.csv',
+        'http://192.168.0.100/static/log/some_other_log_url.csv',
       ],
     };
     const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() =>
