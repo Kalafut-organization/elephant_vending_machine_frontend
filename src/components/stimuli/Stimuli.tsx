@@ -115,7 +115,7 @@ const Stimuli: React.FC = () => {
       <Row className="content">
         {hasError && <div>Error encountered while loading images.</div>}
         {!stimuliUrls.length && !hasError && (
-          <div>No experiment files uploaded.</div>
+          <div>No stimuli files uploaded.</div>
         )}
         {stimuliUrls && generateCards(stimuliUrls)}
       </Row>

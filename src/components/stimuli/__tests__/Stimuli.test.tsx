@@ -40,7 +40,7 @@ describe('<Stimuli />', () => {
     });
 
     expect(wrapper.find('Row.content').text()).toEqual(
-      'No experiment files uploaded.'
+      'No stimuli files uploaded.'
     );
     fetchMock.mockRestore();
     wrapper.unmount();
