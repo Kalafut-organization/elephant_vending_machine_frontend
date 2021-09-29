@@ -3,7 +3,6 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import TextInput from 'react';
 
 const deleteStimuliFile = async (filename: string) => {
   await fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/image/${filename}`, {
