@@ -3,6 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import TextInput from 'react';
 
 const deleteStimuliFile = async (filename: string) => {
   await fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/image/${filename}`, {
@@ -11,13 +12,19 @@ const deleteStimuliFile = async (filename: string) => {
   window.location.reload(false);
 };
 
+const copyStimuliFile = async (url: string, folderToCopy: string) => {
+  alert("copy '" + url + "' to folder '" + folderToCopy + "'");
+};
+
 export interface StimuliCardProps {
   /** URL of the image displayed on card */
   url: string;
 }
 
 const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
-  const [isModalOpen, setModalStatus] = useState(false);
+  const [isCopyModalOpen, setCopyModalStatus] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalStatus] = useState(false);
+  const [folderToCopy, setFolderToCopy] = useState('');
 
   const filenameExpression: RegExp = new RegExp(
     `${process.env.REACT_APP_BACKEND_ADDRESS}/static/img/(.*)`
@@ -34,16 +41,25 @@ const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
           <div>
             <Button
               href={url}
-              variant="secondary"
-              className="align-self-start align-self-bottom mr-2"
+              variant="info"
+              className="align-self-start align-self-bottom m-2"
             >
               View
             </Button>
             <Button
-              variant="danger"
-              className="align-self-start align-self-bottom"
+              variant="info"
+              className="align-self-start align-self-bottom m-2"
               onClick={() => {
-                setModalStatus(true);
+                setCopyModalStatus(true);
+              }}
+            >
+              Copy to Folder
+            </Button>
+            <Button
+              variant="danger"
+              className="align-self-start align-self-bottomm m-2"
+              onClick={() => {
+                setDeleteModalStatus(true);
               }}
             >
               Delete
@@ -54,22 +70,22 @@ const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
       <div>
         <Modal
           className="modal-container"
-          show={isModalOpen}
-          onHide={() => setModalStatus(false)}
+          show={isDeleteModalOpen}
+          onHide={() => setDeleteModalStatus(false)}
         >
           <Modal.Header closeButton>
             <Modal.Title>Confirm File Deletion</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
-            <h1>Are you sure you want to delete {filename}?</h1>
+            <p>Are you sure you want to delete the file '{filename}'?</p>
           </Modal.Body>
 
           <Modal.Footer>
             <Button
               className="cancel-delete"
               variant="secondary"
-              onClick={() => setModalStatus(false)}
+              onClick={() => setDeleteModalStatus(false)}
             >
               Cancel
             </Button>
@@ -78,10 +94,51 @@ const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
               variant="danger"
               onClick={() => {
                 deleteStimuliFile(filename);
-                setModalStatus(false);
+                setDeleteModalStatus(false);
               }}
             >
               Delete
+            </Button>
+          </Modal.Footer>
+        </Modal>
+        <Modal
+          className="modal-container"
+          show={isCopyModalOpen}
+          onHide={() => setCopyModalStatus(false)}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Copy to Folder</Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body>
+            <p>
+              Enter the name of the folder would like '{filename}' to be copied
+              to.
+            </p>
+            <input
+              type="text"
+              onChange={e => setFolderToCopy(e.target.value)}
+              value={folderToCopy}
+            />
+          </Modal.Body>
+
+          <Modal.Footer>
+            <Button
+              className="cancel-copy"
+              variant="secondary"
+              onClick={() => setCopyModalStatus(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              className="confirm-copy"
+              variant="info"
+              onClick={() => {
+                copyStimuliFile(url, folderToCopy);
+                setCopyModalStatus(false);
+              }}
+            >
+              Copy
             </Button>
           </Modal.Footer>
         </Modal>
