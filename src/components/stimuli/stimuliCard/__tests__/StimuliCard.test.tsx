@@ -4,6 +4,19 @@ import { act } from 'react-dom/test-utils';
 import Modal from 'react-bootstrap/Modal';
 import StimuliCard from '../StimuliCard';
 
+const BUTTON_COUNT = 7;
+
+const VIEW_BUTTON_INDEX = 0;
+const COPY_TO_FOLDER_BUTTON_INDEX = 1;
+const DELETE_BUTTON_INDEX = 2;
+const DELETE_MODAL_CANCEL_BUTTON_INDEX = 3;
+const DELETE_MODAL_DELETE_BUTTON_INDEX = 4;
+const COPY_MODAL_CANCEL_BUTTON_INDEX = 5;
+const COPY_MODAL_COPY_BUTTON_INDEX = 6;
+
+const DELETE_MODAL_INDEX = 0;
+const COPY_MODAL_INDEX = 1;
+
 describe('<StimuliCard />', () => {
   it('renders without crashing', () => {
     shallow(
@@ -30,11 +43,20 @@ describe('<StimuliCard />', () => {
       <StimuliCard url="http://192.168.0.100/static/img/some_image_url.jpg" />
     );
     const button = wrapper.find('Button');
-    expect(button).toHaveLength(4);
-    expect(button.at(0).text()).toEqual('View');
-    expect(button.at(1).text()).toEqual('Delete');
-    expect(button.at(2).text()).toEqual('Cancel');
-    expect(button.at(3).text()).toEqual('Delete');
+    expect(button).toHaveLength(BUTTON_COUNT);
+    expect(button.at(VIEW_BUTTON_INDEX).text()).toEqual('View');
+    expect(button.at(COPY_TO_FOLDER_BUTTON_INDEX).text()).toEqual(
+      'Copy to Folder'
+    );
+    expect(button.at(DELETE_BUTTON_INDEX).text()).toEqual('Delete');
+    expect(button.at(DELETE_MODAL_CANCEL_BUTTON_INDEX).text()).toEqual(
+      'Cancel'
+    );
+    expect(button.at(DELETE_MODAL_DELETE_BUTTON_INDEX).text()).toEqual(
+      'Delete'
+    );
+    expect(button.at(COPY_MODAL_CANCEL_BUTTON_INDEX).text()).toEqual('Cancel');
+    expect(button.at(COPY_MODAL_COPY_BUTTON_INDEX).text()).toEqual('Copy');
   });
 
   it('renders an image preview for the url passed as prop', () => {
@@ -48,17 +70,40 @@ describe('<StimuliCard />', () => {
     );
   });
 
-  it('renders a model when the delete button is clicked.', async () => {
+  it('renders the delete model when the delete button is clicked.', async () => {
     const wrapper = shallow(
       <StimuliCard url="http://192.168.0.100/static/img/some_stimuli_url.py" />
     );
     await act(async () => {
       wrapper
         .find('Button')
-        .at(1)
+        .at(DELETE_BUTTON_INDEX)
         .simulate('click');
     });
-    expect(wrapper.find(Modal).props().show).toBe(true);
+    expect(
+      wrapper
+        .find(Modal)
+        .at(DELETE_MODAL_INDEX)
+        .props().show
+    ).toBe(true);
+  });
+
+  it('renders the copy model when the copy to folder button is clicked.', async () => {
+    const wrapper = shallow(
+      <StimuliCard url="http://192.168.0.100/static/img/some_stimuli_url.py" />
+    );
+    await act(async () => {
+      wrapper
+        .find('Button')
+        .at(COPY_TO_FOLDER_BUTTON_INDEX)
+        .simulate('click');
+    });
+    expect(
+      wrapper
+        .find(Modal)
+        .at(COPY_MODAL_INDEX)
+        .props().show
+    ).toBe(true);
   });
 
   it('sends delete API call when delete then confirm buttons are pressed', async () => {
@@ -80,13 +125,13 @@ describe('<StimuliCard />', () => {
     await act(async () => {
       wrapper
         .find('Button')
-        .at(1)
+        .at(DELETE_BUTTON_INDEX)
         .simulate('click');
     });
     await act(async () => {
       wrapper
         .find('Button')
-        .at(3)
+        .at(DELETE_MODAL_DELETE_BUTTON_INDEX)
         .simulate('click');
     });
     expect(fetchMock).toHaveBeenCalled();
@@ -95,40 +140,123 @@ describe('<StimuliCard />', () => {
     windowReloadMock.mockRestore();
   });
 
-  it('closes the modal when you click delete and then cancel', async () => {
+  it('closes the delete modal when you click delete and then cancel', async () => {
     const wrapper = shallow(
       <StimuliCard url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
     await act(async () => {
       wrapper
         .find('Button')
-        .at(1)
+        .at(DELETE_BUTTON_INDEX)
         .simulate('click');
     });
-    expect(wrapper.find(Modal).props().show).toBe(true);
+    expect(
+      wrapper
+        .find(Modal)
+        .at(DELETE_MODAL_INDEX)
+        .props().show
+    ).toBe(true);
     await act(async () => {
       wrapper
         .find('Button')
-        .at(2)
+        .at(DELETE_MODAL_CANCEL_BUTTON_INDEX)
         .simulate('click');
     });
-    expect(wrapper.find(Modal).props().show).toBe(false);
+    expect(
+      wrapper
+        .find(Modal)
+        .at(DELETE_MODAL_INDEX)
+        .props().show
+    ).toBe(false);
   });
 
-  it('hides the modal when the modals hide action is triggered.', async () => {
+  it('closes the copy modal when you click copy to file and then cancel', async () => {
     const wrapper = shallow(
       <StimuliCard url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
     await act(async () => {
       wrapper
         .find('Button')
-        .at(1)
+        .at(COPY_TO_FOLDER_BUTTON_INDEX)
         .simulate('click');
     });
-    expect(wrapper.find(Modal).props().show).toBe(true);
+    expect(
+      wrapper
+        .find(Modal)
+        .at(COPY_MODAL_INDEX)
+        .props().show
+    ).toBe(true);
     await act(async () => {
-      wrapper.find(Modal).simulate('hide');
+      wrapper
+        .find('Button')
+        .at(COPY_MODAL_CANCEL_BUTTON_INDEX)
+        .simulate('click');
     });
-    expect(wrapper.find(Modal).props().show).toBe(false);
+    expect(
+      wrapper
+        .find(Modal)
+        .at(COPY_MODAL_INDEX)
+        .props().show
+    ).toBe(false);
+  });
+
+  it('hides the delete modal when the modals hide action is triggered.', async () => {
+    const wrapper = shallow(
+      <StimuliCard url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
+    );
+    await act(async () => {
+      wrapper
+        .find('Button')
+        .at(DELETE_BUTTON_INDEX)
+        .simulate('click');
+    });
+    expect(
+      wrapper
+        .find(Modal)
+        .at(DELETE_MODAL_INDEX)
+        .props().show
+    ).toBe(true);
+    await act(async () => {
+      wrapper
+        .find(Modal)
+        .at(DELETE_MODAL_INDEX)
+        .simulate('hide');
+    });
+    expect(
+      wrapper
+        .find(Modal)
+        .at(DELETE_MODAL_INDEX)
+        .props().show
+    ).toBe(false);
+  });
+
+  it('hides the copy modal when the modals hide action is triggered.', async () => {
+    const wrapper = shallow(
+      <StimuliCard url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
+    );
+    await act(async () => {
+      wrapper
+        .find('Button')
+        .at(COPY_TO_FOLDER_BUTTON_INDEX)
+        .simulate('click');
+    });
+    expect(
+      wrapper
+        .find(Modal)
+        .at(COPY_MODAL_INDEX)
+        .props().show
+    ).toBe(true);
+    await act(async () => {
+      wrapper
+        .find(Modal)
+        .at(COPY_MODAL_INDEX)
+        .simulate('hide');
+    });
+    expect(
+      wrapper
+        .find(Modal)
+        .at(COPY_MODAL_INDEX)
+        .props().show
+    ).toBe(false);
   });
 });
