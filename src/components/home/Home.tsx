@@ -52,7 +52,7 @@ const Home: React.FC = () => {
             variant="secondary"
             size="lg"
             className="my-3"
-            href="/stimuli"
+            href="/groups"
             block
           >
             Manage Stimuli

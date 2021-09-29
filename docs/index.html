@@ -64,6 +64,10 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
+				<p><a href="https://github.com/Kalafut-organization/elephant_vending_machine_frontend/actions?query=workflow%3Abuild"><img src="https://github.com/Kalafut-organization/elephant_vending_machine_frontend/workflows/build/badge.svg" alt="build"></a>
+					<a href="https://github.com/Kalafut-organization/elephant_vending_machine_frontend/blob/master/LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT license"></a>
+					<a href="https://codecov.io/gh/Kalafut-organization/elephant_vending_machine_frontend"><img src="https://codecov.io/gh/Kalafut-organization/elephant_vending_machine_frontend/branch/master/graph/badge.svg" alt="codecov"></a>
+				<a href="https://kalafut-organization.github.io/elephant_vending_machine_frontend/"><img src="https://github.com/Kalafut-organization/elephant_vending_machine_frontend/workflows/docs/badge.svg" alt="docs"></a></p>
 				<a href="#elephant-vending-machine" id="elephant-vending-machine" style="color: inherit; text-decoration: none;">
 					<h1>Elephant Vending Machine</h1>
 				</a>
@@ -79,6 +83,9 @@
 				<a href="#starting-the-user-interface" id="starting-the-user-interface" style="color: inherit; text-decoration: none;">
 					<h2>Starting the user interface</h2>
 				</a>
+				<p>NOTE: You will need to set your local environment variables if not connected to the actual backend running on the
+					Raspberry Pi attached to the real hardware. See <a href="https://create-react-app.dev/docs/adding-custom-environment-variables/">documentation here</a>
+				for reference.</p>
 				<ol>
 					<li>Navigate to the root directory of this project</li>
 					<li>Run <code>npm start</code></li>
@@ -89,6 +96,10 @@
 				<ol>
 					<li>Navigate to the root directory of this project</li>
 					<li>Run <code>npm run docs</code></li>
+					<li>Open the generated page in <code>docs/index.html</code> in a browser<ul>
+							<li>Up to date documentation can be found <a href="https://Kalafut-organization.github.io/elephant_vending_machine_frontend">here</a>.</li>
+						</ul>
+					</li>
 				</ol>
 				<a href="#running-linting" id="running-linting" style="color: inherit; text-decoration: none;">
 					<h2>Running linting</h2>
@@ -96,7 +107,7 @@
 				<ol>
 					<li>Navigate to the root directory of this project</li>
 					<li>Run <code>npm run lint</code><ul>
-							<li>Note: You can use <code>npm run format</code> to automatically fix many style issues</li>
+							<li>Note: Code is automatically formatted with Prettier on each commit. You can use <code>npm run format</code> to run the formatter manually</li>
 						</ul>
 					</li>
 				</ol>
@@ -110,12 +121,18 @@
 						</ul>
 					</li>
 				</ol>
-				<a href="#bundling-the-application-to-deploy" id="bundling-the-application-to-deploy" style="color: inherit; text-decoration: none;">
-					<h2>Bundling the application to deploy</h2>
+				<a href="#running-in-production" id="running-in-production" style="color: inherit; text-decoration: none;">
+					<h2>Running in production</h2>
 				</a>
 				<ol>
-					<li>Navigate to the root directory of this project</li>
-					<li>Run <code>npm run build</code></li>
+					<li>Clone this repo to the Pi</li>
+					<li>Navigate to the cloned directory</li>
+					<li><a href="https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl">Install docker and docker-compose</a></li>
+					<li>Run <code>docker-compose up --build</code> to start the container<ul>
+							<li>This will ensure the app automatically restarts in case of errors or reboots.</li>
+							<li>To stop the containers you can use <code>ctrl-c</code> or <code>docker-compose down</code></li>
+						</ul>
+					</li>
 				</ol>
 			</div>
 		</div>
@@ -126,10 +143,85 @@
 						<a href="globals.html"><em>Globals</em></a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="modules/_app_.html">&quot;<wbr>App&quot;</a>
+						<a href="modules/_components_app_app_.html">&quot;components/app/<wbr>App&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_app_index_.html">&quot;components/app/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_experiment_experiment_.html">&quot;components/experiment/<wbr>Experiment&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_experiment_experimentitem_experimentitem_.html">&quot;components/experiment/<wbr>Experiment<wbr>Item/<wbr>Experiment<wbr>Item&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_experiment_experimentitem_index_.html">&quot;components/experiment/<wbr>Experiment<wbr>Item/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_experiment_index_.html">&quot;components/experiment/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_experimentrunner_experimentrunner_.html">&quot;components/experiment<wbr>Runner/<wbr>Experiment<wbr>Runner&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_experimentrunner_experimentblock_experimentblock_.html">&quot;components/experiment<wbr>Runner/experiment<wbr>Block/<wbr>Experiment<wbr>Block&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_experimentrunner_experimentblock_index_.html">&quot;components/experiment<wbr>Runner/experiment<wbr>Block/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_experimentrunner_index_.html">&quot;components/experiment<wbr>Runner/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_home_home_.html">&quot;components/home/<wbr>Home&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_home_index_.html">&quot;components/home/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_index_.html">&quot;components/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_index_.html">&quot;components/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_logs_logitem_logitem_.html">&quot;components/logs/<wbr>Log<wbr>Item/<wbr>Log<wbr>Item&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_logs_logitem_index_.html">&quot;components/logs/<wbr>Log<wbr>Item/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_logs_logs_.html">&quot;components/logs/<wbr>Logs&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_logs_index_.html">&quot;components/logs/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_notfound_notfound_.html">&quot;components/not<wbr>Found/<wbr>Not<wbr>Found&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_notfound_index_.html">&quot;components/not<wbr>Found/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_stimuli_stimuli_.html">&quot;components/stimuli/<wbr>Stimuli&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_stimuli_index_.html">&quot;components/stimuli/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_stimuli_stimulicard_stimulicard_.html">&quot;components/stimuli/stimuli<wbr>Card/<wbr>Stimuli<wbr>Card&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_components_stimuli_stimulicard_index_.html">&quot;components/stimuli/stimuli<wbr>Card/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_index_.html">&quot;index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_serviceworker_.html">&quot;service<wbr>Worker&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_setuptests_.html">&quot;setup<wbr>Tests&quot;</a>
 					</li>
 				</ul>
 			</nav>
@@ -144,6 +236,14 @@
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+			</ul>
 		</div>
 	</div>
 </footer>

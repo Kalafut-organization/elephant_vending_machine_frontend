@@ -12,6 +12,8 @@ export const Home = lazy(() => import('../home/Home'));
 /* istanbul ignore next */
 export const Stimuli = lazy(() => import('../stimuli/Stimuli'));
 /* istanbul ignore next */
+export const Groups = lazy(() => import('../stimuli/groups/Groups'));
+/* istanbul ignore next */
 export const Experiment = lazy(() => import('../experiment/Experiment'));
 /* istanbul ignore next */
 export const ExperimentRunner = lazy(() =>
@@ -41,6 +43,7 @@ const App: React.FC = () => {
                 <Route path="/experimentRunner" component={ExperimentRunner} />
                 <Route path="/stimuli" component={Stimuli} />
                 <Route path="/logs" component={Logs} />
+                <Route path="/groups" component={Groups} />
                 <Route component={NotFound} />
               </Switch>
             </Suspense>
