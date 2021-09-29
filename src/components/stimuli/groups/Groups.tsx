@@ -46,12 +46,8 @@ const Group: React.FC = () => {
 
   const handleAddClick = async () => {
     const formData = new FormData();
-    console.log(selectedName);
     if (selectedName !== '') {
       formData.append('name', selectedName);
-    }
-    for (var pair in formData.entries()) {
-      console.log(pair);
     }
     setUploading(true);
     const response = await fetch(
@@ -93,6 +89,7 @@ const Group: React.FC = () => {
               )}
             </Button>
             <FormControl
+              className="text-field"
               aria-label="Group name entry form"
               aria-describedby="addButton"
               onChange={onNameSelect}
