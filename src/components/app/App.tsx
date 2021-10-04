@@ -39,9 +39,9 @@ const App: React.FC = () => {
             <Suspense fallback={<div>Loading...</div>}>
               <Switch>
                 <Route exact path="/" component={Home} />
+                <Route path="/:name/stimuli" component={Stimuli} />
                 <Route path="/experiment" component={Experiment} />
                 <Route path="/experimentRunner" component={ExperimentRunner} />
-                <Route path="/stimuli" component={Stimuli} />
                 <Route path="/logs" component={Logs} />
                 <Route path="/groups" component={Groups} />
                 <Route component={NotFound} />

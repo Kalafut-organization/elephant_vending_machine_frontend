@@ -1,10 +1,17 @@
 import React from 'react';
+import Router from 'react-router-dom';
 import { mount, shallow } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import Stimuli from '../Stimuli';
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: jest.fn(),
+}));
+
 describe('<Stimuli />', () => {
   it('renders without crashing', async () => {
+    jest.spyOn(Router, 'useParams').mockReturnValue({ name: 'test' });
     await shallow(<Stimuli />);
   });
 
