@@ -34,7 +34,7 @@ describe('<Home />', () => {
   it('renders the button to manage stimuli', () => {
     const wrapper = shallow(<Home />);
     const button = wrapper.find('Button').at(3);
-    expect(button.prop('href')).toEqual('/stimuli');
+    expect(button.prop('href')).toEqual('/groups');
     expect(button.text()).toEqual('Manage Stimuli');
   });
 });
