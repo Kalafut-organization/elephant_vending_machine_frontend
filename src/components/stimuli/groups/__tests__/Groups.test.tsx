@@ -67,12 +67,12 @@ describe('<Groups />', () => {
 
   it('renders text input field', () => {
     const wrapper = shallow(<Groups />);
-    expect(wrapper.find('FormControl.text-field')).toHaveLength(1);
+    expect(wrapper.find('.text-field.form-control')).toHaveLength(1);
   });
 
   it('renders an upload button', () => {
     const wrapper = shallow(<Groups />);
-    expect(wrapper.find('.input-group-text')).toHaveLength(1);
+    expect(wrapper.find('#addButton')).toHaveLength(1);
   });
 
   it('sends POSTs to the backend and then rerenders the stimuli cards', async () => {
