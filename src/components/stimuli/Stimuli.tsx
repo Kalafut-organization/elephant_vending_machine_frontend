@@ -23,7 +23,7 @@ const Stimuli: React.FC = props => {
   const [showToast, setShowToast] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState({ file: null });
-  const name = useParams();
+  const { name } = useParams<{ name?: string }>();
 
   useEffect(() => {
     async function fetchStimuliUrls(): Promise<void> {
@@ -34,7 +34,7 @@ const Stimuli: React.FC = props => {
         const body = await response.json();
         setStimuliUrls(body.files);
       } catch (err) {
-        setErrors(err);
+        setErrors(err as any);
       }
     }
 
