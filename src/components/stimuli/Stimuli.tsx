@@ -39,7 +39,7 @@ const Stimuli: React.FC = props => {
     }
 
     if (!isUploading) fetchStimuliUrls();
-  }, [isUploading]);
+  }, [isUploading, name]);
 
   const onFileSelect = (event: any) => {
     setSelectedFile({ file: event.target.files[0] });
