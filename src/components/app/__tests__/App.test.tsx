@@ -46,7 +46,6 @@ describe('<App />', () => {
   it('renders home icon link', () => {
     const wrapper = shallow(<App />);
     expect(wrapper.find("a#home-icon-link[href='/']")).toHaveLength(1);
-    expect(wrapper.find('HouseDoorFill')).toHaveLength(1);
   });
 
   it('lazy loads home component', async () => {

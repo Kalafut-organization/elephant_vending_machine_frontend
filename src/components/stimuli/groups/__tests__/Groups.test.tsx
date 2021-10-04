@@ -67,7 +67,7 @@ describe('<Groups />', () => {
 
   it('renders text input field', () => {
     const wrapper = shallow(<Groups />);
-    expect(wrapper.find('.text-field.form-control')).toHaveLength(1);
+    expect(wrapper.find('FormControl.text-field')).toHaveLength(1);
   });
 
   it('renders an upload button', () => {
