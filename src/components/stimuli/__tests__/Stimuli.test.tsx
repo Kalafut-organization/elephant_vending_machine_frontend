@@ -3,6 +3,13 @@ import { mount, shallow } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import Stimuli from '../Stimuli';
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useParams: jest
+    .fn()
+    .mockReturnValue({ environment: 'dev', service: 'fakeService' }),
+}));
+
 describe('<Stimuli />', () => {
   it('renders without crashing', async () => {
     await shallow(<Stimuli />);
