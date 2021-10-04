@@ -33,7 +33,7 @@ const GroupCard: React.FC<GroupCardProps> = ({ name }: GroupCardProps) => {
           <Card.Text className="mt-auto">{name}</Card.Text>
           <div>
             <Button
-              href={`/groups/"${name}`}
+              href={`/${name}/stimuli`}
               variant="secondary"
               className="align-self-start align-self-bottom mr-2"
             >
