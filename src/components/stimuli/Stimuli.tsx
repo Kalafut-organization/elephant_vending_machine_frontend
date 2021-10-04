@@ -23,13 +23,13 @@ const Stimuli: React.FC = props => {
   const [showToast, setShowToast] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState({ file: null });
-  const { name } = useParams<{ name?: string }>();
+  const { name } = useParams<{ name: string }>();
 
   useEffect(() => {
     async function fetchStimuliUrls(): Promise<void> {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_ADDRESS}/${(name as any).name}`
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/${name}`
         );
         const body = await response.json();
         setStimuliUrls(body.files);
@@ -51,11 +51,9 @@ const Stimuli: React.FC = props => {
       formData.append('file', (selectedFile.file as unknown) as File);
     }
     setUploading(true);
-    console.log(
-      `${process.env.REACT_APP_BACKEND_ADDRESS}/${(name as any).name}/image`
-    );
+    console.log(`${process.env.REACT_APP_BACKEND_ADDRESS}/${name}/image`);
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_ADDRESS}/${(name as any).name}/image`,
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/${name}/image`,
       {
         method: 'POST',
         body: formData,
