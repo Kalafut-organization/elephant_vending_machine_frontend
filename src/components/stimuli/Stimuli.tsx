@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import Toast from 'react-bootstrap/Toast';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
@@ -15,19 +16,20 @@ const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
   return cards;
 };
 
-const Stimuli: React.FC = () => {
+const Stimuli: React.FC = props => {
   const [hasError, setErrors] = useState(false);
   const [stimuliUrls, setStimuliUrls] = useState([]);
   const [isUploading, setUploading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState({ file: null });
+  const name = useParams();
 
   useEffect(() => {
     async function fetchStimuliUrls(): Promise<void> {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_ADDRESS}/image`
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/${(name as any).name}`
         );
         const body = await response.json();
         setStimuliUrls(body.files);
@@ -49,8 +51,11 @@ const Stimuli: React.FC = () => {
       formData.append('file', (selectedFile.file as unknown) as File);
     }
     setUploading(true);
+    console.log(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/${(name as any).name}/image`
+    );
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_ADDRESS}/image`,
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/${(name as any).name}/image`,
       {
         method: 'POST',
         body: formData,
