@@ -61,7 +61,6 @@ const Group: React.FC = () => {
     setResponseMessage(body.message);
     setUploading(false);
     setShowToast(true);
-    setSelectedName('');
   };
 
   return (
