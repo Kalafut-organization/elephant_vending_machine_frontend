@@ -8,7 +8,7 @@ const deleteStimuliFile = async (filename: string) => {
   await fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/image/${filename}`, {
     method: 'delete',
   });
-  window.location.reload(false);
+  window.location.reload();
 };
 
 export interface StimuliCardProps {
