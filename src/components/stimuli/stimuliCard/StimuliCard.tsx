@@ -11,10 +11,6 @@ const deleteStimuliFile = async (filename: string) => {
   window.location.reload(false);
 };
 
-const copyStimuliFile = async (url: string, folderToCopy: string) => {
-  alert("copy '" + url + "' to folder '" + folderToCopy + "'");
-};
-
 export interface StimuliCardProps {
   /** URL of the image displayed on card */
   url: string;
@@ -24,6 +20,23 @@ const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
   const [isCopyModalOpen, setCopyModalStatus] = useState(false);
   const [isDeleteModalOpen, setDeleteModalStatus] = useState(false);
   const [folderToCopy, setFolderToCopy] = useState('');
+
+  const copyStimuliFile = async (filename: string) => {
+    console.log(filename);
+    const formData = new FormData();
+    if (folderToCopy) {
+      formData.append('name', folderToCopy);
+    }
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/${filename}/copy`,
+      {
+        method: 'post',
+        body: formData,
+      }
+    );
+    const body = await response.json();
+    alert(body.message);
+  };
 
   const filenameExpression: RegExp = new RegExp(
     `${process.env.REACT_APP_BACKEND_ADDRESS}/static/img/(.*)`
@@ -133,7 +146,7 @@ const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
               className="confirm-copy"
               variant="info"
               onClick={() => {
-                copyStimuliFile(url, folderToCopy);
+                copyStimuliFile(filename);
                 setCopyModalStatus(false);
               }}
             >
