@@ -115,7 +115,7 @@ const ExperimentForm = () => {
       <Button
         variant="secondary"
         style={{ float: 'right', marginTop: '16px' }}
-        className="mr-1 run-button"
+        className="mr-1 form-button"
         onClick={() => {
           setModalStatus(true);
         }}
@@ -259,14 +259,14 @@ const ExperimentForm = () => {
 
           <Modal.Footer>
             <Button
-              className="cancel-run"
+              className="cancel-form"
               variant="secondary"
               onClick={() => setModalStatus(false)}
             >
               Cancel
             </Button>
             <Button
-              className="confirm-run"
+              className="confirm-form"
               variant="primary"
               onClick={() => {
                 setModalStatus(false);
