@@ -148,8 +148,17 @@ const ExperimentForm = () => {
                 </Col>
               </Row>
               <Row>
-                Stimuli outcomes:
-                {selectedGroups}
+                <Col>
+                  <Row style={{ marginBottom: '5px' }}>Stimuli outcomes:</Row>
+                  {selectedGroups.length === 0 && (
+                    <Row>
+                      <p style={{ fontStyle: 'italic', color: 'grey' }}>
+                        Please select stimuli first.
+                      </p>
+                    </Row>
+                  )}
+                  {selectedGroups}
+                </Col>
               </Row>
               <Row>
                 Fixation duration:
@@ -206,6 +215,41 @@ const ExperimentForm = () => {
                         name="stimuli-randomness"
                       />
                       Without replacement in trials (repetition possible)
+                    </Row>
+                  </Col>
+                </InputGroup>
+              </Row>
+              <Row>
+                Fixation point:
+                <InputGroup className="mb-3">
+                  <Col>
+                    <Row>
+                      <Form.Check
+                        value="1"
+                        type="radio"
+                        name="fixation-point"
+                      />
+                      Standard fixation
+                    </Row>
+                    <Row>
+                      <Form.Check value="2" type="radio" name="fixation-new" />
+                      <Col>
+                        <Row>Upload new</Row>
+                        <Row>
+                          <Form.Group
+                            style={{
+                              borderStyle: 'solid',
+                              borderColor: '#ced4da',
+                              borderRadius: '.25rem',
+                              width: '100%',
+                            }}
+                            className="border border-10"
+                            controlId="formFile"
+                          >
+                            <Form.Control type="file" />
+                          </Form.Group>
+                        </Row>
+                      </Col>
                     </Row>
                   </Col>
                 </InputGroup>
