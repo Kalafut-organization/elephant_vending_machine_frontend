@@ -6,6 +6,7 @@ import Toast from 'react-bootstrap/Toast';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
 import ExperimentItem from './ExperimentItem';
+import ExperimentForm from './ExperimentForm';
 
 const generateItems = (experimentUrls: Array<string>) => {
   const items: Array<JSX.Element> = [];
@@ -69,49 +70,54 @@ const Experiment: React.FC = () => {
       {!hasError && (
         <Row style={{ marginBottom: '1em' }}>
           <Col>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span
-                  className="input-group-text"
-                  id="uploadButton"
-                  style={{
-                    cursor:
-                      selectedFile.file !== null ? 'pointer' : 'not-allowed',
-                  }}
-                  onClick={() => {
-                    selectedFile.file && handleUploadClick();
-                  }}
-                  onKeyDown={() => {
-                    selectedFile.file && handleUploadClick();
-                  }}
-                  role="button"
-                  tabIndex={0}
-                >
-                  {isUploading ? (
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                  ) : (
-                    'Upload'
-                  )}
-                </span>
+            <Row>
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <span
+                    className="input-group-text"
+                    id="uploadButton"
+                    style={{
+                      cursor:
+                        selectedFile.file !== null ? 'pointer' : 'not-allowed',
+                    }}
+                    onClick={() => {
+                      selectedFile.file && handleUploadClick();
+                    }}
+                    onKeyDown={() => {
+                      selectedFile.file && handleUploadClick();
+                    }}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    {isUploading ? (
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      'Upload'
+                    )}
+                  </span>
+                </div>
+                <div className="custom-file">
+                  <input
+                    type="file"
+                    className="custom-file-input"
+                    onChange={onFileSelect}
+                  />
+                  <label className="custom-file-label">
+                    {selectedFile.file !== null
+                      ? ((selectedFile.file as unknown) as File).name
+                      : 'Select a file to upload'}
+                  </label>
+                </div>
               </div>
-              <div className="custom-file">
-                <input
-                  type="file"
-                  className="custom-file-input"
-                  onChange={onFileSelect}
-                />
-                <label className="custom-file-label">
-                  {selectedFile.file !== null
-                    ? ((selectedFile.file as unknown) as File).name
-                    : 'Select a file to upload'}
-                </label>
-              </div>
-            </div>
+            </Row>
+            <Row>
+              <ExperimentForm />
+            </Row>
           </Col>
         </Row>
       )}
