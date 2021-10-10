@@ -15,8 +15,6 @@ const ExperimentForm = () => {
   const [selectedGroups, setSelectedGroups] = useState<JSX.Element[]>([]);
 
   const handleChange = (name: any) => {
-    console.log(selectedGroups, name);
-
     if (selectedTemp.includes(name)) {
       const index = selectedTemp.indexOf(name);
       selectedTemp.splice(index, 1);
@@ -24,8 +22,6 @@ const ExperimentForm = () => {
       selectedTemp.push(name);
     }
     setSelectedGroups(generateOutcomes(selectedTemp));
-    console.log('AFTER');
-    console.log(selectedGroups, name);
   };
 
   const generateGroups = (groupNames: Array<JSX.Element>) => {
@@ -57,7 +53,6 @@ const ExperimentForm = () => {
   };
 
   const generateOutcomes = (groupNames: Array<JSX.Element>) => {
-    console.log('HERE');
     var val = 1;
     const items: Array<JSX.Element> = [];
     groupNames.forEach(group => {
@@ -101,7 +96,9 @@ const ExperimentForm = () => {
           `${process.env.REACT_APP_BACKEND_ADDRESS}/groups`
         );
         const body = await response.json();
-        setGroupNames(body.names);
+        if (body.names.length > 0) {
+          setGroupNames(body.names);
+        }
       } catch (err) {
         // setErrors(true);
       }

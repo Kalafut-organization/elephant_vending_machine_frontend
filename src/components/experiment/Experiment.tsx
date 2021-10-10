@@ -74,7 +74,7 @@ const Experiment: React.FC = () => {
               <div className="input-group">
                 <div className="input-group-prepend">
                   <span
-                    className="input-group-text"
+                    className="input-group-text upload-button"
                     id="uploadButton"
                     style={{
                       cursor:
