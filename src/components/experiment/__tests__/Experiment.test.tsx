@@ -67,9 +67,9 @@ describe('<Experiment />', () => {
       });
     });
     await act(async () => {
-      wrapper.find('#uploadButton').simulate('click');
+      wrapper.find('.upload-button').simulate('click');
     });
-    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(fetchMock).toHaveBeenCalledTimes(4); //one is in ExperimentForm
     fetchMock.mockRestore();
     wrapper.unmount();
   });
