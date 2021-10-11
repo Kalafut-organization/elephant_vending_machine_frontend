@@ -31,6 +31,13 @@ describe('<StimuliCard />', () => {
     expect(wrapper.contains('some_image_url.jpg')).toEqual(true);
   });
 
+  it('renders filename text parsed from URL with group', () => {
+    const wrapper = shallow(
+      <StimuliCard url="http://192.168.0.100/static/img/GRP_test/some_image_url.jpg" />
+    );
+    expect(wrapper.contains('some_image_url.jpg')).toEqual(true);
+  });
+
   it('renders error text if URL does not match correct format', () => {
     const wrapper = shallow(
       <StimuliCard url="http://badurl.com/some_image_url.jpg" />
@@ -67,6 +74,17 @@ describe('<StimuliCard />', () => {
     expect(image).toHaveLength(1);
     expect(image.prop('src')).toEqual(
       'http://192.168.0.100/static/img/some_image_url.jpg'
+    );
+  });
+
+  it('renders an image preview for the url passed as prop including group', () => {
+    const wrapper = shallow(
+      <StimuliCard url="http://192.168.0.100/static/img/GRP_TST/some_image_url.jpg" />
+    );
+    const image = wrapper.find('CardImg');
+    expect(image).toHaveLength(1);
+    expect(image.prop('src')).toEqual(
+      'http://192.168.0.100/static/img/GRP_TST/some_image_url.jpg'
     );
   });
 
