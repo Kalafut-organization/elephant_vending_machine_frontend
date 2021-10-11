@@ -174,6 +174,11 @@ describe('<StimuliCard />', () => {
     const wrapper = shallow(
       <StimuliCard url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
     );
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementationOnce(() =>
+      Promise.resolve({
+        json: () => Promise.resolve({ file: 'group1' }),
+      })
+    );
     await act(async () => {
       wrapper
         .find('Button')
@@ -198,6 +203,7 @@ describe('<StimuliCard />', () => {
         .at(COPY_MODAL_INDEX)
         .props().show
     ).toBe(false);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it('closes the copy modal when you click copy to file and then cancel', async () => {
