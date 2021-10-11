@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Toast from 'react-bootstrap/Toast';
@@ -20,6 +21,7 @@ const generateItems = (experimentUrls: Array<string>) => {
 const Experiment: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [experimentUrls, setExperimentUrls] = useState([]);
+  const [sampleExperimentUrls, setSampleExperimentUrls] = useState([]);
   const [isUploading, setUploading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
@@ -28,11 +30,19 @@ const Experiment: React.FC = () => {
   useEffect(() => {
     async function fetchExperimentUrls(): Promise<void> {
       try {
+        // fetch experiment urls
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_ADDRESS}/experiment`
         );
         const body = await response.json();
         setExperimentUrls(body.files);
+
+        // fetch sample experiment url
+        const sample_response = await fetch(
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/template`
+        );
+        const sample_body = await sample_response.json();
+        setSampleExperimentUrls(sample_body.files);
       } catch (err) {
         setErrors(err);
       }
@@ -117,6 +127,17 @@ const Experiment: React.FC = () => {
             </Row>
             <Row>
               <ExperimentForm />
+              <Button
+                type="submit"
+                variant="secondary"
+                style={{ marginTop: '16px' }}
+                className="mr-1 form-button"
+                onClick={() => {
+                  window.open(sampleExperimentUrls[0]);
+                }}
+              >
+                Download Sample
+              </Button>
             </Row>
           </Col>
         </Row>
