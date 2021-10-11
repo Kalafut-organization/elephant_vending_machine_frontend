@@ -192,6 +192,13 @@ describe('<StimuliCard />', () => {
         .props().show
     ).toBe(true);
     await act(async () => {
+      wrapper.find('input').simulate('change', {
+        target: {
+          value: 'mockimg.png',
+        },
+      });
+    });
+    await act(async () => {
       wrapper
         .find('Button')
         .at(COPY_MODAL_COPY_BUTTON_INDEX)
