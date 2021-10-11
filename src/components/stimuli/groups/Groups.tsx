@@ -61,7 +61,6 @@ const Group: React.FC = () => {
     setResponseMessage(body.message);
     setUploading(false);
     setShowToast(true);
-    setSelectedName('');
   };
 
   return (
@@ -99,7 +98,7 @@ const Group: React.FC = () => {
       </Row>
       <Row className="content">
         {hasError && <div>Error encountered while loading groups.</div>}
-        {!groupNames.length && !hasError && (
+        {(groupNames === undefined || (!groupNames.length && !hasError)) && (
           <div>No groups currently exist.</div>
         )}
         {groupNames && generateCards(groupNames)}

@@ -13,7 +13,7 @@ describe('<Groups />', () => {
       return Promise.reject(new Error('An error occurred'));
     });
 
-    let wrapper;
+    let wrapper: any;
     await act(async () => {
       wrapper = await mount(<Groups />);
     });
@@ -34,7 +34,7 @@ describe('<Groups />', () => {
       return Promise.resolve(new Response(JSON.stringify(mockResponse)));
     });
 
-    let wrapper;
+    let wrapper: any;
     await act(async () => {
       wrapper = await mount(<Groups />);
     });
@@ -54,7 +54,7 @@ describe('<Groups />', () => {
       return Promise.resolve(new Response(JSON.stringify(mockResponse)));
     });
 
-    let wrapper;
+    let wrapper: any;
     await act(async () => {
       wrapper = await mount(<Groups />);
     });
@@ -66,8 +66,8 @@ describe('<Groups />', () => {
   });
 
   it('renders text input field', () => {
-    const wrapper = shallow(<Groups />);
-    expect(wrapper.find('FormControl.text-field')).toHaveLength(1);
+    const wrapper = mount(<Groups />);
+    expect(wrapper.find('.text-field .form-control')).toHaveLength(1);
   });
 
   it('renders an upload button', () => {
@@ -84,22 +84,25 @@ describe('<Groups />', () => {
 
     const fetchMock = jest
       .spyOn(global, 'fetch')
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          json: () => Promise.resolve(mockResponse),
-        })
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            json: () => Promise.resolve(mockResponse),
+          }) as any
       )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          json: () => Promise.resolve(mockPostResponse),
-        })
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            json: () => Promise.resolve(mockPostResponse),
+          }) as any
       )
-      .mockImplementationOnce(() =>
-        Promise.resolve({
-          json: () => Promise.resolve(mockGetResponse),
-        })
+      .mockImplementationOnce(
+        () =>
+          Promise.resolve({
+            json: () => Promise.resolve(mockGetResponse),
+          }) as any
       );
-    let wrapper;
+    let wrapper: any;
     await act(async () => {
       wrapper = await mount(<Groups />);
     });
