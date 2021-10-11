@@ -34,7 +34,7 @@ const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
       }
     );
     const body = await response.json();
-    // alert(body.message);
+    alert(body.message);
   };
 
   const filenameExpression: RegExp = new RegExp(
