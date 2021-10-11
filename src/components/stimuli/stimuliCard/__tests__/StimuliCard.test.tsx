@@ -170,6 +170,36 @@ describe('<StimuliCard />', () => {
     ).toBe(false);
   });
 
+  it('closes the copy modal when you click copy to file and then confirm', async () => {
+    const wrapper = shallow(
+      <StimuliCard url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
+    );
+    await act(async () => {
+      wrapper
+        .find('Button')
+        .at(COPY_TO_FOLDER_BUTTON_INDEX)
+        .simulate('click');
+    });
+    expect(
+      wrapper
+        .find(Modal)
+        .at(COPY_MODAL_INDEX)
+        .props().show
+    ).toBe(true);
+    await act(async () => {
+      wrapper
+        .find('Button')
+        .at(COPY_MODAL_COPY_BUTTON_INDEX)
+        .simulate('click');
+    });
+    expect(
+      wrapper
+        .find(Modal)
+        .at(COPY_MODAL_INDEX)
+        .props().show
+    ).toBe(false);
+  });
+
   it('closes the copy modal when you click copy to file and then cancel', async () => {
     const wrapper = shallow(
       <StimuliCard url="http://192.168.0.100/static/experiment/some_experiment_url.py" />
