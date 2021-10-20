@@ -112,7 +112,6 @@ const ExperimentForm = () => {
                   var prev = form_info.outcomes.get(group);
                   prev['tray'] = 2;
                   form_info.outcomes.set(group, prev);
-                  console.log(form_info.outcomes);
                 }}
               >
                 Tray 2
@@ -253,7 +252,6 @@ const ExperimentForm = () => {
         className="mr-1 form-button"
         onClick={() => {
           setModalStatus(true);
-          console.log(form_info);
         }}
       >
         Add new from parameters
@@ -271,7 +269,7 @@ const ExperimentForm = () => {
 
             <Modal.Body>
               <Col>
-                <Row>
+                <Row style={{ marginBottom: '16px' }}>
                   Experiment name:
                   <InputGroup>
                     <FormControl
@@ -625,7 +623,6 @@ const ExperimentForm = () => {
                 className="confirm-form"
                 variant="primary"
                 onClick={() => {
-                  console.log(form_info);
                   setErrorChecking(true);
                   if (validate()) {
                     setModalStatus(false);
