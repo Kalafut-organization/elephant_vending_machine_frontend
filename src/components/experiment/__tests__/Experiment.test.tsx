@@ -60,7 +60,7 @@ describe('<Experiment />', () => {
       wrapper = await mount(<Experiment />);
     });
     await act(async () => {
-      wrapper.find('input').simulate('change', {
+      wrapper.find('.custom-file-input').simulate('change', {
         target: {
           files: [new File([], 'newFile.py')],
         },
