@@ -576,7 +576,7 @@ const ExperimentForm = () => {
                                 width: '100%',
                               }}
                               className="border border-10"
-                              controlId="formFile"
+                              controlId="formFixationFile"
                               onClick={(event: any) => {
                                 onFileSelect(event);
                                 form_info.fixation_default = false;
