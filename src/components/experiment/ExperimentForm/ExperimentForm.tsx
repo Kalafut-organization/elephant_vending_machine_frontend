@@ -9,6 +9,7 @@ import {
 } from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { getgroups } from 'process';
 
 var form_info = {
   name: '',
@@ -47,7 +48,6 @@ const ExperimentForm = () => {
       form_info.outcomes.set(name, { name: '', tray: '' });
     }
     setSelectedGroups(selectedTemp);
-    setNameValid(true);
   };
 
   const generateGroups = (groupNames: Array<JSX.Element>) => {
@@ -67,7 +67,7 @@ const ExperimentForm = () => {
         >
           <Form.Check
             value={'form-' + group}
-            name="stimuli-randomness"
+            className="stimuli-group"
             onChange={() => {
               handleChange(group);
               setSelectedGroups(selectedTemp);
@@ -84,7 +84,7 @@ const ExperimentForm = () => {
     return items;
   };
 
-  const [isModalOpen, setModalStatus] = useState(true);
+  const [isModalOpen, setModalStatus] = useState(false);
   const [groupNames, setGroupNames] = useState([]);
   const [newUpload, setNewUpload] = useState(false);
   var isUploading = false;
@@ -183,40 +183,54 @@ const ExperimentForm = () => {
         return 'Tray ' + data['tray'];
       }
     }
-    return 'Select tray';
   };
 
-  useEffect(() => {
-    async function fetchGroups(): Promise<void> {
-      try {
-        const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_ADDRESS}/groups`
-        );
-        const body = await response.json();
-        if (body.names.length > 0) {
-          setGroupNames(body.names);
-        }
-      } catch (err) {
-        // setErrors(true);
-      }
-    }
+  // useEffect(() => {
+  //   async function fetchGroups(): Promise<void> {
+  //     try {
+  //       const response = await fetch(
+  //         `${process.env.REACT_APP_BACKEND_ADDRESS}/groups`
+  //       );
+  //       const body = await response.json();
+  //       if (body.names.length > 0) {
+  //         setGroupNames(body.names);
+  //       }
+  //     } catch (err) {
+  //       // setErrors(true);
+  //     }
+  //   }
 
-    if (!isUploading) fetchGroups();
-  }, [isUploading]);
+  //   if (!isUploading) fetchGroups();
+  // }, [isUploading]);
+
+  const getGroups = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/groups`
+      );
+      const body = await response.json();
+      if (body.names.length > 0) {
+        setGroupNames(body.names);
+      }
+    } catch (err) {
+      // setErrors(true);
+    }
+  };
 
   return (
     <div>
       <Button
         variant="secondary"
         style={{ float: 'right', marginTop: '16px' }}
-        className="mr-1 form-button"
+        className="mr-1 create-form-button"
         onClick={() => {
+          getGroups();
           setModalStatus(true);
         }}
       >
         Add new from parameters
       </Button>
-      <div>
+      <div className="modal-div">
         <Modal
           className="modal-container"
           show={isModalOpen}
@@ -233,7 +247,7 @@ const ExperimentForm = () => {
                   Experiment name:
                   <InputGroup>
                     <FormControl
-                      className="text-field"
+                      className="name-text"
                       aria-label="Group name entry form"
                       aria-describedby="addButton"
                       defaultValue={form_info['name']}
@@ -247,6 +261,7 @@ const ExperimentForm = () => {
                   </InputGroup>
                   {!nameValid && (
                     <Form.Text
+                      className="name-error"
                       style={{
                         fontStyle: 'italic',
                         color: 'red',
@@ -284,7 +299,7 @@ const ExperimentForm = () => {
                   </InputGroup>
                 </Row>
                 <Row>
-                  <Col>
+                  <Col className="all-groups">
                     <Row>Stimuli:</Row>
                     {groupNames.length === 0 && (
                       <Row>No groups found. Add groups and then continue. </Row>
@@ -296,6 +311,7 @@ const ExperimentForm = () => {
                     </InputGroup>
                     {!stimuliValid && (
                       <Form.Text
+                        className="stimuli-selection-error"
                         style={{
                           fontStyle: 'italic',
                           color: 'red',
@@ -329,6 +345,7 @@ const ExperimentForm = () => {
                                 {group}
                               </InputGroup.Text>
                               <FormControl
+                                className="outcome-field"
                                 placeholder="Treat name"
                                 aria-label="Default"
                                 aria-describedby="inputGroup-sizing-default"
@@ -343,6 +360,7 @@ const ExperimentForm = () => {
                               />
                               <Dropdown>
                                 <Dropdown.Toggle
+                                  className="dropdown-toggle"
                                   variant="secondary"
                                   id="dropdown-basic"
                                 >
@@ -350,6 +368,7 @@ const ExperimentForm = () => {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                   <Dropdown.Item
+                                    className="outcome-tray-1"
                                     href="#/action-1"
                                     onClick={() => {
                                       var data = form_info.outcomes.get(group);
@@ -363,6 +382,7 @@ const ExperimentForm = () => {
                                     Tray 1
                                   </Dropdown.Item>
                                   <Dropdown.Item
+                                    className="outcome-tray-2"
                                     href="#/action-2"
                                     onClick={() => {
                                       var data = form_info.outcomes.get(group);
@@ -376,6 +396,7 @@ const ExperimentForm = () => {
                                     Tray 2
                                   </Dropdown.Item>
                                   <Dropdown.Item
+                                    className="outcome-tray-3"
                                     href="#/action-3"
                                     onClick={() => {
                                       var data = form_info.outcomes.get(group);
@@ -389,6 +410,7 @@ const ExperimentForm = () => {
                                     Tray 3
                                   </Dropdown.Item>
                                   <Dropdown.Item
+                                    className="outcome-none"
                                     href="#/action-3"
                                     onClick={() => {
                                       var data = form_info.outcomes.get(group);
@@ -406,6 +428,7 @@ const ExperimentForm = () => {
                             </InputGroup>
                             {outcomeErrors.includes(group) && (
                               <Form.Text
+                                className="outcome-error"
                                 style={{
                                   fontStyle: 'italic',
                                   color: 'red',
@@ -425,7 +448,7 @@ const ExperimentForm = () => {
                   Number of trials:
                   <InputGroup className="mb-3">
                     <FormControl
-                      className="text-field"
+                      className="trials-field"
                       aria-label="Group name entry form"
                       aria-describedby="addButton"
                       defaultValue={form_info['trials']}
@@ -441,6 +464,7 @@ const ExperimentForm = () => {
                   {!trialsValid && (
                     <Col>
                       <Form.Text
+                        className="trials-error"
                         style={{
                           fontStyle: 'italic',
                           color: 'red',
@@ -462,7 +486,7 @@ const ExperimentForm = () => {
                   Fixation duration:
                   <InputGroup className="mb-3">
                     <FormControl
-                      className="text-field"
+                      className="fixation-field"
                       aria-label="Group name entry form"
                       aria-describedby="addButton"
                       defaultValue={form_info['fixation_duration']}
@@ -478,6 +502,7 @@ const ExperimentForm = () => {
                   {!fixationValid && (
                     <Col>
                       <Form.Text
+                        className="fixation-error"
                         style={{
                           fontStyle: 'italic',
                           color: 'red',
@@ -499,7 +524,7 @@ const ExperimentForm = () => {
                   Duration between fixation and stimuli:
                   <InputGroup className="mb-3">
                     <FormControl
-                      className="text-field"
+                      className="intermediate-field"
                       aria-label="Group name entry form"
                       aria-describedby="addButton"
                       defaultValue={form_info['intermediate_duration']}
@@ -515,6 +540,7 @@ const ExperimentForm = () => {
                   {!intermediateValid && (
                     <Col>
                       <Form.Text
+                        className="intermediate-error"
                         style={{
                           fontStyle: 'italic',
                           color: 'red',
@@ -536,7 +562,7 @@ const ExperimentForm = () => {
                   Stimuli duration:
                   <InputGroup className="mb-3">
                     <FormControl
-                      className="text-field"
+                      className="stimduration-field"
                       aria-label="Group name entry form"
                       aria-describedby="addButton"
                       defaultValue={form_info['stimuli_duration']}
@@ -552,6 +578,7 @@ const ExperimentForm = () => {
                   {!stimDurationValid && (
                     <Col>
                       <Form.Text
+                        className="stimDuration-error"
                         style={{
                           fontStyle: 'italic',
                           color: 'red',
@@ -603,7 +630,7 @@ const ExperimentForm = () => {
                         <Form.Check
                           value="1"
                           type="radio"
-                          name="fixation-point"
+                          className="fixation-point"
                           checked={!newUpload}
                           onChange={() => {
                             form_info.fixation_default = true;
@@ -616,7 +643,7 @@ const ExperimentForm = () => {
                         <Form.Check
                           value="2"
                           type="radio"
-                          name="fixation-point"
+                          className="fixation-point"
                           checked={newUpload}
                           onChange={() => {
                             form_info.fixation_default = false;
@@ -633,7 +660,7 @@ const ExperimentForm = () => {
                                 borderRadius: '.25rem',
                                 width: '100%',
                               }}
-                              className="border border-10"
+                              className="border border-10 fixation-upload"
                               controlId="formFixationFile"
                               onClick={(event: any) => {
                                 onFileSelect(event);
@@ -650,6 +677,7 @@ const ExperimentForm = () => {
                             </Form.Group>
                             {!fileValid && (
                               <Form.Text
+                                className="file-error"
                                 style={{
                                   fontStyle: 'italic',
                                   color: 'red',
