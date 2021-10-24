@@ -9,7 +9,6 @@ import {
 } from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { getNameOfDeclaration, setConstantValue } from 'typescript';
 
 var form_info = {
   name: '',
@@ -25,6 +24,18 @@ var form_info = {
   groups: [],
 };
 
+var form_info = {
+  name: '',
+  trials: '',
+  outcomes: new Map(),
+  fixation_duration: '',
+  intermediate_duration: '',
+  stimuli_duration: '',
+  monitor: 2,
+  replacement: true,
+  fixation_default: true,
+  new_fixation: {},
+};
 var selectedTemp: Array<JSX.Element> = [];
 
 const ExperimentForm = () => {
@@ -44,12 +55,10 @@ const ExperimentForm = () => {
       const outcome_index = outcomeErrors.indexOf(name);
       outcomeErrors.splice(outcome_index, 1);
     } else {
-      console.log('in else');
       selectedTemp.push(name);
       form_info.outcomes.set(name, { name: '', tray: '' });
     }
     setSelectedGroups(selectedTemp);
-    console.log(form_info.outcomes);
     setNameValid(true);
   };
 
@@ -74,7 +83,6 @@ const ExperimentForm = () => {
             //checked={selectedGroups.includes(group)}
             onChange={() => {
               handleChange(group);
-              console.log(selectedGroups);
               setSelectedGroups(selectedTemp);
               if (errorChecking) {
                 validate();
@@ -87,14 +95,6 @@ const ExperimentForm = () => {
     });
 
     return items;
-  };
-
-  const [dropdownLabel, setDropdownLabel] = useState('Select Tray');
-
-  const changeDropdown = (selected: any) => {
-    setDropdownLabel(selected);
-    console.log('here');
-    console.log(selected);
   };
 
   const [isModalOpen, setModalStatus] = useState(true);
@@ -170,18 +170,13 @@ const ExperimentForm = () => {
       setFileValid(true);
     }
     var outcomeErrorsTemp: Array<JSX.Element> = [];
-    console.log(form_info.outcomes);
     form_info.outcomes.forEach((group, name) => {
-      console.log(group);
-      console.log(name);
       if (group['name'] === '' || group['tray'] === '') {
         outcomeErrorsTemp.push(name);
         errorFree = false;
       }
     });
     setOutcomeErrors(outcomeErrorsTemp);
-    console.log('setting');
-    console.log(outcomeErrors);
     return errorFree;
   };
 
@@ -354,7 +349,6 @@ const ExperimentForm = () => {
                                   var data = form_info.outcomes.get(group);
                                   data['name'] = event.target.value;
                                   form_info.outcomes.set(group, data);
-                                  console.log(form_info.outcomes);
                                   if (errorChecking === true) {
                                     validate();
                                   }
@@ -374,9 +368,6 @@ const ExperimentForm = () => {
                                       var data = form_info.outcomes.get(group);
                                       data['tray'] = 1;
                                       form_info.outcomes.set(group, data);
-                                      console.log(
-                                        form_info.outcomes.get(group)
-                                      );
                                       if (errorChecking === true) {
                                         validate();
                                       }
@@ -390,9 +381,6 @@ const ExperimentForm = () => {
                                       var data = form_info.outcomes.get(group);
                                       data['tray'] = 2;
                                       form_info.outcomes.set(group, data);
-                                      console.log(
-                                        form_info.outcomes.get(group)
-                                      );
                                       if (errorChecking === true) {
                                         validate();
                                       }
@@ -406,9 +394,6 @@ const ExperimentForm = () => {
                                       var data = form_info.outcomes.get(group);
                                       data['tray'] = 3;
                                       form_info.outcomes.set(group, data);
-                                      console.log(
-                                        form_info.outcomes.get(group)
-                                      );
                                       if (errorChecking === true) {
                                         validate();
                                       }
@@ -709,7 +694,6 @@ const ExperimentForm = () => {
                 className="confirm-form"
                 variant="primary"
                 onClick={() => {
-                  console.log(outcomeErrors);
                   setErrorChecking(true);
                   if (validate()) {
                     setModalStatus(false);
