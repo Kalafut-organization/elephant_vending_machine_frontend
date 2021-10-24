@@ -68,7 +68,6 @@ const ExperimentForm = () => {
           <Form.Check
             value={'form-' + group}
             name="stimuli-randomness"
-            //checked={selectedGroups.includes(group)}
             onChange={() => {
               handleChange(group);
               setSelectedGroups(selectedTemp);
