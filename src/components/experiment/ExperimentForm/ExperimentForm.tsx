@@ -118,7 +118,10 @@ const ExperimentForm = () => {
     } else {
       setMonitorsValid(true);
     }
-    if (selectedTemp.length === 0) {
+    if (
+      selectedTemp.length === 0 ||
+      selectedTemp.length !== form_info.monitors.filter(Boolean).length
+    ) {
       setStimuliValid(false);
       errorFree = false;
     } else {
@@ -389,7 +392,16 @@ const ExperimentForm = () => {
                           fontSize: 'small',
                         }}
                       >
-                        At least one stimuli required
+                        {selectedTemp.length === 0 && (
+                          <p>At least one stimuli required</p>
+                        )}
+                        {selectedTemp.length !==
+                          form_info.monitors.filter(Boolean).length && (
+                          <p>
+                            Number of stimuli groups must be equal to monitor
+                            count
+                          </p>
+                        )}
                       </Form.Text>
                     )}
                   </Col>
