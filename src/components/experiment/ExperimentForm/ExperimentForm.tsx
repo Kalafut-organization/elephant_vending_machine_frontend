@@ -24,18 +24,6 @@ var form_info = {
   groups: [],
 };
 
-var form_info = {
-  name: '',
-  trials: '',
-  outcomes: new Map(),
-  fixation_duration: '',
-  intermediate_duration: '',
-  stimuli_duration: '',
-  monitor: 2,
-  replacement: true,
-  fixation_default: true,
-  new_fixation: {},
-};
 var selectedTemp: Array<JSX.Element> = [];
 
 const ExperimentForm = () => {
