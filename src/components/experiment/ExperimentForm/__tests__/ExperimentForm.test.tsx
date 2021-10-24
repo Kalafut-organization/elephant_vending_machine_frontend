@@ -12,15 +12,18 @@ describe('<ExperimentBlock />', () => {
   it('renders a model when the run button is clicked.', async () => {
     const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
-      wrapper.find('.form-button').simulate('click');
+      wrapper.find('.create-form-button').simulate('click');
     });
     expect(wrapper.find(Modal).props().show).toBe(true);
   });
 
-  it('closes the modal when you click run and then cancel', async () => {
+  it('closes the modal when you click cancel', async () => {
     const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
-      wrapper.find('.form-button').simulate('click');
+      wrapper.find('.create-form-button').simulate('click');
+    });
+    await act(async () => {
+      wrapper.find('.confirm-form').simulate('click');
     });
     expect(wrapper.find(Modal).props().show).toBe(true);
     await act(async () => {
@@ -32,7 +35,7 @@ describe('<ExperimentBlock />', () => {
   it('hides the modal when the modals hide action is triggered.', async () => {
     const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
-      wrapper.find('.form-button').simulate('click');
+      wrapper.find('.create-form-button').simulate('click');
     });
     expect(wrapper.find(Modal).props().show).toBe(true);
     await act(async () => {
