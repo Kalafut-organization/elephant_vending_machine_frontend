@@ -84,7 +84,7 @@ const ExperimentForm = () => {
     return items;
   };
 
-  const [isModalOpen, setModalStatus] = useState(true);
+  const [isModalOpen, setModalStatus] = useState(false);
   const [groupNames, setGroupNames] = useState([]);
   const [newUpload, setNewUpload] = useState(false);
   const [monitors, setMonitors] = useState([true, false, true]);
@@ -233,7 +233,6 @@ const ExperimentForm = () => {
     m[index] = e.target.checked;
     setMonitors(m);
     form_info.monitors = monitors;
-    console.log(form_info.monitors);
   };
 
   return (
