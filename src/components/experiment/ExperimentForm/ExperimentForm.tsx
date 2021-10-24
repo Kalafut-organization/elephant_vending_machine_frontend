@@ -17,7 +17,7 @@ var form_info = {
   fixation_duration: '',
   intermediate_duration: '',
   stimuli_duration: '',
-  monitor: 2,
+  monitors: [true, false, true],
   replacement: true,
   fixation_default: true,
   new_fixation: {},
@@ -86,9 +86,11 @@ const ExperimentForm = () => {
   const [isModalOpen, setModalStatus] = useState(false);
   const [groupNames, setGroupNames] = useState([]);
   const [newUpload, setNewUpload] = useState(false);
+  const [monitors, setMonitors] = useState([true, false, true]);
 
   //Validation states
   const [nameValid, setNameValid] = useState(true);
+  const [monitorsValid, setMonitorsValid] = useState(true);
   const [stimuliValid, setStimuliValid] = useState(true);
   const [trialsValid, settrialsValid] = useState(true);
   const [fixationValid, setfixationValid] = useState(true);
@@ -105,6 +107,16 @@ const ExperimentForm = () => {
       errorFree = false;
     } else {
       setNameValid(true);
+    }
+    if (
+      form_info.monitors[0] === false &&
+      form_info.monitors[1] === false &&
+      form_info.monitors[2] === false
+    ) {
+      setMonitorsValid(false);
+      errorFree = false;
+    } else {
+      setMonitorsValid(true);
     }
     if (selectedTemp.length === 0) {
       setStimuliValid(false);
@@ -215,6 +227,13 @@ const ExperimentForm = () => {
     }
   };
 
+  const updateMonitorArrayIndex = (index: number, e: any) => {
+    const m = monitors;
+    m[index] = e.target.checked;
+    setMonitors(m);
+    form_info.monitors = monitors;
+  };
+
   return (
     <div>
       <Button
@@ -272,26 +291,77 @@ const ExperimentForm = () => {
                   )}
                 </Row>
                 <Row>
-                  Number of monitors displaying stimuli:
+                  <Col>
+                    <Row>Monitors used to display stimuli:</Row>
+                    <Row>
+                      <p style={{ fontStyle: 'italic', color: 'grey' }}>
+                        The fixation will be shown on the center screen.
+                      </p>
+                    </Row>
+                    {!monitorsValid && (
+                      <Form.Text
+                        className="monitors-selection-error"
+                        style={{
+                          fontStyle: 'italic',
+                          color: 'red',
+                          marginLeft: '-15px',
+                          marginTop: '-10px',
+                          marginBottom: '10px',
+                          fontSize: 'small',
+                        }}
+                      >
+                        At least one monitor required
+                      </Form.Text>
+                    )}
+                  </Col>
                   <InputGroup className="mb-3">
                     <Col>
                       <Row>
-                        <Form.Check
-                          value="1"
-                          type="radio"
-                          name="stimuli-monitors"
-                          defaultChecked
-                        />
-                        2
-                      </Row>
-                      <Row>
-                        <Form.Check
-                          value="2"
-                          type="radio"
-                          name="stimuli-monitors"
-                          onClick={() => (form_info.monitor = 3)}
-                        />
-                        3
+                        <Col>
+                          <Form.Check
+                            value="1"
+                            type="checkbox"
+                            name="stimuli-monitor-0"
+                            defaultChecked={monitors[0]}
+                            onChange={(event: any) => {
+                              updateMonitorArrayIndex(0, event);
+                              if (errorChecking === true) {
+                                validate();
+                              }
+                            }}
+                          />
+                          Left
+                        </Col>
+                        <Col>
+                          <Form.Check
+                            value="2"
+                            type="checkbox"
+                            name="stimuli-monitor-1"
+                            defaultChecked={monitors[1]}
+                            onChange={(event: any) => {
+                              updateMonitorArrayIndex(1, event);
+                              if (errorChecking === true) {
+                                validate();
+                              }
+                            }}
+                          />
+                          Center
+                        </Col>
+                        <Col>
+                          <Form.Check
+                            value="2"
+                            type="checkbox"
+                            name="stimuli-monitor-2"
+                            defaultChecked={monitors[2]}
+                            onChange={(event: any) => {
+                              updateMonitorArrayIndex(2, event);
+                              if (errorChecking === true) {
+                                validate();
+                              }
+                            }}
+                          />
+                          Right
+                        </Col>
                       </Row>
                     </Col>
                   </InputGroup>
