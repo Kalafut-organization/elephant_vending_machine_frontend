@@ -21,19 +21,33 @@ var form_info = {
   replacement: true,
   fixation_default: true,
   new_fixation: {},
+  groups: [],
 };
+
 var selectedTemp: Array<JSX.Element> = [];
+
 const ExperimentForm = () => {
   const [selectedGroups, setSelectedGroups] = useState<JSX.Element[]>([]);
 
   const handleChange = (name: any) => {
-    if (selectedTemp.includes(name)) {
+    var newTemp: Array<JSX.Element> = [];
+    newTemp = selectedTemp;
+    selectedTemp = [];
+    for (var i = 0; i < newTemp.length; i++) {
+      selectedTemp.push(newTemp[i]);
+    }
+    if (form_info.outcomes.has(name)) {
       const index = selectedTemp.indexOf(name);
       selectedTemp.splice(index, 1);
+      form_info.outcomes.delete(name);
+      const outcome_index = outcomeErrors.indexOf(name);
+      outcomeErrors.splice(outcome_index, 1);
     } else {
       selectedTemp.push(name);
+      form_info.outcomes.set(name, { name: '', tray: '' });
     }
-    setSelectedGroups(generateOutcomes(selectedTemp));
+    setSelectedGroups(selectedTemp);
+    setNameValid(true);
   };
 
   const generateGroups = (groupNames: Array<JSX.Element>) => {
@@ -54,94 +68,20 @@ const ExperimentForm = () => {
           <Form.Check
             value={'form-' + group}
             name="stimuli-randomness"
-            checked={selectedTemp.includes(group)}
-            onChange={() => handleChange(group)}
+            //checked={selectedGroups.includes(group)}
+            onChange={() => {
+              handleChange(group);
+              setSelectedGroups(selectedTemp);
+              if (errorChecking) {
+                validate();
+              }
+            }}
           />
           {group}
         </Row>
       );
     });
 
-    return items;
-  };
-
-  const [dropdownLabel, setDropdownLabel] = useState('Select Tray');
-
-  const generateOutcomes = (groupNames: Array<JSX.Element>) => {
-    var val = 1;
-    const items: Array<JSX.Element> = [];
-    form_info.outcomes.clear();
-    groupNames.forEach(group => {
-      var newOutcomes = { name: '', tray: '' };
-      form_info.outcomes.set(group, newOutcomes);
-      items.push(
-        <InputGroup key={val} className="mb-3">
-          <InputGroup.Text id="inputGroup-sizing-default">
-            {group}
-          </InputGroup.Text>
-          <FormControl
-            placeholder="Treat name"
-            aria-label="Default"
-            aria-describedby="inputGroup-sizing-default"
-            onChange={(event: any) => {
-              var prev = form_info.outcomes.get(group);
-              prev['name'] = event.target.value;
-              form_info.outcomes.set(group, prev);
-            }}
-          />
-          <Dropdown>
-            <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-              {dropdownLabel}
-            </Dropdown.Toggle>
-
-            <Dropdown.Menu>
-              <Dropdown.Item
-                href="#/action-1"
-                onClick={() => {
-                  var prev = form_info.outcomes.get(group);
-                  prev['tray'] = 1;
-                  form_info.outcomes.set(group, prev);
-                  setDropdownLabel('Tray 1');
-                }}
-              >
-                Tray 1
-              </Dropdown.Item>
-              <Dropdown.Item
-                href="#/action-2"
-                onClick={() => {
-                  var prev = form_info.outcomes.get(group);
-                  prev['tray'] = 2;
-                  form_info.outcomes.set(group, prev);
-                }}
-              >
-                Tray 2
-              </Dropdown.Item>
-              <Dropdown.Item
-                href="#/action-3"
-                onClick={() => {
-                  var prev = form_info.outcomes.get(group);
-                  prev['tray'] = 3;
-                  form_info.outcomes.set(group, prev);
-                }}
-              >
-                Tray 3
-              </Dropdown.Item>
-              <Dropdown.Item
-                href="#/action-3"
-                onClick={() => {
-                  var prev = form_info.outcomes.get(group);
-                  prev['tray'] = 0;
-                  form_info.outcomes.set(group, prev);
-                }}
-              >
-                None
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </InputGroup>
-      );
-      val++;
-    });
     return items;
   };
 
@@ -158,6 +98,7 @@ const ExperimentForm = () => {
   const [intermediateValid, setintermediateValid] = useState(true);
   const [stimDurationValid, setStimDurationValid] = useState(true);
   const [errorChecking, setErrorChecking] = useState(false);
+  const [outcomeErrors, setOutcomeErrors] = useState<JSX.Element[]>([]);
   const [fileValid, setFileValid] = useState(true);
 
   const validate = () => {
@@ -216,6 +157,14 @@ const ExperimentForm = () => {
     } else {
       setFileValid(true);
     }
+    var outcomeErrorsTemp: Array<JSX.Element> = [];
+    form_info.outcomes.forEach((group, name) => {
+      if (group['name'] === '' || group['tray'] === '') {
+        outcomeErrorsTemp.push(name);
+        errorFree = false;
+      }
+    });
+    setOutcomeErrors(outcomeErrorsTemp);
     return errorFree;
   };
 
@@ -224,6 +173,18 @@ const ExperimentForm = () => {
     if (errorChecking === true) {
       validate();
     }
+  };
+
+  const getName = (name: any) => {
+    if (form_info.outcomes.has(name)) {
+      var data = form_info.outcomes.get(name);
+      if (data['tray'] === '') {
+        return 'Select tray';
+      } else {
+        return 'Tray ' + data['tray'];
+      }
+    }
+    return 'Select tray';
   };
 
   useEffect(() => {
@@ -360,7 +321,105 @@ const ExperimentForm = () => {
                         </p>
                       </Row>
                     )}
-                    {selectedGroups}
+                    {selectedGroups.length > 0 &&
+                      selectedGroups.map((group, i) => (
+                        <div key={i}>
+                          <Row style={{ marginBottom: '12px' }}>
+                            <InputGroup>
+                              <InputGroup.Text id="inputGroup-sizing-default">
+                                {group}
+                              </InputGroup.Text>
+                              <FormControl
+                                placeholder="Treat name"
+                                aria-label="Default"
+                                aria-describedby="inputGroup-sizing-default"
+                                onChange={(event: any) => {
+                                  var data = form_info.outcomes.get(group);
+                                  data['name'] = event.target.value;
+                                  form_info.outcomes.set(group, data);
+                                  if (errorChecking === true) {
+                                    validate();
+                                  }
+                                }}
+                              />
+                              <Dropdown>
+                                <Dropdown.Toggle
+                                  variant="secondary"
+                                  id="dropdown-basic"
+                                >
+                                  {getName(group)}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  <Dropdown.Item
+                                    href="#/action-1"
+                                    onClick={() => {
+                                      var data = form_info.outcomes.get(group);
+                                      data['tray'] = 1;
+                                      form_info.outcomes.set(group, data);
+                                      if (errorChecking === true) {
+                                        validate();
+                                      }
+                                    }}
+                                  >
+                                    Tray 1
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    href="#/action-2"
+                                    onClick={() => {
+                                      var data = form_info.outcomes.get(group);
+                                      data['tray'] = 2;
+                                      form_info.outcomes.set(group, data);
+                                      if (errorChecking === true) {
+                                        validate();
+                                      }
+                                    }}
+                                  >
+                                    Tray 2
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    href="#/action-3"
+                                    onClick={() => {
+                                      var data = form_info.outcomes.get(group);
+                                      data['tray'] = 3;
+                                      form_info.outcomes.set(group, data);
+                                      if (errorChecking === true) {
+                                        validate();
+                                      }
+                                    }}
+                                  >
+                                    Tray 3
+                                  </Dropdown.Item>
+                                  <Dropdown.Item
+                                    href="#/action-3"
+                                    onClick={() => {
+                                      var data = form_info.outcomes.get(group);
+                                      data['tray'] = 0;
+                                      form_info.outcomes.set(group, data);
+                                      if (errorChecking === true) {
+                                        validate();
+                                      }
+                                    }}
+                                  >
+                                    None
+                                  </Dropdown.Item>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </InputGroup>
+                            {outcomeErrors.includes(group) && (
+                              <Form.Text
+                                style={{
+                                  fontStyle: 'italic',
+                                  color: 'red',
+                                  marginBottom: '10px',
+                                  fontSize: 'small',
+                                }}
+                              >
+                                Missing treat name and/or tray selection.
+                              </Form.Text>
+                            )}
+                          </Row>{' '}
+                        </div>
+                      ))}
                   </Col>
                 </Row>
                 <Row>
