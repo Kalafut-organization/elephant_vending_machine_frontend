@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Modal,
   Button,
@@ -86,7 +86,6 @@ const ExperimentForm = () => {
   const [isModalOpen, setModalStatus] = useState(false);
   const [groupNames, setGroupNames] = useState([]);
   const [newUpload, setNewUpload] = useState(false);
-  var isUploading = false;
 
   //Validation states
   const [nameValid, setNameValid] = useState(true);
