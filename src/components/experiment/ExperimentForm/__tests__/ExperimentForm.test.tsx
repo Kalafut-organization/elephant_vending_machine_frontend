@@ -17,10 +17,13 @@ describe('<ExperimentBlock />', () => {
     expect(wrapper.find(Modal).props().show).toBe(true);
   });
 
-  it('closes the modal when you click run and then cancel', async () => {
+  it('closes the modal when you click cancel', async () => {
     const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');
+    });
+    await act(async () => {
+      wrapper.find('.confirm-form').simulate('click');
     });
     expect(wrapper.find(Modal).props().show).toBe(true);
     await act(async () => {
