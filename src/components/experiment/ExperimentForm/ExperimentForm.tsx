@@ -21,7 +21,6 @@ var form_info = {
   replacement: true,
   fixation_default: true,
   new_fixation: {},
-  groups: [],
 };
 
 var selectedTemp: Array<JSX.Element> = [];
@@ -228,6 +227,31 @@ const ExperimentForm = () => {
     } catch (err) {
       // setErrors(true);
     }
+  };
+
+  const uploadNewExperiment = async () => {
+    console.log(JSON.stringify(form_info));
+    const form = new FormData();
+    form.append('name', form_info.name);
+    form.append('trials', form_info.trials);
+    form.append('outcomes', form_info.trials);
+    form.append('fixation_duration', form_info.fixation_duration);
+    form.append('intermediate_duration', form_info.intermediate_duration);
+    form.append('stimuli_duration', form_info.stimuli_duration);
+    form.append('monitors', JSON.stringify(form_info.monitors));
+    form.append('replacement', form_info.replacement.toString());
+    form.append('fixation_default', form_info.fixation_default.toString());
+    form.append('new_fixation', JSON.stringify(form_info.new_fixation));
+    form.append('groups', JSON.stringify(selectedGroups));
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_ADDRESS}/experiment/create`,
+      {
+        method: 'POST',
+        body: form,
+      }
+    );
+    const body = await response.json();
+    console.log(body);
   };
 
   const updateMonitorArrayIndex = (index: number, e: any) => {
@@ -791,6 +815,7 @@ const ExperimentForm = () => {
                 onClick={() => {
                   setErrorChecking(true);
                   if (validate()) {
+                    uploadNewExperiment();
                     setModalStatus(false);
                   }
                 }}
