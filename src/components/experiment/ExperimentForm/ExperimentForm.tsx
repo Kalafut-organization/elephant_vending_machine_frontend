@@ -11,12 +11,12 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 var form_info = {
-  name: '',
-  trials: '',
+  name: 'test',
+  trials: '10',
   outcomes: new Map(),
-  fixation_duration: '',
-  intermediate_duration: '',
-  stimuli_duration: '',
+  fixation_duration: '1',
+  intermediate_duration: '1',
+  stimuli_duration: '1',
   monitors: [true, false, true],
   replacement: true,
   fixation_default: true,
@@ -233,16 +233,21 @@ const ExperimentForm = () => {
     console.log(JSON.stringify(form_info));
     const form = new FormData();
     form.append('name', form_info.name);
-    form.append('trials', form_info.trials);
     form.append('outcomes', form_info.trials);
+
+    form.append('fixation_default', form_info.fixation_default.toString());
+    form.append('new_fixation', JSON.stringify(form_info.new_fixation));
+
     form.append('fixation_duration', form_info.fixation_duration);
     form.append('intermediate_duration', form_info.intermediate_duration);
     form.append('stimuli_duration', form_info.stimuli_duration);
-    form.append('monitors', JSON.stringify(form_info.monitors));
+    form.append('trials', form_info.trials);
+    // intertrial interval
     form.append('replacement', form_info.replacement.toString());
-    form.append('fixation_default', form_info.fixation_default.toString());
-    form.append('new_fixation', JSON.stringify(form_info.new_fixation));
     form.append('groups', JSON.stringify(selectedGroups));
+    form.append('monitors', JSON.stringify(form_info.monitors));
+    // used stimuli
+
     const response = await fetch(
       `${process.env.REACT_APP_BACKEND_ADDRESS}/experiment/create`,
       {
