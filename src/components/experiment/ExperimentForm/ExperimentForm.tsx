@@ -233,7 +233,13 @@ const ExperimentForm = () => {
     console.log(JSON.stringify(form_info));
     const form = new FormData();
     form.append('name', form_info.name);
-    form.append('outcomes', form_info.trials);
+    let array = Array.from(form_info.outcomes, ([name, value]) => ({
+      name,
+      value,
+    }));
+    let array2 = [] as any;
+    array.forEach(i => array2.push([i.name, i.value['name'], i.value['tray']]));
+    form.append('outcomes', JSON.stringify(array2));
 
     form.append('fixation_default', form_info.fixation_default.toString());
     form.append('new_fixation', JSON.stringify(form_info.new_fixation));
@@ -247,7 +253,6 @@ const ExperimentForm = () => {
     form.append('groups', JSON.stringify(selectedGroups));
     form.append('monitors', JSON.stringify(form_info.monitors));
     // used stimuli
-
     const response = await fetch(
       `${process.env.REACT_APP_BACKEND_ADDRESS}/experiment/create`,
       {
