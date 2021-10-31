@@ -14,6 +14,7 @@ var form_info = {
   name: 'test',
   trials: '10',
   outcomes: new Map(),
+  outcomes_dict: {},
   fixation_duration: '1',
   intermediate_duration: '1',
   stimuli_duration: '1',
@@ -233,7 +234,10 @@ const ExperimentForm = () => {
     console.log(JSON.stringify(form_info));
     const form = new FormData();
     form.append('name', form_info.name);
-    form.append('outcomes', form_info.trials);
+    form.append(
+      'outcomes',
+      JSON.stringify(Object.fromEntries(form_info.outcomes))
+    );
 
     form.append('fixation_default', form_info.fixation_default.toString());
     form.append('new_fixation', JSON.stringify(form_info.new_fixation));
