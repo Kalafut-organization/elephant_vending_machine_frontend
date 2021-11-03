@@ -75,6 +75,10 @@ const Experiment: React.FC = () => {
     setSelectedFile({ file: null });
   };
 
+  const props = {
+    setUpload: setUploading,
+  };
+
   return (
     <Container>
       {!hasError && (
@@ -126,7 +130,7 @@ const Experiment: React.FC = () => {
               </div>
             </Row>
             <Row>
-              <ExperimentForm />
+              <ExperimentForm {...props} />
               <Button
                 type="submit"
                 variant="secondary"
