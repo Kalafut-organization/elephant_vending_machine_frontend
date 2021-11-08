@@ -10,7 +10,6 @@ import {
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
-import { useParams } from 'react-router';
 import defaultimage from './resources/fixation_stimuli.png';
 
 var form_info = {
@@ -258,7 +257,7 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
     form.append('outcomes', JSON.stringify(array2));
 
     form.append('fixation_default', form_info.fixation_default.toString());
-    if (fixation_num != 0) {
+    if (fixation_num !== 0) {
       form.append(
         'new_fixation',
         stimuliUrls[fixation_num - 1].replace(
@@ -284,7 +283,7 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
         body: form,
       }
     );
-    const body = await response.json();
+    // const body = await response.json();
     props.setUpload(false);
   };
 
