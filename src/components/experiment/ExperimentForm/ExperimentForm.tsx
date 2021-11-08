@@ -283,7 +283,8 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
         body: form,
       }
     );
-    // const body = await response.json();
+    const body = await response.json();
+    console.log(body);
     props.setUpload(false);
   };
 
