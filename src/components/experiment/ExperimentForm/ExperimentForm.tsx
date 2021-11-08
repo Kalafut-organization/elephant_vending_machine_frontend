@@ -17,6 +17,7 @@ var form_info = {
   name: 'test',
   trials: '10',
   outcomes: new Map(),
+  outcomes_dict: {},
   fixation_duration: '1',
   intermediate_duration: '1',
   stimuli_duration: '1',
