@@ -60,16 +60,16 @@ describe('<Experiment />', () => {
       wrapper = await mount(<Experiment />);
     });
     await act(async () => {
-      wrapper.find('input').simulate('change', {
+      wrapper.find('.custom-file-input').simulate('change', {
         target: {
           files: [new File([], 'newFile.py')],
         },
       });
     });
     await act(async () => {
-      wrapper.find('#uploadButton').simulate('click');
+      wrapper.find('.upload-button').simulate('click');
     });
-    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(fetchMock).toHaveBeenCalledTimes(4); //one is in ExperimentForm
     fetchMock.mockRestore();
     wrapper.unmount();
   });

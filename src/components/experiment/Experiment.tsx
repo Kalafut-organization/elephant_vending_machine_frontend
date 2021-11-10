@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Toast from 'react-bootstrap/Toast';
 import Spinner from 'react-bootstrap/Spinner';
 import Container from 'react-bootstrap/Container';
 import ExperimentItem from './ExperimentItem';
+import ExperimentForm from './ExperimentForm';
 
 const generateItems = (experimentUrls: Array<string>) => {
   const items: Array<JSX.Element> = [];
@@ -19,6 +21,7 @@ const generateItems = (experimentUrls: Array<string>) => {
 const Experiment: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [experimentUrls, setExperimentUrls] = useState([]);
+  const [sampleExperimentUrls, setSampleExperimentUrls] = useState([]);
   const [isUploading, setUploading] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
@@ -27,11 +30,19 @@ const Experiment: React.FC = () => {
   useEffect(() => {
     async function fetchExperimentUrls(): Promise<void> {
       try {
+        // fetch experiment urls
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_ADDRESS}/experiment`
         );
         const body = await response.json();
         setExperimentUrls(body.files);
+
+        // fetch sample experiment url
+        const sample_response = await fetch(
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/template`
+        );
+        const sample_body = await sample_response.json();
+        setSampleExperimentUrls(sample_body.files);
       } catch (err) {
         setErrors(err);
       }
@@ -64,54 +75,74 @@ const Experiment: React.FC = () => {
     setSelectedFile({ file: null });
   };
 
+  const props = {
+    setUpload: setUploading,
+  };
+
   return (
     <Container>
       {!hasError && (
         <Row style={{ marginBottom: '1em' }}>
           <Col>
-            <div className="input-group">
-              <div className="input-group-prepend">
-                <span
-                  className="input-group-text"
-                  id="uploadButton"
-                  style={{
-                    cursor:
-                      selectedFile.file !== null ? 'pointer' : 'not-allowed',
-                  }}
-                  onClick={() => {
-                    selectedFile.file && handleUploadClick();
-                  }}
-                  onKeyDown={() => {
-                    selectedFile.file && handleUploadClick();
-                  }}
-                  role="button"
-                  tabIndex={0}
-                >
-                  {isUploading ? (
-                    <Spinner
-                      as="span"
-                      animation="border"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                  ) : (
-                    'Upload'
-                  )}
-                </span>
+            <Row>
+              <div className="input-group">
+                <div className="input-group-prepend">
+                  <span
+                    className="input-group-text upload-button"
+                    id="uploadButton"
+                    style={{
+                      cursor:
+                        selectedFile.file !== null ? 'pointer' : 'not-allowed',
+                    }}
+                    onClick={() => {
+                      selectedFile.file && handleUploadClick();
+                    }}
+                    onKeyDown={() => {
+                      selectedFile.file && handleUploadClick();
+                    }}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    {isUploading ? (
+                      <Spinner
+                        as="span"
+                        animation="border"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      'Upload'
+                    )}
+                  </span>
+                </div>
+                <div className="custom-file">
+                  <input
+                    type="file"
+                    className="custom-file-input"
+                    onChange={onFileSelect}
+                  />
+                  <label className="custom-file-label">
+                    {selectedFile.file !== null
+                      ? ((selectedFile.file as unknown) as File).name
+                      : 'Select a file to upload'}
+                  </label>
+                </div>
               </div>
-              <div className="custom-file">
-                <input
-                  type="file"
-                  className="custom-file-input"
-                  onChange={onFileSelect}
-                />
-                <label className="custom-file-label">
-                  {selectedFile.file !== null
-                    ? ((selectedFile.file as unknown) as File).name
-                    : 'Select a file to upload'}
-                </label>
-              </div>
-            </div>
+            </Row>
+            <Row>
+              <ExperimentForm {...props} />
+              <Button
+                type="submit"
+                variant="secondary"
+                style={{ marginTop: '16px' }}
+                className="mr-1 form-button"
+                onClick={() => {
+                  window.open(sampleExperimentUrls[0]);
+                }}
+              >
+                Download Sample
+              </Button>
+            </Row>
           </Col>
         </Row>
       )}

@@ -22,7 +22,6 @@ const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
   const [folderToCopy, setFolderToCopy] = useState('');
 
   const copyStimuliFile = async (filename: string) => {
-    console.log(filename);
     const formData = new FormData();
     if (folderToCopy) {
       formData.append('name', folderToCopy);
