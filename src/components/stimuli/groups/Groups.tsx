@@ -7,15 +7,6 @@ import Col from 'react-bootstrap/Col';
 import GroupCard from './GroupCard';
 import { Button, InputGroup, FormControl } from 'react-bootstrap';
 
-const generateCards = (groupNames: Array<string>): Array<JSX.Element> => {
-  const cards: Array<JSX.Element> = [];
-  groupNames.forEach(name => {
-    cards.push(<GroupCard name={name} key={name} />);
-  });
-
-  return cards;
-};
-
 const Group: React.FC = () => {
   const [hasError, setErrors] = useState(false);
   const [groupNames, setGroupNames] = useState([]);
@@ -23,6 +14,22 @@ const Group: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [selectedName, setSelectedName] = useState('');
+
+  const generateCards = (groupNames: Array<string>): Array<JSX.Element> => {
+    const cards: Array<JSX.Element> = [];
+    groupNames.forEach(name => {
+      cards.push(
+        <GroupCard
+          name={name}
+          key={name}
+          setShowToast={setShowToast}
+          setResponseMessage={setResponseMessage}
+        />
+      );
+    });
+
+    return cards;
+  };
 
   useEffect(() => {
     async function fetchGroups(): Promise<void> {

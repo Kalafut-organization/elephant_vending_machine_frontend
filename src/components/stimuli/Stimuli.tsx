@@ -7,15 +7,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import StimuliCard from './stimuliCard';
 
-const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
-  const cards: Array<JSX.Element> = [];
-  stimuliUrls.forEach(url => {
-    cards.push(<StimuliCard url={url} key={url} />);
-  });
-
-  return cards;
-};
-
 const Stimuli: React.FC = props => {
   const [hasError, setErrors] = useState(false);
   const [stimuliUrls, setStimuliUrls] = useState([]);
@@ -24,6 +15,22 @@ const Stimuli: React.FC = props => {
   const [responseMessage, setResponseMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState({ file: null });
   const { name } = useParams<{ name: string }>();
+
+  const generateCards = (stimuliUrls: Array<string>): Array<JSX.Element> => {
+    const cards: Array<JSX.Element> = [];
+    stimuliUrls.forEach(url => {
+      cards.push(
+        <StimuliCard
+          url={url}
+          key={url}
+          setShowToast={setShowToast}
+          setResponseMessage={setResponseMessage}
+        />
+      );
+    });
+
+    return cards;
+  };
 
   useEffect(() => {
     async function fetchStimuliUrls(): Promise<void> {
