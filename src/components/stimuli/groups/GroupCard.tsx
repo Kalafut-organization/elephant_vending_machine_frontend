@@ -15,8 +15,8 @@ const deleteGroup = async (
       method: 'delete',
     }
   );
-  if (response.status !== 200) {
-    const body = await response.json();
+  const body = await response.json();
+  if (body.status !== 200) {
     setResponseMessage(body.message);
     setShowToast(true);
   } else {
