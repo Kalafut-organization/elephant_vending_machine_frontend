@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   Button,
@@ -9,11 +9,14 @@ import {
 } from 'react-bootstrap';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import defaultimage from './resources/fixation_stimuli.png';
 
 var form_info = {
   name: 'test',
   trials: '10',
   outcomes: new Map(),
+  outcomes_dict: {},
   fixation_duration: '1',
   intermediate_duration: '1',
   intertrial_duration: '1',
@@ -52,32 +55,34 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
   const generateGroups = (groupNames: Array<JSX.Element>) => {
     const items: Array<JSX.Element> = [];
     groupNames.forEach(group => {
-      items.push(
-        <Row
-          key={'row' + group}
-          style={{
-            borderColor: '#ced4da',
-            borderStyle: 'solid',
-            borderRadius: '0.25rem',
-            padding: '12px',
-            marginTop: '8px',
-          }}
-          className="border border-5"
-        >
-          <Form.Check
-            value={'form-' + group}
-            className="stimuli-group"
-            onChange={() => {
-              handleChange(group);
-              setSelectedGroups(selectedTemp);
-              if (errorChecking) {
-                validate();
-              }
+      if (String(group) !== 'Fixations') {
+        items.push(
+          <Row
+            key={'row' + group}
+            style={{
+              borderColor: '#ced4da',
+              borderStyle: 'solid',
+              borderRadius: '0.25rem',
+              padding: '12px',
+              marginTop: '8px',
             }}
-          />
-          {group}
-        </Row>
-      );
+            className="border border-5"
+          >
+            <Form.Check
+              value={'form-' + group}
+              className="stimuli-group"
+              onChange={() => {
+                handleChange(group);
+                setSelectedGroups(selectedTemp);
+                if (errorChecking) {
+                  validate();
+                }
+              }}
+            />
+            {group}
+          </Row>
+        );
+      }
     });
 
     return items;
@@ -85,7 +90,7 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
 
   const [isModalOpen, setModalStatus] = useState(false);
   const [groupNames, setGroupNames] = useState([]);
-  const [newUpload, setNewUpload] = useState(false);
+  const [fixation_num, setFixationNum] = useState(0);
   const [monitors, setMonitors] = useState([true, false, true]);
 
   //Validation states
@@ -98,7 +103,34 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
   const [stimDurationValid, setStimDurationValid] = useState(true);
   const [errorChecking, setErrorChecking] = useState(false);
   const [outcomeErrors, setOutcomeErrors] = useState<JSX.Element[]>([]);
-  const [fileValid, setFileValid] = useState(true);
+  const [stimuliUrls, setStimuliUrls] = useState<any[]>([]);
+
+  const [newFormStarted, setNewForm] = useState(true);
+  useEffect(() => {
+    async function fetchStimuliUrls(): Promise<void> {
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/Fixations`
+        );
+        const body = await response.json();
+        setStimuliUrls(body.files);
+        setNewForm(false);
+      } catch (err) {
+        //setErrors(err as any);
+      }
+      // try {
+      //   const response = await fetch(
+      //     `${process.env.REACT_APP_BACKEND_ADDRESS}/${name}`
+      //   );
+      //   const body = await response.json();
+      //   console.log(body.files)
+      //   setStimuliUrls(body.files);
+      // } catch (err) {
+      //   //setErrors(err as any);
+      // }
+    }
+    if (newFormStarted) fetchStimuliUrls();
+  }, [newFormStarted]);
 
   const validate = () => {
     var errorFree = true;
@@ -160,15 +192,6 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
     } else {
       setStimDurationValid(true);
     }
-    if (
-      !form_info.fixation_default &&
-      Object.keys(form_info.new_fixation).length === 0
-    ) {
-      setFileValid(false);
-      errorFree = false;
-    } else {
-      setFileValid(true);
-    }
     var outcomeErrorsTemp: Array<JSX.Element> = [];
     form_info.outcomes.forEach((group, name) => {
       if (group['name'] === '' || group['tray'] === '') {
@@ -178,13 +201,6 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
     });
     setOutcomeErrors(outcomeErrorsTemp);
     return errorFree;
-  };
-
-  const onFileSelect = (event: any) => {
-    form_info.new_fixation = { file: event.target.files[0] };
-    if (errorChecking === true) {
-      validate();
-    }
   };
 
   const getName = (name: any) => {
@@ -231,7 +247,6 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
   };
 
   const uploadNewExperiment = async () => {
-    console.log(JSON.stringify(form_info));
     const form = new FormData();
     form.append('name', form_info.name);
     let array = Array.from(form_info.outcomes, ([name, value]) => ({
@@ -243,8 +258,15 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
     form.append('outcomes', JSON.stringify(array2));
 
     form.append('fixation_default', form_info.fixation_default.toString());
-    form.append('new_fixation', JSON.stringify(form_info.new_fixation));
-
+    if (fixation_num !== 0) {
+      form.append(
+        'new_fixation',
+        stimuliUrls[fixation_num - 1].replace(
+          process.env.REACT_APP_BACKEND_ADDRESS + '/',
+          ''
+        )
+      );
+    }
     form.append('fixation_duration', form_info.fixation_duration);
     form.append('intermediate_duration', form_info.intermediate_duration);
     form.append('stimuli_duration', form_info.stimuli_duration);
@@ -281,6 +303,7 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
         style={{ float: 'right', marginTop: '16px' }}
         className="mr-1 create-form-button"
         onClick={() => {
+          setNewForm(true);
           getGroups();
           setModalStatus(true);
         }}
@@ -782,70 +805,99 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
                   <InputGroup className="mb-3">
                     <Col>
                       <Row>
-                        <Form.Check
-                          value="1"
-                          type="radio"
-                          className="fixation-point"
-                          checked={!newUpload}
-                          onChange={() => {
-                            form_info.fixation_default = true;
-                            setNewUpload(false);
-                          }}
-                        />
-                        Standard fixation
-                      </Row>
-                      <Row>
-                        <Form.Check
-                          value="2"
-                          type="radio"
-                          className="fixation-point"
-                          checked={newUpload}
-                          onChange={() => {
-                            form_info.fixation_default = false;
-                            setNewUpload(true);
-                          }}
-                        />
                         <Col>
-                          <Row>Upload new</Row>
                           <Row>
-                            <Form.Group
+                            <Form.Check
+                              value="1"
+                              type="radio"
+                              className="fixation-point"
+                              checked={fixation_num === 0}
+                              onChange={() => {
+                                form_info.fixation_default = true;
+                                setFixationNum(0);
+                              }}
+                            />
+                            Standard fixation
+                          </Row>
+                          <div>
+                            <Card
                               style={{
-                                borderStyle: 'solid',
-                                borderColor: '#ced4da',
-                                borderRadius: '.25rem',
-                                width: '100%',
-                              }}
-                              className="border border-10 fixation-upload"
-                              controlId="formFixationFile"
-                              onClick={(event: any) => {
-                                onFileSelect(event);
-                                form_info.fixation_default = false;
-                                setNewUpload(true);
-                              }}
-                              onChange={(event: any) => {
-                                form_info.fixation_default = false;
-                                onFileSelect(event);
-                                setNewUpload(true);
+                                marginLeft: '8px',
+                                marginBottom: '5px',
+                                maxWidth: '100px',
                               }}
                             >
-                              <Form.Control type="file" />
-                            </Form.Group>
-                            {!fileValid && (
-                              <Form.Text
-                                className="file-error"
-                                style={{
-                                  fontStyle: 'italic',
-                                  color: 'red',
-                                  marginTop: '-10px',
-                                  fontSize: 'small',
-                                }}
-                              >
-                                Choose file to upload
-                              </Form.Text>
-                            )}
-                          </Row>
+                              {
+                                <Card.Img
+                                  variant="top"
+                                  style={{ maxHeight: '100px' }}
+                                  src={defaultimage}
+                                  className="img-fluid"
+                                />
+                              }
+                            </Card>
+                          </div>
                         </Col>
                       </Row>
+                      <Row>
+                        <p
+                          style={{
+                            fontStyle: 'italic',
+                            color: 'grey',
+                            fontSize: '0.7rem',
+                            marginBottom: '5px',
+                          }}
+                        >
+                          From 'Fixations' group:
+                        </p>
+                      </Row>
+                      {stimuliUrls.length > 0 &&
+                        stimuliUrls.map((group, i) => (
+                          <div key={i}>
+                            <Row>
+                              <Col>
+                                <Row>
+                                  <Form.Check
+                                    value="1"
+                                    type="radio"
+                                    className="fixation-point"
+                                    checked={fixation_num === i + 1}
+                                    onChange={() => {
+                                      form_info.fixation_default = true;
+                                      setFixationNum(i + 1);
+                                    }}
+                                  />
+                                  {group.replace(
+                                    process.env.REACT_APP_BACKEND_ADDRESS +
+                                      '/static/img/Fixations/',
+                                    ''
+                                  )}
+                                </Row>
+                                <div>
+                                  <Card
+                                    style={{
+                                      marginLeft: '8px',
+                                      marginBottom: '5px',
+                                      maxWidth: '100px',
+                                    }}
+                                  >
+                                    {
+                                      <Card.Img
+                                        variant="top"
+                                        style={{ maxHeight: '100px' }}
+                                        src={group}
+                                        className="img-fluid"
+                                      />
+                                    }
+                                  </Card>
+                                </div>
+                              </Col>
+                            </Row>
+                          </div>
+                        ))}
+                      {stimuliUrls.length === 0 && (
+                        <Row>No images in fixation folder</Row>
+                      )}
                     </Col>
                   </InputGroup>
                 </Row>
