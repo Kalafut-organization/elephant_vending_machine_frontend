@@ -42,3 +42,13 @@ for reference.
 1. Run `docker-compose up --build` to start the container
     * This will ensure the app automatically restarts in case of errors or reboots.
     * To stop the containers you can use `ctrl-c` or `docker-compose down`
+    
+## Running in Dev
+You will need to run commands on the server Pi though ssh network commands, this is included in these instructions
+
+1. Connect to the same network as the Server Pi and navigate to your terminal
+1. run command, `ssh pi@192.168.0.100`
+1. A sign in should appear, username is `pi` password is `raspberry`
+1. you should now be in the Server Pi terminal, run these commands to activate the backend
+1. `npm start`
+1. the front end should open on your web browser
