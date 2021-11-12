@@ -49,6 +49,7 @@ You will need to run commands on the server Pi though ssh network commands, this
 1. Connect to the same network as the Server Pi and navigate to your terminal
 1. run command, `ssh pi@192.168.0.100`
 1. A sign in should appear, username is `pi` password is `raspberry`
-1. you should now be in the Server Pi terminal, run these commands to activate the backend
-1. `npm start`
+1. you should now be in the Server Pi terminal
+1. enter the directory for the backend by running command `cd elephant_vending_machine_frontend`
+1. run this command `npm start`
 1. the front end should open on your web browser
