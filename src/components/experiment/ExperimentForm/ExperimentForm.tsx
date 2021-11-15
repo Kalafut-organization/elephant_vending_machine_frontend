@@ -19,6 +19,7 @@ var form_info = {
   outcomes_dict: {},
   fixation_duration: '',
   intermediate_duration: '',
+  intertrial_duration: '',
   stimuli_duration: '',
   monitors: [true, false, true],
   replacement: true,
@@ -252,7 +253,7 @@ const ExperimentForm = () => {
     form.append('intermediate_duration', form_info.intermediate_duration);
     form.append('stimuli_duration', form_info.stimuli_duration);
     form.append('trials', form_info.trials);
-    // intertrial interval
+    form.append('intertrial_duration', form_info.intertrial_duration);
     form.append('replacement', form_info.replacement.toString());
     form.append('groups', JSON.stringify(selectedGroups));
     form.append('monitors', JSON.stringify(form_info.monitors));
@@ -668,6 +669,44 @@ const ExperimentForm = () => {
                     <Col>
                       <Form.Text
                         className="intermediate-error"
+                        style={{
+                          fontStyle: 'italic',
+                          color: 'red',
+                          marginLeft: '-15px',
+                          marginTop: '-10px',
+                          marginBottom: '10px',
+                          fontSize: 'small',
+                        }}
+                      >
+                        Required and must be a number
+                        <p style={{ fontSize: '70%' }}>
+                          (Numbers below 0 must be in the form 0.X )
+                        </p>
+                      </Form.Text>
+                    </Col>
+                  )}
+                </Row>
+                <Row>
+                  Duration between Trials:
+                  <InputGroup className="mb-3">
+                    <FormControl
+                      className="intertrial-field"
+                      aria-label="Group name entry form"
+                      aria-describedby="addButton"
+                      defaultValue={form_info['intertrial_duration']}
+                      onChange={(event: any) => {
+                        form_info['intertrial_duration'] = event.target.value;
+                        if (errorChecking === true) {
+                          validate();
+                        }
+                      }}
+                    />
+                    <InputGroup.Text>seconds</InputGroup.Text>
+                  </InputGroup>
+                  {!intermediateValid && (
+                    <Col>
+                      <Form.Text
+                        className="intertrial-error"
                         style={{
                           fontStyle: 'italic',
                           color: 'red',

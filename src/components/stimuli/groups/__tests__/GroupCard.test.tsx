@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { SetStateAction } from 'react';
 import { shallow } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 import Modal from 'react-bootstrap/Modal';
@@ -6,11 +6,23 @@ import GroupCard from '../GroupCard';
 
 describe('<GroupCard />', () => {
   it('renders without crashing', () => {
-    shallow(<GroupCard name="Test" />);
+    shallow(
+      <GroupCard
+        name="Test"
+        setShowToast={function(value: SetStateAction<boolean>): void {}}
+        setResponseMessage={function(value: SetStateAction<string>): void {}}
+      />
+    );
   });
 
   it('renders view and delete buttons and hidden modal buttons', () => {
-    const wrapper = shallow(<GroupCard name="Test" />);
+    const wrapper = shallow(
+      <GroupCard
+        name="Test"
+        setShowToast={function(value: SetStateAction<boolean>): void {}}
+        setResponseMessage={function(value: SetStateAction<string>): void {}}
+      />
+    );
     const button = wrapper.find('Button');
     expect(button).toHaveLength(4);
     expect(button.at(0).text()).toEqual('View');
@@ -20,7 +32,13 @@ describe('<GroupCard />', () => {
   });
 
   it('renders a model when the delete button is clicked.', async () => {
-    const wrapper = shallow(<GroupCard name="Test" />);
+    const wrapper = shallow(
+      <GroupCard
+        name="Test"
+        setShowToast={function(value: SetStateAction<boolean>): void {}}
+        setResponseMessage={function(value: SetStateAction<string>): void {}}
+      />
+    );
     await act(async () => {
       wrapper
         .find('Button')
@@ -32,6 +50,7 @@ describe('<GroupCard />', () => {
 
   it('sends delete API call when delete then confirm buttons are pressed', async () => {
     const mockResponse = {
+      status: 200,
       message: ['mock message'],
     };
     const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() =>
@@ -43,7 +62,13 @@ describe('<GroupCard />', () => {
       .spyOn(window.location, 'reload')
       .mockImplementation(() => {});
 
-    const wrapper = shallow(<GroupCard name="Test" />);
+    const wrapper = shallow(
+      <GroupCard
+        name="Test"
+        setShowToast={function(value: SetStateAction<boolean>): void {}}
+        setResponseMessage={function(value: SetStateAction<string>): void {}}
+      />
+    );
     await act(async () => {
       wrapper
         .find('Button')
@@ -62,8 +87,53 @@ describe('<GroupCard />', () => {
     windowReloadMock.mockRestore();
   });
 
+  it('sends bad delete request then confirm window is not reloaded', async () => {
+    const mockResponse = {
+      status: 400,
+      message: ['mock message'],
+    };
+    const fetchMock = jest.spyOn(global, 'fetch').mockImplementation(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(mockResponse),
+      })
+    );
+    const windowReloadMock = jest
+      .spyOn(window.location, 'reload')
+      .mockImplementation(() => {});
+
+    const wrapper = shallow(
+      <GroupCard
+        name="Test"
+        setShowToast={function(value: SetStateAction<boolean>): void {}}
+        setResponseMessage={function(value: SetStateAction<string>): void {}}
+      />
+    );
+    await act(async () => {
+      wrapper
+        .find('Button')
+        .at(1)
+        .simulate('click');
+    });
+    await act(async () => {
+      wrapper
+        .find('Button')
+        .at(3)
+        .simulate('click');
+    });
+    expect(fetchMock).toHaveBeenCalled();
+    expect(windowReloadMock).not.toHaveBeenCalled();
+    fetchMock.mockRestore();
+    windowReloadMock.mockRestore();
+  });
+
   it('closes the modal when you click delete and then cancel', async () => {
-    const wrapper = shallow(<GroupCard name="Test" />);
+    const wrapper = shallow(
+      <GroupCard
+        name="Test"
+        setShowToast={function(value: SetStateAction<boolean>): void {}}
+        setResponseMessage={function(value: SetStateAction<string>): void {}}
+      />
+    );
     await act(async () => {
       wrapper
         .find('Button')
@@ -81,7 +151,13 @@ describe('<GroupCard />', () => {
   });
 
   it('hides the modal when the modals hide action is triggered.', async () => {
-    const wrapper = shallow(<GroupCard name="Test" />);
+    const wrapper = shallow(
+      <GroupCard
+        name="Test"
+        setShowToast={function(value: SetStateAction<boolean>): void {}}
+        setResponseMessage={function(value: SetStateAction<string>): void {}}
+      />
+    );
     await act(async () => {
       wrapper
         .find('Button')

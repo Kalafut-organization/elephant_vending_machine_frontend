@@ -4,19 +4,38 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-const deleteGroup = async (name: string) => {
-  await fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/groups/${name}`, {
-    method: 'delete',
-  });
-  window.location.reload();
+const deleteGroup = async (
+  name: string,
+  setShowToast: React.Dispatch<React.SetStateAction<boolean>>,
+  setResponseMessage: React.Dispatch<React.SetStateAction<string>>
+) => {
+  const response = await fetch(
+    `${process.env.REACT_APP_BACKEND_ADDRESS}/groups/${name}`,
+    {
+      method: 'delete',
+    }
+  );
+  const body = await response.json();
+  if (body.status !== 200) {
+    setResponseMessage(body.message);
+    setShowToast(true);
+  } else {
+    window.location.reload();
+  }
 };
 
 export interface GroupCardProps {
   /** Name of the group the card represents */
   name: string;
+  setShowToast: React.Dispatch<React.SetStateAction<boolean>>;
+  setResponseMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const GroupCard: React.FC<GroupCardProps> = ({ name }: GroupCardProps) => {
+const GroupCard: React.FC<GroupCardProps> = ({
+  name,
+  setShowToast,
+  setResponseMessage,
+}: GroupCardProps) => {
   const [isModalOpen, setModalStatus] = useState(false);
 
   return (
@@ -80,7 +99,7 @@ const GroupCard: React.FC<GroupCardProps> = ({ name }: GroupCardProps) => {
               className="confirm-delete"
               variant="danger"
               onClick={() => {
-                deleteGroup(name);
+                deleteGroup(name, setShowToast, setResponseMessage);
                 setModalStatus(false);
               }}
             >

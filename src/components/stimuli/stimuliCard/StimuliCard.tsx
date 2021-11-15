@@ -4,19 +4,38 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-const deleteStimuliFile = async (filename: string) => {
-  await fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/image/${filename}`, {
-    method: 'delete',
-  });
-  window.location.reload();
+const deleteStimuliFile = async (
+  filename: string,
+  setShowToast: React.Dispatch<React.SetStateAction<boolean>>,
+  setResponseMessage: React.Dispatch<React.SetStateAction<string>>
+) => {
+  const response = await fetch(
+    `${process.env.REACT_APP_BACKEND_ADDRESS}/image/${filename}`,
+    {
+      method: 'delete',
+    }
+  );
+  const body = await response.json();
+  if (body.status !== 200) {
+    setResponseMessage(body.message);
+    setShowToast(true);
+  } else {
+    window.location.reload();
+  }
 };
 
 export interface StimuliCardProps {
   /** URL of the image displayed on card */
   url: string;
+  setShowToast: React.Dispatch<React.SetStateAction<boolean>>;
+  setResponseMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
+const StimuliCard: React.FC<StimuliCardProps> = ({
+  url,
+  setShowToast,
+  setResponseMessage,
+}: StimuliCardProps) => {
   const [isCopyModalOpen, setCopyModalStatus] = useState(false);
   const [isDeleteModalOpen, setDeleteModalStatus] = useState(false);
   const [folderToCopy, setFolderToCopy] = useState('');
@@ -34,7 +53,8 @@ const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
       }
     );
     const body = await response.json();
-    alert(body.message);
+    setResponseMessage(body.message);
+    setShowToast(true);
   };
 
   const filenameExpression: RegExp = new RegExp(
@@ -104,7 +124,7 @@ const StimuliCard: React.FC<StimuliCardProps> = ({ url }: StimuliCardProps) => {
               className="confirm-delete"
               variant="danger"
               onClick={() => {
-                deleteStimuliFile(filename);
+                deleteStimuliFile(filename, setShowToast, setResponseMessage);
                 setDeleteModalStatus(false);
               }}
             >
