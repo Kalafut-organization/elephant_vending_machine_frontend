@@ -130,7 +130,7 @@ const Experiment: React.FC = () => {
               </div>
             </Row>
             <Row>
-              <ExperimentForm {...props} />
+              <ExperimentForm />
               <Button
                 type="submit"
                 variant="secondary"
