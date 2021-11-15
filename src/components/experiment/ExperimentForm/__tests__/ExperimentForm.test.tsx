@@ -8,23 +8,11 @@ import { setUncaughtExceptionCaptureCallback } from 'process';
 
 describe('<ExperimentBlock />', () => {
   it('renders without crashing', () => {
-    shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    shallow(<ExperimentForm />);
   });
 
   it('renders a model when the run button is clicked.', async () => {
-    const wrapper = shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');
     });
@@ -32,13 +20,7 @@ describe('<ExperimentBlock />', () => {
   });
 
   it('closes the modal when you click cancel', async () => {
-    const wrapper = shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');
     });
@@ -53,13 +35,7 @@ describe('<ExperimentBlock />', () => {
   });
 
   it('hides the modal when the modals hide action is triggered.', async () => {
-    const wrapper = shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');
     });
@@ -71,13 +47,7 @@ describe('<ExperimentBlock />', () => {
   });
 
   it('name updates on change', async () => {
-    const wrapper = shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');
       wrapper.find('.confirm-form').simulate('click');
@@ -94,13 +64,7 @@ describe('<ExperimentBlock />', () => {
   });
 
   it('fixation updates on change', async () => {
-    const wrapper = shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');
       wrapper.find('.confirm-form').simulate('click');
@@ -117,13 +81,7 @@ describe('<ExperimentBlock />', () => {
   });
 
   it('intermediate field updates on change', async () => {
-    const wrapper = shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');
       wrapper.find('.confirm-form').simulate('click');
@@ -139,14 +97,25 @@ describe('<ExperimentBlock />', () => {
     expect(wrapper.contains('.intermediate-error')).toEqual(false);
   });
 
+  it('intertrial field updates on change', async () => {
+    const wrapper = shallow(<ExperimentForm />);
+    await act(async () => {
+      wrapper.find('.create-form-button').simulate('click');
+      wrapper.find('.confirm-form').simulate('click');
+    });
+    expect(wrapper.find('#intertrial-error')).toBeTruthy();
+    await act(async () => {
+      wrapper.find('.intertrial-field').simulate('change', {
+        target: {
+          value: '10',
+        },
+      });
+    });
+    expect(wrapper.contains('.intertrial-error')).toEqual(false);
+  });
+
   it('stimuli duration field updates on change', async () => {
-    const wrapper = shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');
       wrapper.find('.confirm-form').simulate('click');
@@ -163,13 +132,7 @@ describe('<ExperimentBlock />', () => {
   });
 
   it('number of trials field updates on change', async () => {
-    const wrapper = shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    const wrapper = shallow(<ExperimentForm />);
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');
       wrapper.find('.confirm-form').simulate('click');
@@ -185,6 +148,26 @@ describe('<ExperimentBlock />', () => {
     expect(wrapper.contains('.trials-error')).toEqual(false);
   });
 
+  it('stimuli replacement changes', async () => {
+    const wrapper = shallow(<ExperimentForm />);
+    await act(async () => {
+      wrapper.find('.create-form-button').simulate('click');
+    });
+    //provides coverage and would fail if error occurs
+    await act(async () => {
+      wrapper
+        .find('.stimuli-randomness')
+        .at(0)
+        .simulate('click');
+    });
+    await act(async () => {
+      wrapper
+        .find('.stimuli-randomness')
+        .at(1)
+        .simulate('click');
+    });
+  });
+
   //Tests including groups:
   it('groups field generates correctly', async () => {
     const mockResponse = {
@@ -194,13 +177,7 @@ describe('<ExperimentBlock />', () => {
       return Promise.resolve(new Response(JSON.stringify(mockResponse)));
     });
 
-    const wrapper = shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    const wrapper = shallow(<ExperimentForm />);
 
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');
@@ -228,13 +205,7 @@ describe('<ExperimentBlock />', () => {
       return Promise.resolve(new Response(JSON.stringify(mockResponse)));
     });
 
-    const wrapper = shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    const wrapper = shallow(<ExperimentForm />);
 
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');
@@ -266,13 +237,7 @@ describe('<ExperimentBlock />', () => {
       return Promise.resolve(new Response(JSON.stringify(mockResponse)));
     });
 
-    const wrapper = shallow(
-      <ExperimentForm
-        setUpload={function(arg0: boolean): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    const wrapper = shallow(<ExperimentForm />);
 
     await act(async () => {
       wrapper.find('.create-form-button').simulate('click');

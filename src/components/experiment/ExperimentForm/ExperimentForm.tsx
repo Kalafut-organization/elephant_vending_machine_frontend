@@ -770,7 +770,7 @@ const ExperimentForm = () => {
                         <Form.Check
                           value="1"
                           type="radio"
-                          name="stimuli-randomness"
+                          className="stimuli-randomness"
                           onClick={() => (form_info.replacement = true)}
                           defaultChecked
                         />
@@ -780,7 +780,7 @@ const ExperimentForm = () => {
                         <Form.Check
                           value="2"
                           type="radio"
-                          name="stimuli-randomness"
+                          className="stimuli-randomness"
                           onClick={() => (form_info.replacement = false)}
                         />
                         Without replacement in trials (repetition possible)
