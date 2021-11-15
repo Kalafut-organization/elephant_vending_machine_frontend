@@ -29,7 +29,7 @@ var form_info = {
 
 var selectedTemp: Array<JSX.Element> = [];
 
-const ExperimentForm = () => {
+const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
   const [selectedGroups, setSelectedGroups] = useState<JSX.Element[]>([]);
 
   const handleChange = (name: any) => {
@@ -202,7 +202,6 @@ const ExperimentForm = () => {
     return errorFree;
   };
 
-  const [trayNum, setTrayNum] = useState<any[]>([]); // so testing will update
   const getName = (name: any) => {
     if (form_info.outcomes.has(name)) {
       var data = form_info.outcomes.get(name);
@@ -258,6 +257,7 @@ const ExperimentForm = () => {
     form.append('groups', JSON.stringify(selectedGroups));
     form.append('monitors', JSON.stringify(form_info.monitors));
     // used stimuli
+    props.setUpload(true);
     const response = await fetch(
       `${process.env.REACT_APP_BACKEND_ADDRESS}/experiment/create`,
       {
@@ -267,6 +267,7 @@ const ExperimentForm = () => {
     );
     const body = await response.json();
     console.log(body);
+    props.setUpload(false);
   };
 
   const updateMonitorArrayIndex = (index: number, e: any) => {
@@ -495,7 +496,6 @@ const ExperimentForm = () => {
                                       data['tray'] = 1;
                                       getName(group);
                                       form_info.outcomes.set(group, data);
-                                      setTrayNum([group]); //for testing
                                       if (errorChecking === true) {
                                         validate();
                                       }
@@ -511,7 +511,6 @@ const ExperimentForm = () => {
                                       data['tray'] = 2;
                                       getName(group);
                                       form_info.outcomes.set(group, data);
-                                      setTrayNum([group]); //for testing
                                       if (errorChecking === true) {
                                         validate();
                                       }
@@ -527,7 +526,6 @@ const ExperimentForm = () => {
                                       data['tray'] = 3;
                                       getName(group);
                                       form_info.outcomes.set(group, data);
-                                      setTrayNum([group]); //for testing
                                       if (errorChecking === true) {
                                         validate();
                                       }
@@ -543,7 +541,6 @@ const ExperimentForm = () => {
                                       data['tray'] = 0;
                                       getName(group);
                                       form_info.outcomes.set(group, data);
-                                      setTrayNum([group]); //for testing
                                       if (errorChecking === true) {
                                         validate();
                                       }
