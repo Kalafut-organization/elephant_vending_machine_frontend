@@ -13,13 +13,13 @@ import Card from 'react-bootstrap/Card';
 import defaultimage from './resources/fixation_stimuli.png';
 
 var form_info = {
-  name: 'test',
-  trials: '10',
+  name: '',
+  trials: '',
   outcomes: new Map(),
   outcomes_dict: {},
-  fixation_duration: '1',
-  intermediate_duration: '1',
-  stimuli_duration: '1',
+  fixation_duration: '',
+  intermediate_duration: '',
+  stimuli_duration: '',
   monitors: [true, false, true],
   replacement: true,
   fixation_default: true,
@@ -28,7 +28,7 @@ var form_info = {
 
 var selectedTemp: Array<JSX.Element> = [];
 
-const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
+const ExperimentForm = () => {
   const [selectedGroups, setSelectedGroups] = useState<JSX.Element[]>([]);
 
   const handleChange = (name: any) => {
@@ -50,9 +50,9 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
     }
     setSelectedGroups(selectedTemp);
   };
-
+  let items: Array<JSX.Element> = [];
   const generateGroups = (groupNames: Array<JSX.Element>) => {
-    const items: Array<JSX.Element> = [];
+    items = [];
     groupNames.forEach(group => {
       if (String(group) !== 'Fixations') {
         items.push(
@@ -83,7 +83,6 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
         );
       }
     });
-
     return items;
   };
 
@@ -202,6 +201,7 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
     return errorFree;
   };
 
+  const [trayNum, setTrayNum] = useState<any[]>([]); // so testing will update
   const getName = (name: any) => {
     if (form_info.outcomes.has(name)) {
       var data = form_info.outcomes.get(name);
@@ -212,24 +212,6 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
       }
     }
   };
-
-  // useEffect(() => {
-  //   async function fetchGroups(): Promise<void> {
-  //     try {
-  //       const response = await fetch(
-  //         `${process.env.REACT_APP_BACKEND_ADDRESS}/groups`
-  //       );
-  //       const body = await response.json();
-  //       if (body.names.length > 0) {
-  //         setGroupNames(body.names);
-  //       }
-  //     } catch (err) {
-  //       // setErrors(true);
-  //     }
-  //   }
-
-  //   if (!isUploading) fetchGroups();
-  // }, [isUploading]);
 
   const getGroups = async () => {
     try {
@@ -275,7 +257,6 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
     form.append('groups', JSON.stringify(selectedGroups));
     form.append('monitors', JSON.stringify(form_info.monitors));
     // used stimuli
-    props.setUpload(true);
     const response = await fetch(
       `${process.env.REACT_APP_BACKEND_ADDRESS}/experiment/create`,
       {
@@ -285,7 +266,6 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
     );
     const body = await response.json();
     console.log(body);
-    props.setUpload(false);
   };
 
   const updateMonitorArrayIndex = (index: number, e: any) => {
@@ -383,7 +363,7 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
                           <Form.Check
                             value="1"
                             type="checkbox"
-                            name="stimuli-monitor-0"
+                            className="stimuli-monitor-0"
                             defaultChecked={monitors[0]}
                             onChange={(event: any) => {
                               updateMonitorArrayIndex(0, event);
@@ -398,7 +378,7 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
                           <Form.Check
                             value="2"
                             type="checkbox"
-                            name="stimuli-monitor-1"
+                            className="stimuli-monitor-1"
                             defaultChecked={monitors[1]}
                             onChange={(event: any) => {
                               updateMonitorArrayIndex(1, event);
@@ -413,7 +393,7 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
                           <Form.Check
                             value="2"
                             type="checkbox"
-                            name="stimuli-monitor-2"
+                            className="stimuli-monitor-2"
                             defaultChecked={monitors[2]}
                             onChange={(event: any) => {
                               updateMonitorArrayIndex(2, event);
@@ -512,7 +492,9 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
                                     onClick={() => {
                                       var data = form_info.outcomes.get(group);
                                       data['tray'] = 1;
+                                      getName(group);
                                       form_info.outcomes.set(group, data);
+                                      setTrayNum([group]); //for testing
                                       if (errorChecking === true) {
                                         validate();
                                       }
@@ -526,7 +508,9 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
                                     onClick={() => {
                                       var data = form_info.outcomes.get(group);
                                       data['tray'] = 2;
+                                      getName(group);
                                       form_info.outcomes.set(group, data);
+                                      setTrayNum([group]); //for testing
                                       if (errorChecking === true) {
                                         validate();
                                       }
@@ -540,7 +524,9 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
                                     onClick={() => {
                                       var data = form_info.outcomes.get(group);
                                       data['tray'] = 3;
+                                      getName(group);
                                       form_info.outcomes.set(group, data);
+                                      setTrayNum([group]); //for testing
                                       if (errorChecking === true) {
                                         validate();
                                       }
@@ -554,7 +540,9 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
                                     onClick={() => {
                                       var data = form_info.outcomes.get(group);
                                       data['tray'] = 0;
+                                      getName(group);
                                       form_info.outcomes.set(group, data);
+                                      setTrayNum([group]); //for testing
                                       if (errorChecking === true) {
                                         validate();
                                       }
