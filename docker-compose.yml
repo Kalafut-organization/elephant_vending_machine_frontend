@@ -1,7 +1,9 @@
 version: "3.7"
 services:
   frontend:
-    build: .
+    build:
+        context: .
+        network: host
     restart: always
     ports: 
       - "3000:3000"
