@@ -31,6 +31,7 @@ describe('<Experiment />', () => {
 
   it('sends POSTs to the backend and then rerenders the experiment list', async () => {
     const mockResponse = { files: [] };
+    const mockTemplateResponse = { files: [], status: 200 };
     const mockPostResponse = { message: '' };
     const mockGetResponse = {
       files: [
@@ -43,6 +44,11 @@ describe('<Experiment />', () => {
       .mockImplementationOnce(() =>
         Promise.resolve({
           json: () => Promise.resolve(mockResponse),
+        })
+      )
+      .mockImplementationOnce(() =>
+        Promise.resolve({
+          json: () => Promise.resolve(mockTemplateResponse),
         })
       )
       .mockImplementationOnce(() =>
@@ -69,7 +75,7 @@ describe('<Experiment />', () => {
     await act(async () => {
       wrapper.find('.upload-button').simulate('click');
     });
-    expect(fetchMock).toHaveBeenCalledTimes(4); //one is in ExperimentForm
+    expect(fetchMock).toHaveBeenCalledTimes(5); //one is in ExperimentForm
     fetchMock.mockRestore();
     wrapper.unmount();
   });

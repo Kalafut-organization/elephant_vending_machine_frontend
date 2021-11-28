@@ -39,9 +39,11 @@ for reference.
 1. Clone this repo to the Pi
 1. Navigate to the cloned directory
 1. [Install docker and docker-compose](https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl)
+1. Ensure that the `.env` file has the address that the backend is using. For the backend running in docker, this should be `http://192.168.0.100`.
 1. Run `docker-compose up --build` to start the container
     * This will ensure the app automatically restarts in case of errors or reboots.
     * To stop the containers you can use `ctrl-c` or `docker-compose down`
+    * For the build to be successful, you will most likely need to temporarily disable to static IP of the pi.
     
 ## Running in Dev
 You will need to run commands on the server Pi though ssh network commands, this is included in these instructions
@@ -51,5 +53,6 @@ You will need to run commands on the server Pi though ssh network commands, this
 1. A sign in should appear, username is `pi` password is `raspberry`
 1. you should now be in the Server Pi terminal
 1. enter the directory for the backend by running command `cd elephant_vending_machine_frontend`
+1. Ensure that the `.env` file has the address that the backend is using. For the backend running in development with Flask, this should be `http://192.168.0.100:5000`.
 1. run this command `npm start`
 1. the front end should open on your web browser
