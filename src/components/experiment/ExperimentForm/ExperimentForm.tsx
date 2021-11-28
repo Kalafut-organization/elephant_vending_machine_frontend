@@ -90,6 +90,7 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
   const [isModalOpen, setModalStatus] = useState(false);
   const [groupNames, setGroupNames] = useState([]);
   const [fixation_num, setFixationNum] = useState(0);
+  const [repetition, setRepetition] = useState(false);
   const [monitors, setMonitors] = useState([true, false, true]);
 
   //Validation states
@@ -768,17 +769,24 @@ const ExperimentForm = (props: { setUpload: (arg0: boolean) => void }) => {
                           value="1"
                           type="radio"
                           className="stimuli-randomness"
-                          onClick={() => (form_info.replacement = true)}
-                          defaultChecked
+                          checked={repetition === false}
+                          onChange={() => {
+                            form_info.replacement = true;
+                            setRepetition(false);
+                          }}
                         />
                         With replacement in trials (no repetition)
                       </Row>
                       <Row>
                         <Form.Check
-                          value="2"
+                          value="1"
                           type="radio"
                           className="stimuli-randomness"
-                          onClick={() => (form_info.replacement = false)}
+                          checked={repetition === true}
+                          onChange={() => {
+                            form_info.replacement = false;
+                            setRepetition(true);
+                          }}
                         />
                         Without replacement in trials (repetition possible)
                       </Row>
