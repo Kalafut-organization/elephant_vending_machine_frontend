@@ -11,14 +11,6 @@ For this project to run successfully, you must have installed:
 * Node >= 8.10
 * npm >= 5.6
 
-## Starting the user interface
-NOTE: You will need to set your local environment variables if not connected to the actual backend running on the
-Raspberry Pi attached to the real hardware. See [documentation here](https://create-react-app.dev/docs/adding-custom-environment-variables/)
-for reference.
-
-1. Navigate to the root directory of this project
-1. Run `npm start`
-
 ## Viewing Documentation
 1. Navigate to the root directory of this project
 1. Run `npm run docs`
@@ -40,7 +32,7 @@ for reference.
 1. Navigate to the cloned directory
 1. [Install docker and docker-compose](https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl)
 1. Ensure that the `.env` file has the address that the backend is using. For the backend running in docker, this should be `http://192.168.0.100`.
-1. Run `docker-compose up --build` to start the container
+1. Run `docker-compose up --build` to build and start the container
     * This will ensure the app automatically restarts in case of errors or reboots.
     * To stop the containers you can use `ctrl-c` or `docker-compose down`
     * For the build to be successful, you will most likely need to temporarily disable to static IP of the pi.
@@ -55,4 +47,5 @@ You will need to run commands on the server Pi though ssh network commands, this
 1. enter the directory for the backend by running command `cd elephant_vending_machine_frontend`
 1. Ensure that the `.env` file has the address that the backend is using. For the backend running in development with Flask, this should be `http://192.168.0.100:5000`.
 1. run this command `npm start`
+   * you may first need to run `export NODE_OPTIONS=--openssl-legacy-provider`
 1. the front end should open on your web browser
