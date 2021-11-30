@@ -80,16 +80,6 @@
 					<li>Node &gt;= 8.10</li>
 					<li>npm &gt;= 5.6</li>
 				</ul>
-				<a href="#starting-the-user-interface" id="starting-the-user-interface" style="color: inherit; text-decoration: none;">
-					<h2>Starting the user interface</h2>
-				</a>
-				<p>NOTE: You will need to set your local environment variables if not connected to the actual backend running on the
-					Raspberry Pi attached to the real hardware. See <a href="https://create-react-app.dev/docs/adding-custom-environment-variables/">documentation here</a>
-				for reference.</p>
-				<ol>
-					<li>Navigate to the root directory of this project</li>
-					<li>Run <code>npm start</code></li>
-				</ol>
 				<a href="#viewing-documentation" id="viewing-documentation" style="color: inherit; text-decoration: none;">
 					<h2>Viewing Documentation</h2>
 				</a>
@@ -129,7 +119,7 @@
 					<li>Navigate to the cloned directory</li>
 					<li><a href="https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl">Install docker and docker-compose</a></li>
 					<li>Ensure that the <code>.env</code> file has the address that the backend is using. For the backend running in docker, this should be <code>http://192.168.0.100</code>.</li>
-					<li>Run <code>docker-compose up --build</code> to start the container<ul>
+					<li>Run <code>docker-compose up --build</code> to build and start the container<ul>
 							<li>This will ensure the app automatically restarts in case of errors or reboots.</li>
 							<li>To stop the containers you can use <code>ctrl-c</code> or <code>docker-compose down</code></li>
 							<li>For the build to be successful, you will most likely need to temporarily disable to static IP of the pi.</li>
@@ -147,7 +137,10 @@
 					<li>you should now be in the Server Pi terminal</li>
 					<li>enter the directory for the backend by running command <code>cd elephant_vending_machine_frontend</code></li>
 					<li>Ensure that the <code>.env</code> file has the address that the backend is using. For the backend running in development with Flask, this should be <code>http://192.168.0.100:5000</code>.</li>
-					<li>run this command <code>npm start</code></li>
+					<li>run this command <code>npm start</code><ul>
+							<li>you may first need to run <code>export NODE_OPTIONS=--openssl-legacy-provider</code></li>
+						</ul>
+					</li>
 					<li>the front end should open on your web browser</li>
 				</ol>
 			</div>
