@@ -38,14 +38,26 @@ For this project to run successfully, you must have installed:
     * For the build to be successful, you will most likely need to temporarily disable to static IP of the pi.
     
 ## Running in Dev
-You will need to run commands on the server Pi though ssh network commands, this is included in these instructions
+You will need to run commands on the server Pi though ssh network commands, this is included in these instructions.
 
 1. Connect to the same network as the Server Pi and navigate to your terminal
 1. run command, `ssh pi@192.168.0.100`
 1. A sign in should appear, username is `pi` password is `raspberry`
-1. you should now be in the Server Pi terminal
-1. enter the directory for the backend by running command `cd elephant_vending_machine_frontend`
+1. You should now be in the Server Pi terminal
+1. Enter the directory for the backend by running command `cd elephant_vending_machine_frontend`
 1. Ensure that the `.env` file has the address that the backend is using. For the backend running in development with Flask, this should be `http://192.168.0.100:5000`.
-1. run this command `npm start`
-   * you may first need to run `export NODE_OPTIONS=--openssl-legacy-provider`
-1. the front end should open on your web browser
+1. Run this command `npm start`
+   * You may first need to run `export NODE_OPTIONS=--openssl-legacy-provider`
+1. The front end should open on your web browser
+
+## Running Automatically
+You will need to run commands on the server Pi though ssh network commands, this is included in these instructions.
+
+1. Connect to the same network as the Server Pi and navigate to your terminal
+1. run command, `ssh pi@192.168.0.100`
+1. A sign in should appear, username is `pi` password is `raspberry`
+1. You should now be in the Server Pi terminal
+1. Enter the directory for the backend by running command `cd elephant_vending_machine_frontend`
+6. Execute the setup shell script "setup.sh" by running the command "bash setup.sh" in terminal
+7. Assuming connections are good, this script will launch front-end and back-end.
+8. To exit, use the CTRL-C hotkey to exit the front-end, and run the shell script "clearExperiment.sh" by running the command "bash clearExperiment.sh" in terminal
