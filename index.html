@@ -129,19 +129,33 @@
 				<a href="#running-in-dev" id="running-in-dev" style="color: inherit; text-decoration: none;">
 					<h2>Running in Dev</h2>
 				</a>
-				<p>You will need to run commands on the server Pi though ssh network commands, this is included in these instructions</p>
+				<p>You will need to run commands on the server Pi though ssh network commands, this is included in these instructions.</p>
 				<ol>
 					<li>Connect to the same network as the Server Pi and navigate to your terminal</li>
 					<li>run command, <code>ssh pi@192.168.0.100</code></li>
 					<li>A sign in should appear, username is <code>pi</code> password is <code>raspberry</code></li>
-					<li>you should now be in the Server Pi terminal</li>
-					<li>enter the directory for the backend by running command <code>cd elephant_vending_machine_frontend</code></li>
+					<li>You should now be in the Server Pi terminal</li>
+					<li>Enter the directory for the backend by running command <code>cd elephant_vending_machine_frontend</code></li>
 					<li>Ensure that the <code>.env</code> file has the address that the backend is using. For the backend running in development with Flask, this should be <code>http://192.168.0.100:5000</code>.</li>
-					<li>run this command <code>npm start</code><ul>
-							<li>you may first need to run <code>export NODE_OPTIONS=--openssl-legacy-provider</code></li>
+					<li>Run this command <code>npm start</code><ul>
+							<li>You may first need to run <code>export NODE_OPTIONS=--openssl-legacy-provider</code></li>
 						</ul>
 					</li>
-					<li>the front end should open on your web browser</li>
+					<li>The front end should open on your web browser</li>
+				</ol>
+				<a href="#running-automatically" id="running-automatically" style="color: inherit; text-decoration: none;">
+					<h2>Running Automatically</h2>
+				</a>
+				<p>You will need to run commands on the server Pi though ssh network commands, this is included in these instructions.</p>
+				<ol>
+					<li>Connect to the same network as the Server Pi and navigate to your terminal</li>
+					<li>run command, <code>ssh pi@192.168.0.100</code></li>
+					<li>A sign in should appear, username is <code>pi</code> password is <code>raspberry</code></li>
+					<li>You should now be in the Server Pi terminal</li>
+					<li>Enter the directory for the backend by running command <code>cd elephant_vending_machine_frontend</code></li>
+					<li>Execute the setup shell script &quot;setup.sh&quot; by running the command &quot;bash setup.sh&quot; in terminal</li>
+					<li>Assuming connections are good, this script will launch front-end and back-end.</li>
+					<li>To exit, use the CTRL-C hotkey to exit the front-end, and run the shell script &quot;clearExperiment.sh&quot; by running the command &quot;bash clearExperiment.sh&quot; in terminal</li>
 				</ol>
 			</div>
 		</div>
